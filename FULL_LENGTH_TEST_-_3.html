@@ -1,0 +1,3215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FULL LENGTH TEST - 3</title>
+<style>
+:root {
+  --primary-color: #007bff;
+  --primary-hover: #0069d9;
+  --success-color: #28a745;
+  --success-hover: #218838;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --secondary-color: #6c757d;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --shadow: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+  --overlay: rgba(0,0,0,0.5);
+  --nav-height: 80px;
+}
+
+[data-theme="dark"] {
+  --primary-color: #4dabf7;
+  --primary-hover: #339af0;
+  --success-color: #51cf66;
+  --success-hover: #40c057;
+  --danger-color: #ff6b6b;
+  --warning-color: #ffd43b;
+  --secondary-color: #868e96;
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #404040;
+  --text-primary: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --border-color: #495057;
+  --shadow: 0 4px 6px rgba(0,0,0,0.3);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.4);
+  --overlay: rgba(0,0,0,0.7);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
+  position: relative;
+  padding-bottom: var(--nav-height);
+}
+
+body.palette-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-primary);
+  padding: 20px 30px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.header h1 {
+  font-size: 28px;
+  color: var(--primary-color);
+  font-weight: 700;
+  user-select: none;
+}
+
+.header-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.theme-toggle, .fullscreen-btn {
+  background: var(--bg-tertiary);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s;
+  min-width: 44px;
+  min-height: 44px;
+  user-select: none;
+}
+
+.theme-toggle:active, .fullscreen-btn:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle:hover, .fullscreen-btn:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.timer {
+  background: var(--warning-color);
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  min-width: 100px;
+  text-align: center;
+  user-select: none;
+}
+
+.timer.warning {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.palette-fab {
+  position: fixed;
+  bottom: calc(var(--nav-height) + 20px);
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+  transition: all 0.3s ease;
+  z-index: 998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.palette-fab:active {
+  transform: scale(0.9);
+}
+
+.palette-fab:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,123,255,0.6);
+}
+
+.palette-fab.active {
+  background: var(--danger-color);
+}
+
+.palette-fab .badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--success-color);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-secondary);
+  pointer-events: none;
+}
+
+.palette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 999;
+  touch-action: none;
+}
+
+.palette-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.question-palette {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  max-width: 450px;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg-primary);
+  box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+  transition: right 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.question-palette.active {
+  right: 0;
+}
+
+.palette-header {
+  padding: 20px;
+  background: var(--primary-color);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.palette-header h3 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.palette-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 32px;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+  line-height: 1;
+  touch-action: manipulation;
+}
+
+.palette-close:active {
+  transform: scale(0.9);
+}
+
+.palette-close:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.palette-stats {
+  padding: 15px 20px;
+  background: var(--bg-tertiary);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  font-size: 13px;
+  text-align: center;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+}
+
+.palette-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.palette-stat .number {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.palette-stat.answered .number { color: var(--success-color); }
+.palette-stat.unanswered .number { color: var(--secondary-color); }
+.palette-stat.bookmarked .number { color: var(--warning-color); }
+
+.palette-search {
+  padding: 15px 20px;
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+}
+
+.palette-search input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.palette-search input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.palette-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+}
+
+.palette-btn {
+  aspect-ratio: 1;
+  border: 2px solid var(--border-color);
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  min-width: 40px;
+  min-height: 40px;
+  color: var(--text-primary);
+  position: relative;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.palette-btn:active {
+  transform: scale(0.9);
+}
+
+.palette-btn:hover {
+  transform: scale(1.1);
+  z-index: 10;
+  box-shadow: var(--shadow);
+}
+
+.palette-btn.current {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  animation: currentPulse 2s infinite;
+}
+
+@keyframes currentPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,123,255,0.7); }
+  50% { box-shadow: 0 0 0 8px rgba(0,123,255,0); }
+}
+
+.palette-btn.answered {
+  background: var(--success-color);
+  color: white;
+  border-color: var(--success-color);
+}
+
+.palette-btn.bookmarked::after {
+  content: '🔖';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.palette-btn.bookmarked.answered {
+  background: var(--success-color);
+}
+
+.palette-legend {
+  padding: 20px;
+  border-top: 1px solid var(--border-color);
+  font-size: 13px;
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.question-image, .option-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 10px 0;
+  display: block;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.legend-color {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.quiz-container {
+  background: var(--bg-primary);
+  border-radius: 15px;
+  box-shadow: var(--shadow-lg);
+  padding: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  scroll-margin-top: 20px;
+}
+
+.quiz-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.marking-info {
+  display: inline-block;
+  background: var(--bg-tertiary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.progress-section {
+  margin-bottom: 25px;
+}
+
+.progress-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.progress-bar-container {
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 10px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+  transition: width 0.4s ease;
+  border-radius: 12px;
+}
+
+.question-section {
+  min-height: 300px;
+  scroll-margin-top: 80px;
+  margin-bottom: 20px;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.question-number {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-color);
+  user-select: none;
+}
+
+.bookmark-btn {
+  background: transparent;
+  border: 2px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.bookmark-btn:active {
+  transform: scale(0.95);
+}
+
+.bookmark-btn.active {
+  background: var(--warning-color);
+  border-color: var(--warning-color);
+  color: #000;
+}
+
+.question {
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  color: var(--text-primary);
+  user-select: text;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--border-color);
+  padding: 16px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg-secondary);
+  min-height: 60px;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.option-label:active {
+  transform: scale(0.98);
+}
+
+.option-label:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-color);
+}
+
+.option-label.selected {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.option-label input[type="radio"] {
+  margin-right: 15px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.option-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.option-image {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: var(--bg-primary);
+  padding: 10px;
+}
+
+.option-label.selected .option-image {
+  background: rgba(255,255,255,0.1);
+}
+
+.navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-primary);
+  border-top: 2px solid var(--border-color);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  z-index: 997;
+  padding: 15px 20px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  max-width: 100%;
+}
+
+.nav-btn {
+  padding: 14px 20px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.nav-btn:active {
+  transform: scale(0.97);
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.nav-btn.prev {
+  background: var(--secondary-color);
+  color: white;
+}
+
+.nav-btn.prev:hover:not(:disabled) {
+  background: #5a6268;
+}
+
+.nav-btn.next {
+  background: var(--primary-color);
+  color: white;
+}
+
+.nav-btn.next:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.nav-btn.clear {
+  background: var(--danger-color);
+  color: white;
+}
+
+.nav-btn.clear:hover {
+  background: #c82333;
+}
+
+.nav-btn.submit {
+  background: var(--success-color);
+  color: white;
+  grid-column: 1 / -1;
+}
+
+.nav-btn.submit:hover {
+  background: var(--success-hover);
+}
+
+.result-section {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.score-card {
+  background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+  color: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  margin-bottom: 30px;
+  user-select: none;
+}
+
+.score-card h2 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.score-card p {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: var(--bg-secondary);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid var(--border-color);
+  user-select: none;
+}
+
+.stat-card h3 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.stat-card.correct h3 { color: var(--success-color); }
+.stat-card.wrong h3 { color: var(--danger-color); }
+.stat-card.unattempted h3 { color: var(--secondary-color); }
+
+.question-review {
+  border: 2px solid var(--border-color);
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 20px;
+  background: var(--bg-secondary);
+}
+
+.question-review h4 {
+  margin-bottom: 15px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.review-option {
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 2px solid var(--border-color);
+  background: var(--bg-primary);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-option .option-image {
+  max-width: 150px;
+  max-height: 100px;
+}
+
+.review-option.correct {
+  background: #d4edda;
+  border-color: var(--success-color);
+  color: #155724;
+}
+
+.review-option.wrong {
+  background: #f8d7da;
+  border-color: var(--danger-color);
+  color: #721c24;
+}
+
+.review-option.user-selected {
+  border-width: 3px;
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  padding: 14px 30px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  min-width: 150px;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.action-btn.restart {
+  background: var(--danger-color);
+  color: white;
+}
+
+.action-btn.restart:hover {
+  background: #c82333;
+}
+
+.action-btn.download {
+  background: var(--primary-color);
+  color: white;
+}
+
+.action-btn.download:hover {
+  background: var(--primary-hover);
+}
+
+.action-btn.print {
+  background: var(--secondary-color);
+  color: white;
+}
+
+.action-btn.print:hover {
+  background: #5a6268;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.palette-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.palette-content::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+.palette-content::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+.palette-content::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 140px;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .quiz-container {
+    padding: 20px 15px;
+  }
+
+  .question-palette {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .palette-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+
+  .palette-btn {
+    font-size: 13px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .palette-fab {
+    bottom: calc(var(--nav-height) + 10px);
+    right: 15px;
+    width: 56px;
+    height: 56px;
+    font-size: 22px;
+  }
+
+  .navigation {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px 15px;
+  }
+
+  .nav-btn {
+    min-height: 44px;
+    font-size: 15px;
+  }
+
+  .nav-btn.clear {
+    order: 3;
+  }
+
+  .nav-btn.submit {
+    grid-column: auto;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .legend-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .question {
+    font-size: 16px;
+  }
+
+  .option-label {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+
+  .option-image {
+    max-height: 150px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .palette-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .palette-btn {
+    font-size: 12px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+
+  .timer {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  .option-image {
+    max-height: 120px;
+  }
+}
+
+@media (max-width: 360px) {
+  .palette-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media print {
+  .header-controls, .navigation, .palette-fab, .palette-overlay, .question-palette, .action-buttons, .bookmark-btn {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    padding-bottom: 0;
+  }
+
+  .container {
+    padding-bottom: 20px;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .palette-fab {
+    bottom: calc(var(--nav-height) + 5px);
+    right: 10px;
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .palette-fab .badge {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🎯 FULL LENGTH TEST - 3</h1>
+    <div class="header-controls">
+      <div class="timer" id="timer">00:00</div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle Theme">🌙</button>
+      <button class="fullscreen-btn" id="fullscreenBtn" aria-label="Toggle fullscreen" title="Fullscreen">⛶</button>
+    </div>
+  </div>
+
+  <div class="quiz-container" id="quizContainer">
+    <div class="quiz-header">
+      <div class="marking-info" id="markingInfo">Marking: +1, -0</div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-stats">
+        <span>Progress: <strong id="progressText">1/2</strong></span>
+        <span>Attempted: <strong id="attemptedText">0</strong></span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <div class="question-section" id="questionSection">
+      <div class="question-header">
+        <div class="question-number" id="questionNumber">Question 1 of 2</div>
+        <button class="bookmark-btn" id="bookmarkBtn" aria-label="Bookmark question">
+          <span>🔖</span> <span>Bookmark</span>
+        </button>
+      </div>
+      
+      <div class="question" id="questionText"></div>
+      
+      <div class="options" id="optionsContainer"></div>
+    </div>
+
+    <div class="result-section hidden" id="resultSection"></div>
+  </div>
+</div>
+
+<button class="palette-fab" id="paletteFab" aria-label="Toggle question palette" title="Question Palette">
+  📋
+  <span class="badge" id="answeredBadge">0</span>
+</button>
+
+<div class="palette-overlay" id="paletteOverlay"></div>
+
+<div class="question-palette" id="questionPalette">
+  <div class="palette-header">
+    <h3>Question Palette</h3>
+    <button class="palette-close" id="paletteClose" aria-label="Close palette">×</button>
+  </div>
+
+  <div class="palette-stats">
+    <div class="palette-stat answered">
+      <div class="number" id="paletteAnswered">0</div>
+      <div>Answered</div>
+    </div>
+    <div class="palette-stat unanswered">
+      <div class="number" id="paletteUnanswered">2</div>
+      <div>Not Answered</div>
+    </div>
+    <div class="palette-stat bookmarked">
+      <div class="number" id="paletteBookmarked">0</div>
+      <div>Bookmarked</div>
+    </div>
+  </div>
+
+  <div class="palette-search">
+    <input type="number" id="paletteSearch" placeholder="Jump to question number..." aria-label="Search questions" inputmode="numeric" pattern="[0-9]*">
+  </div>
+
+  <div class="palette-content">
+    <div class="palette-grid" id="paletteGrid"></div>
+  </div>
+
+  <div class="palette-legend">
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--success-color)"></div>
+        <span>Answered</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--bg-secondary); border: 2px solid var(--border-color)"></div>
+        <span>Not Answered</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--primary-color)"></div>
+        <span>Current Question</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--warning-color)"></div>
+        <span>🔖 Bookmarked</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="navigation" id="navigation">
+  <button class="nav-btn prev" id="prevBtn" aria-label="Previous question">
+    <span>←</span> Previous
+  </button>
+  <button class="nav-btn clear" id="clearBtn" aria-label="Clear answer">Clear</button>
+  <button class="nav-btn next" id="nextBtn" aria-label="Next question">
+    Next <span>→</span>
+  </button>
+  <button class="nav-btn submit hidden" id="submitBtn" aria-label="Submit quiz">Submit Quiz</button>
+</div>
+
+<script>
+// MODIFIED: Quiz data structure with time_minutes
+const quizData = {
+  "time_minutes": 120,
+  "questions": [
+    {
+      "sr_no": 1,
+      "question": "<p>Who was the first Chief Minister of Uttar Pradesh after the state's formation in 1950?</p>",
+      "option1": "<p>Chandra Bhanu Gupta</p>",
+      "option2": "<p>Suheldev</p>",
+      "option3": "<p>Charan Singh</p>",
+      "option4": "<p>Govind Ballabh Pant</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>After the formation of Uttar Pradesh, 1950, the first Chief Minister of U.P. was Pt. Govind Ballabh Pant. He served as Chief Minister from January 26, 1950 to December 27, 1954.</p>"
+    },
+    {
+      "sr_no": 2,
+      "question": "<p>Which of the following districts of Uttar Pradesh shares boundaries with Madhya Pradesh?</p>",
+      "option1": "<p>Chitrakoot</p>",
+      "option2": "<p>Mahoba</p>",
+      "option3": "<p>Both (a) and (b)</p>",
+      "option4": "<p>Ballia</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Chitrakoot and Mahoba districts of Uttar Pradesh share border with Madhya Pradesh. A total of 11 districts of Uttar Pradesh (Agra, Etawah, Jalaun, Jhansi, Lalitpur, Mahoba, Banda, Chitrakoot, Prayagraj, Mirzapur and Sonbhadra) share border with Madhya Pradesh.</p>"
+    },
+    {
+      "sr_no": 3,
+      "question": "<p>Which type of soil is mainly found in Uttar Pradesh?</p>",
+      "option1": "<p>Alluvial soil</p>",
+      "option2": "<p>Laterite soil</p>",
+      "option3": "<p>Red soil</p>",
+      "option4": "<p>Regur soil</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Alluvial soil is mainly found in Uttar Pradesh. It is spread from west to east in the plains. Alluvial soil in Uttar Pradesh is mainly brought by Ganga and its tributaries. Alluvial soil is of two types–</p><p>1. Bangar or old alluvial soils</p><p>2. Khadar or new alluvial soils</p>"
+    },
+    {
+      "sr_no": 4,
+      "question": "<p>Math the following:</p><p>a. Nawabganj Bird Sanctuary</p><p>i. Mainpuri</p><p>b. Parvati Aranga Bird Sanctuary</p><p>ii. Unnao</p><p>c. Saman Bird Sanctuary</p><p>iii. Gonda</p><p>d. Samaspura Bird Sanctuary</p><p>iv. Raebareli</p>",
+      "option1": "<p>a-ii, b-iii, c,-iv d-i</p>",
+      "option2": "<p>a-i, b-ii, c-iii, d-iv</p>",
+      "option3": "<p>a-iv, b-i, c-ii, d-iii</p>",
+      "option4": "<p>a-ii, b-iii, c-i, d-iv</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The correct match is as follows–</p><p>Nawabganj Bird Sanctuary – Unnao</p><p>Parvati Arga Bird Sanctuary – Gonda</p><p>Saman Bird Sanctuary – Mainpuri</p><p>Samaspur Bird Sanctuary – Raebareli</p>"
+    },
+    {
+      "sr_no": 5,
+      "question": "<p>Sarnath, famous for the ‘Ashoka Pillar’ is located 10 km north-east of Varanasi near the confluence of which two rivers?</p>",
+      "option1": "<p>Betwa and Chambal</p>",
+      "option2": "<p>Ganga and Son</p>",
+      "option3": "<p>Ganga and Varuna</p>",
+      "option4": "<p>Yamuna and Kali</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Sarnath, famous for the ‘Ashoka Pillar’ is located 10 km north-east of Varanasi near the confluence of Ganga and Varuna rivers. The Varuna river is a Minor tributary of the rivers Ganga.</p>"
+    },
+    {
+      "sr_no": 6,
+      "question": "<p>Which of the following is not a major crop grown in the Bundelkhand region of India?</p>",
+      "option1": "<p>Millet</p>",
+      "option2": "<p>Gram</p>",
+      "option3": "<p>Soyabean</p>",
+      "option4": "<p>Cassava</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Bundelkhand region is largely characterized by shallow red soils, undulating topography, extreme weather conditions and recurrent droughts, making the agriculture in the region more difficult leading to low crop productivity, crop intensity and higher soil loss through erosion. The major crops grown in the Bundelkhand region include wheat, gram, pulses, millet, barley, mustard etc. However, cassava is not grown in Bundelkhand region, because it requires moderate rainfall and well-drained soil.</p>"
+    },
+    {
+      "sr_no": 7,
+      "question": "<p>Where is the Govind Ballabh Pant Sagar Dam located?</p>",
+      "option1": "<p>Lalitpur</p>",
+      "option2": "<p>Moradabad</p>",
+      "option3": "<p>Prayagraj</p>",
+      "option4": "<p>Pipri</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Govind Ballabh Pant Sagar Dam, also known as Rihand Dam, is a concrete gravity dam located at Pipri in Sonbhadra district of Uttar Pradesh. The reservoir of Rihand Dam, called Govind Ballabh Pant Sagar, is India's largest artificial lake. The dam is located on the Rihand river, a tributary of the Son river.</p>"
+    },
+    {
+      "sr_no": 8,
+      "question": "<p>Kashi located in Uttar Pradesh is a famous pilgrimage center located on banks of which of following river?</p>",
+      "option1": "<p>Gomti</p>",
+      "option2": "<p>Saryu</p>",
+      "option3": "<p>Yamuna</p>",
+      "option4": "<p>Ganga</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The pilgrimage centre Kashi which is situated in Uttar Pradesh is located on the bank of river Ganga.</p>"
+    },
+    {
+      "sr_no": 9,
+      "question": "<p>In which of the following districts of Uttar Pradesh, the Cigarette is made?</p>",
+      "option1": "<p>Meerut and Mathura</p>",
+      "option2": "<p>Saharanpur and Ghaziabad</p>",
+      "option3": "<p>Agra and Kanpur</p>",
+      "option4": "<p>Moradabad and Aligarh</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The Cigarette industry is mainly located in Saharanpur and Ghaziabad districts of Uttar Pradesh. While Aligarh is famous for Lock, Moradabad for Brass, Kanpur for Leather and Meerut for Sports industry.</p>"
+    },
+    {
+      "sr_no": 10,
+      "question": "<p>Where is ‘Aonla Thermal Power Plant’ located?</p>",
+      "option1": "<p>Auraiya</p>",
+      "option2": "<p>Bareilly</p>",
+      "option3": "<p>Jhansi</p>",
+      "option4": "<p>Rampur</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Aonla Thermal Power Plant is located at Aonla in Bareilly district of Uttar Pradesh. It is a gas-based power plant with a design capacity of 100 MW. It is operated by Indian Farmers Fertiliser Cooperative Ltd. (IFFCO).</p>"
+    },
+    {
+      "sr_no": 11,
+      "question": "<p>When was Uttar Pradesh State Biodiversity Board established?</p>",
+      "option1": "<p>5 June, 2007</p>",
+      "option2": "<p>28 Sept, 2006</p>",
+      "option3": "<p>24 October, 2005</p>",
+      "option4": "<p>17 August, 2003</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Uttar Pradesh State Biodiversity Board was established on September 28, 2006 by the Government of Uttar Pradesh. It was formed under the Biological Diversity Act of 2002.</p>"
+    },
+    {
+      "sr_no": 12,
+      "question": "<p>After the decline of the Mughal Empire, which power controlled the city of Agra before it was taken over by the British in 1803?</p>",
+      "option1": "<p>Afghans</p>",
+      "option2": "<p>Marathas</p>",
+      "option3": "<p>Sikhs</p>",
+      "option4": "<p>Rajputs</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>After the decline of the Mughal Empire, the city of Agra fell under the control of the Maratha Confederacy. The Marathas were eventually displaced from Agra by the British East India Company in 1803.</p>"
+    },
+    {
+      "sr_no": 13,
+      "question": "<p>In which month is the Jhula dance of Uttar Pradesh performed?</p>",
+      "option1": "<p>Kartika</p>",
+      "option2": "<p>Chaitra</p>",
+      "option3": "<p>Magha</p>",
+      "option4": "<p>Shraavana</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Jhula dance is a famous folk dance of the Braj region of Uttar Pradesh. It is performed in the month of Saavan and depicts the love of Radha and Krishna.</p>"
+    },
+    {
+      "sr_no": 14,
+      "question": "<p>Who among the following is the author of Fatawa-i-Jahandari?</p>",
+      "option1": "<p>Abul Fazal</p>",
+      "option2": "<p>Ziauddin Barani</p>",
+      "option3": "<p>Abdul Halim Sharar</p>",
+      "option4": "<p>Sheikh Faizi</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The author of Fatawa-i-Jahandari is Ziauddin Barani. The book contains the political ideals to be pursued by a Muslim ruler. His other famous work is Tarikh-i-Firozshahi.</p>"
+    },
+    {
+      "sr_no": 15,
+      "question": "<p>Agariya tribe reside in which of the following districts of U.P.?</p>",
+      "option1": "<p>Ghaziabad</p>",
+      "option2": "<p>Ghazipur</p>",
+      "option3": "<p>Mirzapur</p>",
+      "option4": "<p>Sonbhadra</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The Agariya, Baiga and Bhuiya Scheduled Tribes mainly reside in the Sonbhadra district of Uttar Pradesh.</p>"
+    },
+    {
+      "sr_no": 16,
+      "question": "<p>Part III of the Constitution of India stated about which of the following?</p>",
+      "option1": "<p>Fundamental Rights</p>",
+      "option2": "<p>Directive Principles of State Policy</p>",
+      "option3": "<p>Fundamental Duties</p>",
+      "option4": "<p>Citizenship</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Part III (Articles 12–35) of the Constitution deals with Fundamental Rights.</p><p>These rights protect civil liberties like equality, freedom, and religion.</p><p>They are justiciable and enforceable by courts through Article 32.</p>"
+    },
+    {
+      "sr_no": 17,
+      "question": "<p>Which Articles of the Constitution of India deal with the Union Public Service Commission?</p>",
+      "option1": "<p>Articles 315 to 323</p>",
+      "option2": "<p>Articles 300 to 320</p>",
+      "option3": "<p>Articles 330 to 338</p>",
+      "option4": "<p>Articles 210 to 219</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Articles 315–323 provide for UPSC and State Public Service Commissions.</p><p>UPSC recruits for All India Services like IAS, IPS, and IFS.</p><p>It functions independently to ensure merit-based administration.</p>"
+    },
+    {
+      "sr_no": 18,
+      "question": "<p>Who among the following has the power to dissolve the Legislative Assembly of a State?</p>",
+      "option1": "<p>Chief Secretary of the State</p>",
+      "option2": "<p>Governor of the State</p>",
+      "option3": "<p>Chief Minister of the State</p>",
+      "option4": "<p>Chief Justice of High Court</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The Governor dissolves the State Legislative Assembly under Article 174.</p><p>This power is generally exercised on the advice of the Council of Ministers.</p><p>In special cases, discretion may be used during constitutional crises.</p>"
+    },
+    {
+      "sr_no": 19,
+      "question": "<p>Under which amendment was Right to Property removed from Fundamental Rights?</p>",
+      "option1": "<p>61st Amendment</p>",
+      "option2": "<p>52nd Amendment</p>",
+      "option3": "<p>44th Amendment</p>",
+      "option4": "<p>42nd Amendment</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The 44th Constitutional Amendment Act, 1978 removed Right to Property from Part III.</p><p>It was shifted to Article 300A as a constitutional legal right.</p><p>This helped the government implement land reforms effectively.</p>"
+    },
+    {
+      "sr_no": 20,
+      "question": "<p>The Boilers Bill, 2024 seeks to replace which previous Boilers Act?</p>",
+      "option1": "<p>Boilers Act, 1955</p>",
+      "option2": "<p>Boilers Act, 1975</p>",
+      "option3": "<p>Boilers Act, 1965</p>",
+      "option4": "<p>Boilers Act, 1923</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 21,
+      "question": "<p>The last Shunga ruler was killed by his minister in which century?</p>",
+      "option1": "<p>1st century AD</p>",
+      "option2": "<p>1st century BC</p>",
+      "option3": "<p>2nd century BC</p>",
+      "option4": "<p>3rd century BC</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 22,
+      "question": "<p>Which one of the following statements best reflects the idea behind the \"Fractional Orbital Bombardment System\" often talked about in media ?</p>",
+      "option1": "<p>A hypersonic missile is launched into space to counter the asteroid approaching the Earth and explode it in space.</p>",
+      "option2": "<p>A spacecraft lands on another planet, after making several orbital motions.</p>",
+      "option3": "<p>A missile is put into a stable orbit around the Earth and deorbits over a target on the Earth.</p>",
+      "option4": "<p>A spacecraft moves along a comet with the same speed and places a probe on its surface</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 23,
+      "question": "<p>According to the Vishnu Purana, who was Chandragupta Maurya's mother?</p>",
+      "option1": "<p>Mura, daughter of a hunter</p>",
+      "option2": "<p>The wife of a Nanda king</p>",
+      "option3": "<p>A Greek noblewoma</p>",
+      "option4": "<p>Subhadrangi, daughter of a Brahmin</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 24,
+      "question": "<p>Which Mauryan archaeological site is associated with a wooden palisade?</p>",
+      "option1": "<p>Bulandibagh</p>",
+      "option2": "<p>Mathura</p>",
+      "option3": "<p>Taxila</p>",
+      "option4": "<p>Bhita</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 25,
+      "question": "<p>Who said India would be truly independent only when the poorest are free from suffering?</p>",
+      "option1": "<p>Subhash Chandra Bose</p>",
+      "option2": "<p>Jawaharlal Nehru</p>",
+      "option3": "<p>Indira Gandhi</p>",
+      "option4": "<p>Mahatma Gandhi</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 26,
+      "question": "<p>In which year was the Bengal Partition of 1905 reversed?</p>",
+      "option1": "<p>1907</p>",
+      "option2": "<p>1919</p>",
+      "option3": "<p>1920</p>",
+      "option4": "<p>1911</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 27,
+      "question": "<p>Which one of the following-is the context in which the term \"qubit\" is mentioned ?</p>",
+      "option1": "<p>Quantum Computing </p>",
+      "option2": "<p>Cloud Services</p>",
+      "option3": "<p>Visible Light Communication Technologies </p>",
+      "option4": "<p>Wireless Communication Technologies </p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 28,
+      "question": "<p>Which was declared a UNESCO World Heritage Site in 2025 for military significance?</p>",
+      "option1": "<p>Maratha Military Landscapes, Maharashtra</p>",
+      "option2": "<p>Sattur Srikshetra, Karnataka</p>",
+      "option3": "<p>Nayakkar Mahal, Tamil Nadu</p>",
+      "option4": "<p>Khichan Wetland, Rajasthan</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 29,
+      "question": "<p>Arrange the belts of the Great Indian Plains from north to south</p><p>1. Khadar</p><p>2. Tarai</p><p>3. Bhabar</p><p>4. Bhangar</p>",
+      "option1": "<p>3 → 2 → 4 → 1</p>",
+      "option2": "<p>3 → 2 → 1 → 4</p>",
+      "option3": "<p>2 → 3 → 4 → 1</p>",
+      "option4": "<p>4 → 3 → 2 → 1</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 30,
+      "question": "<p>Acid rain is caused by the pollution of environment by which of the following ?</p>",
+      "option1": "<p>carbon dioxide and nitrogen </p>",
+      "option2": "<p>carbon monoxide and carbon dioxide </p>",
+      "option3": "<p>ozone and carbon dioxide </p>",
+      "option4": "<p>nitrous oxide and sulphur dioxide </p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 31,
+      "question": "<p>Which part of the Great Indian Plains is known for braided channels and floods?</p>",
+      "option1": "<p>Brahmaputra Plains</p>",
+      "option2": "<p>Western Indus Plains</p>",
+      "option3": "<p>Bhabar Belt</p>",
+      "option4": "<p>Upper Ganga Plains</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 32,
+      "question": "<p>Which of the following adds nitrogen to the soil ?</p>",
+      "option1": "<p>Excretion of urea by animals </p>",
+      "option2": "<p>Burning of coal</p>",
+      "option3": "<p>Death of vegetation </p>",
+      "option4": "<p>Microgranular farming </p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 33,
+      "question": "<p>Photochemical smog is a resultant of the reaction among which of the following ?</p>",
+      "option1": "<p>CO, Oxygen and peroxyacetyl nitrate in the presence of sunlight</p>",
+      "option2": "<p>CO, CO₂ and NO2 at low temperature</p>",
+      "option3": "<p>NO2, O3 and peroxyacetyl nitrate in the presence of sunlight</p>",
+      "option4": "<p>high concentration of NO2, 03 and CO in the evening</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 34,
+      "question": "<p>Which forest type remains green throughout the year?</p>",
+      "option1": "<p>Thorn Forests</p>",
+      "option2": "<p>Tropical Evergreen Forests</p>",
+      "option3": "<p>Alpine Scrubs</p>",
+      "option4": "<p>Tropical Deciduous Forests</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 35,
+      "question": "<p>The highest rail bridge in the world is built over which river?</p>",
+      "option1": "<p>Chenab</p>",
+      "option2": "<p>Ravi</p>",
+      "option3": "<p>Sutlej</p>",
+      "option4": "<p>Jhelum</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 36,
+      "question": "<p>Which of the following statements regarding the ‘Green Budget’ are correct?</p><p>Statements:</p><p>i. It adds an environmental/green component to the budgeting process.</p><p>ii. It helps in conserving natural resources for future generations.</p><p>iii. It was introduced in India during the 2018–19 budget framework.</p>",
+      "option1": "<p>All i, ii and iii</p>",
+      "option2": "<p>Only i and ii</p>",
+      "option3": "<p>Only i</p>",
+      "option4": "<p>Only i and iii</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 37,
+      "question": "<p>Which Industrial Policy Resolution formed the base of the Second Five Year Plan?</p>",
+      "option1": "<p>Industrial Policy Resolution of 1956</p>",
+      "option2": "<p>Industrial Policy Resolution of 1952</p>",
+      "option3": "<p>Industrial Policy Resolution of 1948</p>",
+      "option4": "<p>Industrial Policy Resolution of 1954</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 38,
+      "question": "<p>What is per capita income?</p>",
+      "option1": "<p>Total savings of a person</p>",
+      "option2": "<p>Income earned by farmers</p>",
+      "option3": "<p>Income from foreign trade</p>",
+      "option4": "<p>Total income divided by population</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 39,
+      "question": "<p>What is meant by ‘jobless growth’?</p>",
+      "option1": "<p>Growth of part-time jobs</p>",
+      "option2": "<p>Decline in unemployment</p>",
+      "option3": "<p>Growth without employment generation</p>",
+      "option4": "<p>Population growth without jobs</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 40,
+      "question": "<p>What was the main objective of India’s First Five Year Plan (1951–56)?</p>",
+      "option1": "<p>Heavy industrialisation</p>",
+      "option2": "<p>Self-reliance in technology</p>",
+      "option3": "<p>Development of agriculture and transport</p>",
+      "option4": "<p>Promotion of IT</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 41,
+      "question": "<p>Which gas is mainly responsible for global warming?</p>",
+      "option1": "<p>Oxygen</p>",
+      "option2": "<p>Nitrogen</p>",
+      "option3": "<p>Carbon dioxide</p>",
+      "option4": "<p>Hydrogen</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 42,
+      "question": "<p>Which of the following is a renewable source of energy?</p>",
+      "option1": "<p>Coal</p>",
+      "option2": "<p>Petroleum</p>",
+      "option3": "<p>Natural Gas</p>",
+      "option4": "<p>Solar Energy</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 43,
+      "question": "<p>What is the full form of NDRF?</p>",
+      "option1": "<p>National Disaster Response Force</p>",
+      "option2": "<p>National Disaster Relief Fund</p>",
+      "option3": "<p>National Development Response Force</p>",
+      "option4": "<p>Natural Disaster Rescue Force</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 44,
+      "question": "<p>Which layer of the atmosphere prevents Ultraviolet rays from coming on the surface of the earth?</p>",
+      "option1": "<p>Troposphere</p>",
+      "option2": "<p>Mesosphere</p>",
+      "option3": "<p>Stratosphere</p>",
+      "option4": "<p>Ionosphere</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 45,
+      "question": "<p>Which of the following disasters is caused by tectonic movements?</p>",
+      "option1": "<p>Cyclone</p>",
+      "option2": "<p>Flood</p>",
+      "option3": "<p>Earthquake</p>",
+      "option4": "<p>Drought</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 46,
+      "question": "<p>Chipko Movement is related to which environmental issue?</p>",
+      "option1": "<p>Water conservation</p>",
+      "option2": "<p>Wildlife protection</p>",
+      "option3": "<p>Forest conservation</p>",
+      "option4": "<p>Air pollution</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 47,
+      "question": "<p>Which natural disaster is most common in Uttar Pradesh?</p>",
+      "option1": "<p>Earthquake</p>",
+      "option2": "<p>Flood</p>",
+      "option3": "<p>Tsunami</p>",
+      "option4": "<p>Volcanic eruption</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 48,
+      "question": "<p>What is biodiversity?</p>",
+      "option1": "<p>Variety of minerals</p>",
+      "option2": "<p>Variety of climate</p>",
+      "option3": "<p>Variety of living organisms</p>",
+      "option4": "<p>Variety of soil types</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 49,
+      "question": "<p>Which authority prepares the National Disaster Management Plan in India?</p>",
+      "option1": "<p>Ministry of Home Affairs</p>",
+      "option2": "<p>NITI Aayog</p>",
+      "option3": "<p>National Disaster Management Authority</p>",
+      "option4": "<p>State Government</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 50,
+      "question": "<p>Which practice helps in reducing soil erosion?</p>",
+      "option1": "<p>Deforestation</p>",
+      "option2": "<p>Overgrazing</p>",
+      "option3": "<p>Afforestation</p>",
+      "option4": "<p>Mining</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 51,
+      "question": "<p>Match List-I (Scheme) with List-II (Main focus):</p><p>List-I: </p><p>List-II:</p><p>1. PMAY-G </p><p>a. Rural housing</p><p>2. SBM-G </p><p>b. Rural sanitation</p><p>3. PMGSY </p><p>c. Rural roads</p><p>4. Jal Jeevan Mission </p><p>d. Tap water supply</p><p>Choose the correct code</p>",
+      "option1": "<p>1-a, 2-b, 3-c, 4-d</p>",
+      "option2": "<p>1-b, 2-a, 3-d, 4-c</p>",
+      "option3": "<p>1-c, 2-b, 3-a, 4-d</p>",
+      "option4": "<p>1-a, 2-c, 3-b, 4-d</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 52,
+      "question": "<p>Which of the following schemes are related to rural housing and basic infrastructure?</p>",
+      "option1": "<p>PMAY-G, Swachh Bharat Mission (Gramin), PMGSY</p>",
+      "option2": "<p>NRLM, PMFBY, PMJDY</p>",
+      "option3": "<p>ICDS, Ayushman Bharat, PMAY-U</p>",
+      "option4": "<p>Ujjwala Yojana, PMFBY, MGNREGA</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 53,
+      "question": "<p>Consider the statements:</p><p>Which of the above statements is/are correct?</p>",
+      "option1": "<p>1 and 2 only</p>",
+      "option2": "<p>1 and 3 only</p>",
+      "option3": "<p>2 and 3 only</p>",
+      "option4": "<p>1, 2 and 3</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 54,
+      "question": "<p>The correct three-tier Panchayati Raj structure is:</p>",
+      "option1": "<p>Gram Sabha – Gram Panchayat – Municipality</p>",
+      "option2": "<p>Gram Panchayat – Panchayat Samiti – Zila Parishad</p>",
+      "option3": "<p>Zila Parishad – Municipal Corporation – Nagar Panchayat</p>",
+      "option4": "<p>Tehsil – District – State</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 55,
+      "question": "<p>“Mukhyamantri Kanya Sumangala Yojana” is mainly related to:</p>",
+      "option1": "<p>Old age pension</p>",
+      "option2": "<p>Financial support for girl child at different stages</p>",
+      "option3": "<p>Crop insurance</p>",
+      "option4": "<p>Free LPG connection</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 56,
+      "question": "<p>Which of the following is the memory unit that communicates directly with the CPU ?</p>",
+      "option1": "<p>cache</p>",
+      "option2": "<p>back up</p>",
+      "option3": "<p>auxiliary </p>",
+      "option4": "<p>main</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 57,
+      "question": "<p>Which of the following is NOT an example of an e-mail service provider?</p>",
+      "option1": "<p>Outlook </p>",
+      "option2": "<p>Gmail</p>",
+      "option3": "<p>Yandex</p>",
+      "option4": "<p>bing</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 58,
+      "question": "<p>Which of the following is NOT a search engine ?</p>",
+      "option1": "<p>DuckDuckGo</p>",
+      "option2": "<p>Edge</p>",
+      "option3": "<p>Baidu</p>",
+      "option4": "<p>Naenara</p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 59,
+      "question": "<p>Which among the following keyboard shortcuts is used to bookmark the current webpage on the web browser ?</p>",
+      "option1": "<p>Ctrl + V</p>",
+      "option2": "<p>Ctrl + B</p>",
+      "option3": "<p>Ctrl + D</p>",
+      "option4": "<p>Ctrl + W</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The keyboard shortcut used to bookmark the current webpage on a web browser is Ctrl + D</p>"
+    },
+    {
+      "sr_no": 60,
+      "question": "<p>In web browser, which of the following is responsible for displaying the web pages ?</p>",
+      "option1": "<p>Server</p>",
+      "option2": "<p>Rendering engine </p>",
+      "option3": "<p>Page engine</p>",
+      "option4": "<p>Search engine </p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 61,
+      "question": "<p>Crypto Locker is a form of which of the following?</p>",
+      "option1": "<p>Ransomware</p>",
+      "option2": "<p>Adware</p>",
+      "option3": "<p>Spyware</p>",
+      "option4": "<p>Worms</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 62,
+      "question": "<p>Which of the following records everything you type on your PC in order to obtain your log-in name, passwords and other sensitive information ?</p>",
+      "option1": "<p>Virus</p>",
+      "option2": "<p>Key loggers</p>",
+      "option3": "<p>Worms</p>",
+      "option4": "<p>Malware</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 63,
+      "question": "<p>Which of the following is a networking device that filters network traffic while connecting multiple computers or communicating devices ?</p>",
+      "option1": "<p>Switch</p>",
+      "option2": "<p>Router</p>",
+      "option3": "<p>Gateway </p>",
+      "option4": "<p>Mainstream Desktop</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 64,
+      "question": "<p>Which of the following is a multiport repeater ?</p>",
+      "option1": "<p>Hub</p>",
+      "option2": "<p>LAN</p>",
+      "option3": "<p>Keylogger </p>",
+      "option4": "<p>SMPS</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 65,
+      "question": "<p>Which of the following is not a magnetic disk? </p>",
+      "option1": "<p>Winchester disk </p>",
+      "option2": "<p>DVD </p>",
+      "option3": "<p>Zip disk</p>",
+      "option4": "<p>Floppy disk</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 66,
+      "question": "<p>Which of the following is a reading device that reads printed text by scanning it character by character ?</p>",
+      "option1": "<p>Magnetic Ink Card Reader (MICR)</p>",
+      "option2": "<p>Optical Character Recognition (OCR) </p>",
+      "option3": "<p>Digitizer</p>",
+      "option4": "<p>Track Ball</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>OCR (Optical Character Recognition) also called Optical Character Reader is a system that provides full alphanumeric recognition of printed or handwritten characters at electronic speed by simply scanning the form.</p>"
+    },
+    {
+      "sr_no": 67,
+      "question": "<p>Which of the following is a device used for printing vector graphics ?</p>",
+      "option1": "<p>Plotter</p>",
+      "option2": "<p>Barcode Reader </p>",
+      "option3": "<p>Scanner</p>",
+      "option4": "<p>Printer</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>A plotter is a computer hardware device much like a printer that is used for printing vector graphics.</p>"
+    },
+    {
+      "sr_no": 68,
+      "question": "<p>Which of the following server acts as a set of components accessible to the software developer through an API defined by the platform itself ?</p>",
+      "option1": "<p>File Transfer Protocol (FTP) </p>",
+      "option2": "<p>Application</p>",
+      "option3": "<p>Mail </p>",
+      "option4": "<p>database </p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 69,
+      "question": "<p>Which of the following port transmits one bit of a byte at a time as a single stream of bits. It is meant for transmitting slow data over long distances ?. </p>",
+      "option1": "<p>Universal Serial Bus</p>",
+      "option2": "<p>Parallel</p>",
+      "option3": "<p>Serial</p>",
+      "option4": "<p>Display</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 70,
+      "question": "<p>Which of the following is not the commonly used programming language for Artificial Intelligence ?</p>",
+      "option1": "<p>Perl</p>",
+      "option2": "<p>Java</p>",
+      "option3": "<p>PROLOG</p>",
+      "option4": "<p>LISP</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Perl is a scripting language. Whereas other programming languages are used to program AI machines.</p>"
+    },
+    {
+      "sr_no": 71,
+      "question": "<p>किस स्थिति में परिपत्र (Circular) जारी किया जाता है?</p>",
+      "option1": "<p>किसी एक अधिकारी को व्यक्तिगत निर्देश देने हेतु।</p>",
+      "option2": "<p>नए कानून की सार्वजनिक घोषणा के लिए।</p>",
+      "option3": "<p>गोपनीय आदेश देने हेतु।</p>",
+      "option4": "<p>न्यायालय को उत्तर देने हेतु।</p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण:</p><p>परिपत्र का उद्देश्य किसी सामान्य विषय पर एक-समान सूचना या निर्देश को विभाग के अनेक कार्यालयों/कर्मचारियों तक पहुँचाना होता है।</p><p>(A) व्यक्तिगत निर्देश → कार्यालय आदेश</p><p>(B) सार्वजनिक घोषणा → अधिसूचना</p><p>(C) गोपनीय → गोपनीय पत्र/आदेश</p>"
+    },
+    {
+      "sr_no": 72,
+      "question": "<p>वाक्य शुद्धि हेतु रेखांकित स्थान पर उचित क्रिया विशेषण होगा-</p><p>'कहाँ राजा भोज, नहीं गंगू तेली।'</p>",
+      "option1": "<p>तो</p>",
+      "option2": "<p>कहीं</p>",
+      "option3": "<p>कहाँ</p>",
+      "option4": "<p>इसलिए</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण:</p><p>अशुद्ध वाक्य - कहाँ राजा भोज, नहीं गंगू तेली।</p><p>दिए गये वाक्य में क्रिया विशेषण प्रयोग की त्रुटि है, यहाँ 'नहीं' यह सार्थक शब्द नहीं आएगा क्योंकि इससे सही अर्थ प्रकट नहीं हो रहा।</p><p>अत: सार्थक शब्द 'कहाँ ' होना चाहिए।</p><p>शुद्ध वाक्य - कहाँ राजा भोज, कहाँ गंगू तेली।</p><p>क्रिया विशेषण संबंधी अशुद्धियाँ -</p><p>अशुद्ध वाक्य और शुद्ध वाक्य- उदा.-</p><p>तुम बड़ा आगे बढ़ गया। तुम बहुत आगे बढ़ गए।</p><p>जैसा बोओगे उसी तरह काटोगे। जैसा बोओगे वैसा काटोगे।</p><p>पुस्तक विद्वता पूर्ण लिखी गई है। पुस्तक विद्वता पूर्वक लिखी गई है।</p><p>वह लगभग दौड़ रहा था। वह दौड़ रहा था।</p><p> <br/> </p>"
+    },
+    {
+      "sr_no": 73,
+      "question": "<p>'मुहावरा ' शब्द किस भाषा का शब्द है।</p>",
+      "option1": "<p>उर्दू</p>",
+      "option2": "<p>अरबी</p>",
+      "option3": "<p>फारसी</p>",
+      "option4": "<p>हिन्दी</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण:</p><p>मुहावरा मूलत: अरबी भाषा का शब्द है जिसका अर्थ है- बातचीत करना या उत्तर देना ।</p><p>अरबी भाषा के कुछ अन्य प्रचलित शब्द - अदालत, आदमी , दुकान, शराब, हिम्मत, मुकदमा, तरक्की, जहाज, औरत, इज्जत, दवा, तारीख, हकीम, वारिस, फकीर, मुसाफिर, तकदीर आदि।</p><p>उर्दू भाषा शब्द- कानून, हक, फैसला, इजाजत, अदालत, हुक्म आदि।</p><p>संस्कृत भाषा शब्द- कर्ण, नयन, अग्नि।</p>"
+    },
+    {
+      "sr_no": 74,
+      "question": "<p>‘महाभारत के युद्ध में कौरवों के _________ का नाश हो गया।' 'तुम्हारे पास __________ कितने रुपये हैं?</p><p>उपर्युक्त वाक्यों में रिक्त स्थान की पूर्ति के लिए उपयुक्त अनेकार्थी शब्द है।</p>",
+      "option1": "<p>कुल</p>",
+      "option2": "<p>वंश</p>",
+      "option3": "<p>दस</p>",
+      "option4": "<p>परिवार</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>मुख्य बिंदु -</p><p>वाक्य – ‘महाभारत के युद्ध में कौरवों के कुल का नाश हो गया।' 'तुम्हारे पास कुल कितने रुपये हैं?</p><p>'कुल' के सभी अनेकार्थी शब्द - वंश, कुल, अंत, समाप्त, सब, संपूर्ण।</p><p>'वंश' के सभी अनेकार्थी शब्द - कुल, पास, बाँसुरी, परिवार।</p><p>अनेकार्थी शब्द - ऐसे शब्द जिनके एक से अनेक अर्थ होते है, वह अनेकार्थी शब्द कहलाते है।</p><p>अतिरिक्त जानकारी -</p><p>'अर्क' के अनेकार्थी शब्द - सूर्य, रस, इंद्र, स्फटिक, मदार, ताँबा ।</p><p>अनेकार्थी शब्द वह होता है जिसका एक ही शब्द के एकसे अधिक अर्थ होते हैं, जबकि पर्यायवाची शब्द वे होते हैं जो एक ही वस्तु के लिए अलग-अलग शब्द होते हैं और जिनका अर्थ समान होता है। उदाहरण के लिए, 'आम' एक अनेकार्थी शब्द है जिसके अर्थ 'एक फल' और 'साधारण जनता' दोनों हैं।</p>"
+    },
+    {
+      "sr_no": 75,
+      "question": "<p>असंगत विकल्प चुनें -</p>",
+      "option1": "<p>अभि + नि + आस = अभिन्यास</p>",
+      "option2": "<p>अभि + वि + आप्ति = अभिव्‍याप्ति</p>",
+      "option3": "<p>सु + स्थु + अ = सौष्ठव</p>",
+      "option4": "<p>अनु + स + अंग + इक = आनुषंगिक</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण:</p><p>'स' (सहित) उपसर्ग और 'ओष्ठ' मूलशब्द और 'अव' प्रत्यय</p><p>अर्थ: सुष्ठु हो ने की अवस्था या भाव, सुंदरता, उत्तमता।</p><p>अभि + नि + आस = अभिन्यास</p><p>'अभि ' (पास), 'नि ' (बिना ) उपसर्ग और 'आस' (आशा ) मूलशब्द</p><p>अर्थ: किसी मद या विभाग में रखना, जमा करना</p><p>अभि + वि + आप्ति = अभिव्‍याप्ति</p><p>'अभि ' (पास), 'वि ' (विशेष) उपसर्ग और 'आप्ति' (प्राप्ति)</p><p>मूलशब्द</p><p>अर्थ: सभी जगह व्याप्त होने की क्रिया या भाव</p><p>अनु + स + अंग + इक = आनुषंगिक 'अनु' (पीछे), 'स' (सहित) उपसर्ग और 'अंग' मूलशब्द और 'इक' प्रत्यय</p><p>अर्थ: अनावश्यक रूप से साथ होनेवाला, सहवर्ती।</p><p>अतः , 'सु + स्थु + अ = सौष्ठव' सही उत्तर है।</p>"
+    },
+    {
+      "sr_no": 76,
+      "question": "<p>निम्नलिखित में से कौनसा विकल्प सम्बन्ध विराम चिह्न कहलाता है?</p>",
+      "option1": "<p> !</p>",
+      "option2": "<p>:</p>",
+      "option3": "<p>–</p>",
+      "option4": "<p>,</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>व्याकरण में वह चिह्न जो शब्दों, पदों, उपवाक्यों आदि को जोड़ता है, सम्बन्ध विरामचिह्न कहलाता है।</p><p>विरामचिह्न नाम</p><p>(!) - विस्मयवाचक चिह्न</p><p>(:) - अपूर्ण विरामचिह्न</p><p>(,) - अल्पविराम</p><p>(‘…..’) इकहरा उद्धरण चिन्ह</p><p>परीक्षा के दृष्टिकोण से -</p><p>हिंदी व्याकरण में विराम चिन्हों से तात्पर्य है-</p><p>ठहरा व रुकना, गति में मंदता अथवा विश्राम। वाक्यों को लिखते समय उनके ठहराव को दर्शाने के लिए हम कुछ विशेष चिन्हों का प्रयोग करते है, जिन्हें विराम चिन्हों के नाम से जाना जाता है।</p><p>यदि विराम चिन्ह का प्रयोग सही स्थान पर ना किया जाये तो वाक्य अर्थहीन हो जाते है, उनके भाव में विपरीत अर्थ प्रयुक्त हो जाते है, वे अर्थहीन तथा अस्पष्ट प्रतीत होने लग जाते है।</p>"
+    },
+    {
+      "sr_no": 77,
+      "question": "<p>'नायक' शब्द का लिंग परिवर्तित कीजिए :</p>",
+      "option1": "<p>नायकी</p>",
+      "option2": "<p>नायिका</p>",
+      "option3": "<p>नायिकाएँ</p>",
+      "option4": "<p>नायिके</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>'नायक' शब्द का उचित स्त्रीलिंग शब्द 'नायिका ' है।</p><p>नायक के पर्यायवाची शब्द हैं – नेता, प्रधान, स्वामी, मालिक।</p>"
+    },
+    {
+      "sr_no": 78,
+      "question": "<p>उ, ऊ वर्ण का उच्चारण स्थान क्या है?</p>",
+      "option1": "<p>तालव्य वर्ण</p>",
+      "option2": "<p>कंठ्य वर्ण</p>",
+      "option3": "<p>ओष्ठ्य वर्ण</p>",
+      "option4": "<p>दंत्य वर्ण</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>उ, ऊ इत्यादि ‘ओष्ठ्य वर्ण’ हैं। अतः इसका सही उत्तर</p><p>जिन वर्णों का उच्चारण दोनों होठों के स्पर्श से हो वे ओष्ठ्य वर्ण कहलाते हैं। जैसे- प, फ, ब, भ आदि ।</p><p>तालव्य वर्ण - जो व्यंजन कठोर तालु की सहायता से उच्चरित होते हैं, वे तालव्य व्यंजन कहला ते हैं,</p><p>उदाहरण- च, छ, ज आदि ।</p><p>कंठ्य वर्ण - जिनका उच्चारण कंठ की सहायता से किया जाता है, कंठ्य वर्ण कहलाते हैं।</p><p>जैसे- क, ख, ग, घ आदि ।</p><p>दंत्य वर्ण - जिनके उच्चारण में जीभ दांत को स्पर्श करती है, दंत्य वर्ण कहलाते हैं।</p><p>जैसे- त, थ, द, ध, न आदि ।</p>"
+    },
+    {
+      "sr_no": 79,
+      "question": "<p>जब बारिश होगी तब किसान खुश होंगे।”</p><p>प्रश्न:</p><p>उपर्युक्त वाक्य के बारे में सही कथन चुनिए—</p>",
+      "option1": "<p>अशुद्ध, क्योंकि भविष्यकाल दो बार है</p>",
+      "option2": "<p>संयुक्त वाक्य है</p>",
+      "option3": "<p>मिश्र वाक्य और शुद्ध है</p>",
+      "option4": "<p>सरल वाक्य है</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण :</p><p>“जब बारिश होगी” → आश्रित उपवाक्य</p><p>“तब किसान खुश होंगे” → मुख्य उपवाक्य</p><p>‘जब–तब’ यह युग्म मिश्र वाक्य का शुद्ध प्रयोग है।</p>"
+    },
+    {
+      "sr_no": 80,
+      "question": "<p>निम्न वाक्य में अशुद्ध शब्द कौन-सा है?</p><p>“सभी छात्र अपनी-अपनी किताब लेकर आए।”</p>",
+      "option1": "<p>सभी </p>",
+      "option2": "<p>छात्र </p>",
+      "option3": "<p>अपनी-अपनी </p>",
+      "option4": "<p>किताब </p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण :</p><p>छात्र यह बहुवचन होने के करण → किताब की जगह किताबें होना चाहिए।</p><p>यह वचन-दोष आधारित है।</p>"
+    },
+    {
+      "sr_no": 81,
+      "question": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image001.jpeg",
+      "option1": "<p>A</p>",
+      "option2": "<p>D</p>",
+      "option3": "<p>C</p>",
+      "option4": "<p>B</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image002.jpeg"
+    },
+    {
+      "sr_no": 82,
+      "question": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image001.jpeg",
+      "option1": "<p>16:17</p>",
+      "option2": "<p>15:16</p>",
+      "option3": "<p>4:5</p>",
+      "option4": "<p>7:8</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image003.jpeg"
+    },
+    {
+      "sr_no": 83,
+      "question": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image004.jpeg",
+      "option1": "<p>76.5 lakhs</p>",
+      "option2": "<p>77.5 lakhs</p>",
+      "option3": "<p>87.5 lakhs</p>",
+      "option4": "<p>70.5 lakhs</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image005.jpeg"
+    },
+    {
+      "sr_no": 84,
+      "question": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image006.jpeg",
+      "option1": "<p>60.7%</p>",
+      "option2": "<p>61.2%</p>",
+      "option3": "<p>62.8%</p>",
+      "option4": "<p>59.4%</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image007.jpeg"
+    },
+    {
+      "sr_no": 85,
+      "question": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image008.jpeg",
+      "option1": "<p>8:9</p>",
+      "option2": "<p>7:8</p>",
+      "option3": "<p>25:21</p>",
+      "option4": "<p>6:7</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image009.jpeg"
+    },
+    {
+      "sr_no": 86,
+      "question": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image010.jpeg",
+      "option1": "<p>6:7</p>",
+      "option2": "<p>5:6</p>",
+      "option3": "<p>3:4</p>",
+      "option4": "<p>15:11</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image011.jpeg"
+    },
+    {
+      "sr_no": 87,
+      "question": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image012.jpeg",
+      "option1": "<p>3</p>",
+      "option2": "<p>2</p>",
+      "option3": "<p>5</p>",
+      "option4": "<p>4</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image013.jpeg"
+    },
+    {
+      "sr_no": 88,
+      "question": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image014.jpeg",
+      "option1": "<p>124.62</p>",
+      "option2": "<p>140.48</p>",
+      "option3": "<p>118.92</p>",
+      "option4": "<p>110.92</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image015.jpeg"
+    },
+    {
+      "sr_no": 89,
+      "question": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image016.jpeg",
+      "option1": "<p>13</p>",
+      "option2": "<p>11</p>",
+      "option3": "<p>10</p>",
+      "option4": "<p>12</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image017.jpeg"
+    },
+    {
+      "sr_no": 90,
+      "question": "<p>The following table gives the information of the number of students (in thousands) placed in five different companies during six different years.</p><p>COMPANIES </p><p>YEARS</p><p>A</p><p>G</p><p>Y</p><p>T</p><p>F</p><p>2010</p><p>9.6</p><p>10.4</p><p>9.3</p><p>9.8</p><p>8.7</p><p>2011</p><p>10.4</p><p>12.6</p><p>7.2</p><p>13.8</p><p>6.2</p><p>2012</p><p>12.6</p><p>9.8</p><p>10.4</p><p>14.9</p><p>9.8</p><p>2013</p><p>16.8</p><p>15.4</p><p>11.4</p><p>16.3</p><p>11.3</p><p>2014</p><p>19.3</p><p>13.4</p><p>13.4</p><p>11.8</p><p>7.8</p><p>2015</p><p>18.7</p><p>16.7</p><p>12.7</p><p>15.7</p><p>13.7</p><p>What is the difference (in thousands) between the students placed in all companies in the year 2014 and 2012.</p>",
+      "option1": "<p>9000</p>",
+      "option2": "<p>7800</p>",
+      "option3": "<p>8200</p>",
+      "option4": "<p>7500</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://appx-content-v2.classx.co.in/website/bulk_uploader_images/1769307828870_image018.jpeg"
+    },
+    {
+      "sr_no": 91,
+      "question": "<p>The ‘Grameen Bharat Mahotsav’ (Saras Mela) acts as a vital link in the rural supply chain. Which portal has been launched to ensure these artisans have a 365-day digital marketplace?</p>",
+      "option1": "<p>Gramin-e-Market</p>",
+      "option2": "<p>e-SARAS</p>",
+      "option3": "<p>Mahila-E-Haat</p>",
+      "option4": "<p>Bharat-Craft</p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Both e-SARAS and GeM (Government e-Marketplace) are used. e-SARAS is a dedicated B2C platform for SHGs, while GeM is used for B2G (Business to Government) sales.</p>"
+    },
+    {
+      "sr_no": 92,
+      "question": "<p>Which of the following countries has been ranked as the \"Happiest Country in the World\" for the eighth consecutive year in 2025?</p>",
+      "option1": "<p>Denmark</p>",
+      "option2": "<p>Norway</p>",
+      "option3": "<p>Iceland</p>",
+      "option4": "<p>Finland</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 93,
+      "question": "<p>Which of the following statements regarding the nodal ministries for PM Vishwakarma Yojana is correct?</p>",
+      "option1": "<p>It is exclusively implemented by the Ministry of Skill Development.</p>",
+      "option2": "<p>It is a joint initiative of the Ministry of MSME, Ministry of Skill Development, and Department of Financial Services.</p>",
+      "option3": "<p>It is implemented solely by the Ministry of Rural Development.</p>",
+      "option4": "<p>The Ministry of Tribal Affairs is the lead nodal agency.</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 94,
+      "question": "<p>Consider the following statements regarding the PM Surya Ghar: Muft Bijli Yojana:</p><p>1. The scheme was launched in February 2024 with a total outlay of over ₹75,000 crore.</p><p>2. It aims to provide up to 300 units of free electricity every month to 5 crore households.</p><p>3. The Ministry of Power is the sole nodal ministry for the implementation of this scheme.</p><p>Which of the statements given above is/are correct?</p>",
+      "option1": "<p>1 only</p>",
+      "option2": "<p>1 and 2 only</p>",
+      "option3": "<p>2 and 3 only</p>",
+      "option4": "<p>1, 2, and 3</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 95,
+      "question": "<p>What was the official theme of the 55th Annual Meeting of the World Economic Forum held in January 2025?</p>",
+      "option1": "<p>Cooperation in a Fragmented World</p>",
+      "option2": "<p>Rebuilding Trust</p>",
+      "option3": "<p>Collaboration for a Secure and Sustainable Future</p>",
+      "option4": "<p>Stakeholders for a Cohesive and Sustainable World</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 96,
+      "question": "<p>Consider the following statements regarding the history of Uttar Pradesh Day:</p><p>1. The United Provinces was renamed Uttar Pradesh on January 24, 1950.</p><p>2. The tradition of celebrating UP Day annually was officially started by the state government in 2018.</p><p>3. The proposal to celebrate this day was initially suggested by the then Governor, Ram Naik.</p><p>Which of the statements given above are correct?</p>",
+      "option1": "<p>1 and 2 only</p>",
+      "option2": "<p>2 and 3 only</p>",
+      "option3": "<p>1 and 3</p>",
+      "option4": "<p>1, 2, and 3</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 97,
+      "question": "<p>In which city of Uttar Pradesh did the Union Minister Shri Ashwini Vaishnaw inaugurate India's first dedicated tempered glass manufacturing facility for mobile devices?</p>",
+      "option1": "<p>Noida</p>",
+      "option2": "<p>Muzzarpur</p>",
+      "option3": "<p>Lucknow</p>",
+      "option4": "<p>Ghaziabad</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 98,
+      "question": "<p>The 'Sansad Khel Mahotsav' aligns with which of the following national-level sports missions of the Government of India?</p>",
+      "option1": "<p>TOPS (Target Olympic Podium Scheme)</p>",
+      "option2": "<p>Fit India Movement</p>",
+      "option3": "<p>Khelo India</p>",
+      "option4": "<p>Mission Olympic Cell</p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 99,
+      "question": "<p>The Parvati-Arga Bird Sanctuary, recently declared an Eco-Sensitive Zone (ESZ), is located in which district of Uttar Pradesh?</p>",
+      "option1": "<p>Lakhimpur Kheri</p>",
+      "option2": "<p>Gonda</p>",
+      "option3": "<p>Etawah</p>",
+      "option4": "<p>Siddharthnagar</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 100,
+      "question": "<p>The Uttar Pradesh government has recently announced the establishment of India's first dedicated Forest University in which city?</p>",
+      "option1": "<p>Jhansi</p>",
+      "option2": "<p>Lucknow</p>",
+      "option3": "<p>Gorakhpur</p>",
+      "option4": "<p>Dehradun</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    }
+  ]
+};
+
+// Extract questions and time from new structure
+const questions = quizData.questions;
+const totalTimeMinutes = quizData.time_minutes;
+
+let currentQuestion = 0;
+let answers = {};
+let bookmarks = new Set();
+let timerSeconds = totalTimeMinutes * 60;
+let timerInterval = null;
+let isPaletteOpen = false;
+
+function isImageURL(str) {
+  return str && (str.startsWith('http') || str.startsWith('https'));
+}
+
+function createOptionContent(optionText) {
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'option-content';
+    
+    if (isImageURL(optionText)) {
+        const img = document.createElement('img');
+        img.src = optionText;
+        img.className = 'option-image';
+        img.alt = 'Option image';
+        img.loading = 'lazy';
+        img.onerror = function() {
+            this.style.display = 'none';
+            const errorText = document.createTextNode('Image failed to load');
+            contentDiv.appendChild(errorText);
+        };
+        contentDiv.appendChild(img);
+    } else {
+        contentDiv.innerHTML = optionText;  // FIXED: Use innerHTML
+    }
+    
+    return contentDiv;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initQuiz();
+  initEventListeners();
+  loadFromLocalStorage();
+  startTimer();
+  createPalette();
+  preventDoubleTapZoom();
+});
+
+function preventDoubleTapZoom() {
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', (event) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+      event.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, { passive: false });
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('quizTheme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeIcon();
+}
+
+function updateThemeIcon() {
+  const theme = document.documentElement.getAttribute('data-theme');
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) {
+    themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('quizTheme', newTheme);
+  updateThemeIcon();
+}
+
+function initQuiz() {
+  loadQuestion(currentQuestion);
+  updateMarkingInfo();
+}
+
+function initEventListeners() {
+  const themeBtn = document.getElementById('themeToggle');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  
+  if (themeBtn) {
+    themeBtn.addEventListener('click', toggleTheme);
+    themeBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      toggleTheme();
+    });
+  }
+  
+  if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    fullscreenBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      toggleFullscreen();
+    });
+  }
+  
+  addButtonListener('prevBtn', prevQuestion);
+  addButtonListener('nextBtn', nextQuestion);
+  addButtonListener('clearBtn', clearAnswer);
+  addButtonListener('submitBtn', confirmSubmit);
+  addButtonListener('bookmarkBtn', toggleBookmark);
+  
+  addButtonListener('paletteFab', togglePalette);
+  addButtonListener('paletteClose', closePalette);
+  
+  const overlay = document.getElementById('paletteOverlay');
+  if (overlay) {
+    overlay.addEventListener('click', closePalette);
+    overlay.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      closePalette();
+    });
+  }
+  
+  const searchInput = document.getElementById('paletteSearch');
+  if (searchInput) {
+    searchInput.addEventListener('input', handleSearch);
+    searchInput.addEventListener('change', jumpToQuestion);
+  }
+  
+  document.addEventListener('keydown', handleKeyPress);
+  
+  setInterval(saveToLocalStorage, 5000);
+  
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      updatePalette();
+    }
+  });
+}
+
+function addButtonListener(id, handler) {
+  const btn = document.getElementById(id);
+  if (btn) {
+    btn.addEventListener('click', handler);
+    btn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      handler();
+    });
+  }
+}
+
+function jumpToQuestion(e) {
+  const questionNum = parseInt(e.target.value);
+  if (questionNum >= 1 && questionNum <= questions.length) {
+    goToQuestion(questionNum - 1);
+    closePalette();
+    e.target.value = '';
+  }
+}
+
+function togglePalette() {
+  isPaletteOpen = !isPaletteOpen;
+  const palette = document.getElementById('questionPalette');
+  const overlay = document.getElementById('paletteOverlay');
+  const fab = document.getElementById('paletteFab');
+  
+  if (isPaletteOpen) {
+    palette.classList.add('active');
+    overlay.classList.add('active');
+    fab.classList.add('active');
+    fab.innerHTML = `📋 <span class="badge" id="answeredBadge">${Object.keys(answers).length}</span>`;
+    document.body.classList.add('palette-open');
+  } else {
+    closePalette();
+  }
+}
+
+function closePalette() {
+  isPaletteOpen = false;
+  const palette = document.getElementById('questionPalette');
+  const overlay = document.getElementById('paletteOverlay');
+  const fab = document.getElementById('paletteFab');
+  
+  if (palette) palette.classList.remove('active');
+  if (overlay) overlay.classList.remove('active');
+  if (fab) {
+    fab.classList.remove('active');
+    fab.innerHTML = `📋 <span class="badge" id="answeredBadge">${Object.keys(answers).length}</span>`;
+  }
+  document.body.classList.remove('palette-open');
+}
+
+function handleSearch(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  if (!searchTerm) {
+    document.querySelectorAll('.palette-btn').forEach(btn => {
+      btn.style.display = '';
+    });
+    return;
+  }
+  
+  const buttons = document.querySelectorAll('.palette-btn');
+  buttons.forEach((btn, index) => {
+    const questionNum = (index + 1).toString();
+    if (questionNum.includes(searchTerm)) {
+      btn.style.display = '';
+    } else {
+      btn.style.display = 'none';
+    }
+  });
+}
+
+function handleKeyPress(e) {
+  if (document.getElementById('resultSection').classList.contains('hidden')) {
+    if (e.key === 'Escape') {
+      if (isPaletteOpen) {
+        closePalette();
+      }
+    } else if (!isPaletteOpen && e.target.tagName !== 'INPUT') {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevQuestion();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextQuestion();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        nextQuestion();
+      } else if (e.key === 'b' || e.key === 'B') {
+        e.preventDefault();
+        toggleBookmark();
+      } else if (e.key === 'c' || e.key === 'C') {
+        e.preventDefault();
+        clearAnswer();
+      } else if (e.key === 'p' || e.key === 'P') {
+        e.preventDefault();
+        togglePalette();
+      } else if (e.key >= '1' && e.key <= '4') {
+        e.preventDefault();
+        selectOption(parseInt(e.key));
+      }
+    }
+  }
+}
+
+function selectOption(optionNum) {
+  const q = questions[currentQuestion];
+  const radio = document.querySelector(`input[name="q${q.sr_no}"][value="${optionNum}"]`);
+  if (radio) {
+    radio.checked = true;
+    const label = radio.closest('.option-label');
+    if (label) {
+      document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+      label.classList.add('selected');
+      saveAnswer();
+    }
+  }
+}
+
+function toggleFullscreen() {
+  try {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.log('Fullscreen error:', err);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  } catch (err) {
+    console.log('Fullscreen not supported');
+  }
+}
+
+function startTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+  }
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimer();
+    
+    // Auto-submit when time runs out
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      alert('Time is up! Submitting quiz automatically.');
+      submitQuiz();
+      return;
+    }
+    
+    if (timerSeconds <= 120) {
+      const timer = document.getElementById('timer');
+      if (timer) timer.classList.add('warning');
+    }
+  }, 1000);
+}
+
+function updateTimer() {
+  const minutes = Math.floor(timerSeconds / 60);
+  const seconds = timerSeconds % 60;
+  const timer = document.getElementById('timer');
+  if (timer) {
+    timer.textContent = 
+      `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+}
+
+function createPalette() {
+  const grid = document.getElementById('paletteGrid');
+  if (!grid) return;
+  
+  grid.innerHTML = '';
+  questions.forEach((q, index) => {
+    const btn = document.createElement('button');
+    btn.textContent = index + 1;
+    btn.className = 'palette-btn';
+    btn.setAttribute('aria-label', `Go to question ${index + 1}`);
+    btn.setAttribute('type', 'button');
+    
+    btn.addEventListener('click', () => {
+      goToQuestion(index);
+      closePalette();
+    });
+    
+    btn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      goToQuestion(index);
+      closePalette();
+    });
+    
+    grid.appendChild(btn);
+  });
+  updatePalette();
+}
+
+function updatePalette() {
+  const buttons = document.querySelectorAll('.palette-btn');
+  buttons.forEach((btn, index) => {
+    btn.className = 'palette-btn';
+    if (index === currentQuestion) btn.classList.add('current');
+    if (answers[questions[index].sr_no]) btn.classList.add('answered');
+    if (bookmarks.has(questions[index].sr_no)) btn.classList.add('bookmarked');
+  });
+  
+  updatePaletteStats();
+}
+
+function updatePaletteStats() {
+  const answered = Object.keys(answers).length;
+  const unanswered = questions.length - answered;
+  const bookmarkedCount = bookmarks.size;
+  
+  const answeredEl = document.getElementById('paletteAnswered');
+  const unansweredEl = document.getElementById('paletteUnanswered');
+  const bookmarkedEl = document.getElementById('paletteBookmarked');
+  
+  if (answeredEl) answeredEl.textContent = answered;
+  if (unansweredEl) unansweredEl.textContent = unanswered;
+  if (bookmarkedEl) bookmarkedEl.textContent = bookmarkedCount;
+  
+  const badge = document.querySelector('.palette-fab .badge');
+  if (badge) badge.textContent = answered;
+}
+
+function goToQuestion(index) {
+  if (index < 0 || index >= questions.length) return;
+  saveAnswer();
+  currentQuestion = index;
+  loadQuestion(currentQuestion);
+  
+  const questionSection = document.getElementById('questionSection');
+  if (questionSection) {
+    setTimeout(() => {
+      questionSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+}
+
+function loadQuestion(index) {
+  const q = questions[index];
+  
+  const questionNumber = document.getElementById('questionNumber');
+  const questionText = document.getElementById('questionText');
+  
+  if (questionNumber) {
+    questionNumber.textContent = `Question ${index + 1} of ${questions.length}`;
+  }
+  
+  if (questionText) {
+    questionText.innerHTML = '';
+    const questionContent = createOptionContent(q.question);
+    questionText.appendChild(questionContent);
+  }
+  
+  const container = document.getElementById('optionsContainer');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  for (let i = 1; i <= 4; i++) {
+    const label = document.createElement('label');
+    label.className = 'option-label';
+    if (answers[q.sr_no] == i) label.classList.add('selected');
+    
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = `q${q.sr_no}`;
+    radio.value = i;
+    radio.checked = answers[q.sr_no] == i;
+    
+    const changeHandler = () => {
+      document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+      label.classList.add('selected');
+      saveAnswer();
+    };
+    
+    radio.addEventListener('change', changeHandler);
+    label.addEventListener('click', (e) => {
+      if (e.target !== radio) {
+        radio.checked = true;
+        changeHandler();
+      }
+    });
+    
+    label.appendChild(radio);
+    
+    const optionContent = createOptionContent(q[`option${i}`]);
+    label.appendChild(optionContent);
+    
+    container.appendChild(label);
+  }
+  
+  const bookmarkBtn = document.getElementById('bookmarkBtn');
+  if (bookmarkBtn) {
+    if (bookmarks.has(q.sr_no)) {
+      bookmarkBtn.classList.add('active');
+    } else {
+      bookmarkBtn.classList.remove('active');
+    }
+  }
+  
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const submitBtn = document.getElementById('submitBtn');
+  
+  if (prevBtn) prevBtn.disabled = index === 0;
+  
+  if (index === questions.length - 1) {
+    if (nextBtn) nextBtn.classList.add('hidden');
+    if (submitBtn) submitBtn.classList.remove('hidden');
+  } else {
+    if (nextBtn) nextBtn.classList.remove('hidden');
+    if (submitBtn) submitBtn.classList.add('hidden');
+  }
+  
+  updateProgress();
+  updatePalette();
+}
+
+function updateMarkingInfo() {
+  const q = questions[0];
+  const markingInfo = document.getElementById('markingInfo');
+  if (markingInfo) {
+    markingInfo.textContent = `Marking: +${q.positive_marking}, -${q.negative_marking}`;
+  }
+}
+
+function updateProgress() {
+  const attempted = Object.keys(answers).length;
+  const currentProgress = ((currentQuestion + 1) / questions.length) * 100;
+  
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const attemptedText = document.getElementById('attemptedText');
+  
+  if (progressBar) progressBar.style.width = `${currentProgress}%`;
+  if (progressText) progressText.textContent = `${currentQuestion + 1}/${questions.length}`;
+  if (attemptedText) attemptedText.textContent = attempted;
+}
+
+function saveAnswer() {
+  const q = questions[currentQuestion];
+  const selected = document.querySelector(`input[name="q${q.sr_no}"]:checked`);
+  
+  if (selected) {
+    answers[q.sr_no] = selected.value;
+  }
+  
+  updateProgress();
+  updatePalette();
+  saveToLocalStorage();
+}
+
+function clearAnswer() {
+  const q = questions[currentQuestion];
+  delete answers[q.sr_no];
+  
+  const selected = document.querySelector(`input[name="q${q.sr_no}"]:checked`);
+  if (selected) selected.checked = false;
+  
+  document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+  
+  updateProgress();
+  updatePalette();
+  saveToLocalStorage();
+}
+
+function toggleBookmark() {
+  const q = questions[currentQuestion];
+  const btn = document.getElementById('bookmarkBtn');
+  
+  if (bookmarks.has(q.sr_no)) {
+    bookmarks.delete(q.sr_no);
+    if (btn) btn.classList.remove('active');
+  } else {
+    bookmarks.add(q.sr_no);
+    if (btn) btn.classList.add('active');
+  }
+  
+  updatePalette();
+  saveToLocalStorage();
+}
+
+function nextQuestion() {
+  saveAnswer();
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    loadQuestion(currentQuestion);
+  }
+}
+
+function prevQuestion() {
+  saveAnswer();
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    loadQuestion(currentQuestion);
+  }
+}
+
+function confirmSubmit() {
+  const unattempted = questions.length - Object.keys(answers).length;
+  let message = 'Are you sure you want to submit the quiz?';
+  
+  if (unattempted > 0) {
+    message = `You have ${unattempted} unanswered questions. ${message}`;
+  }
+  
+  if (confirm(message)) {
+    submitQuiz();
+  }
+}
+
+function submitQuiz() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  saveAnswer();
+  closePalette();
+  
+  let correct = 0, wrong = 0, unattempted = 0, score = 0;
+  
+  questions.forEach(q => {
+    const userAns = answers[q.sr_no];
+    const posMark = parseFloat(q.positive_marking) || 0;
+    const negMark = parseFloat(q.negative_marking) || 0;
+    
+    if (!userAns) {
+      unattempted++;
+    } else if (userAns == q.answer) {
+      correct++;
+      score += posMark;
+    } else {
+      wrong++;
+      score -= negMark;
+    }
+  });
+  
+  displayResults(correct, wrong, unattempted, score);
+  
+  const fab = document.getElementById('paletteFab');
+  const nav = document.getElementById('navigation');
+  if (fab) fab.style.display = 'none';
+  if (nav) nav.style.display = 'none';
+  
+  document.body.style.paddingBottom = '20px';
+  
+  clearLocalStorage();
+}
+
+function displayResults(correct, wrong, unattempted, score) {
+  const totalQuestions = questions.length;
+  const percentage = ((correct / totalQuestions) * 100).toFixed(1);
+  const timerEl = document.getElementById('timer');
+  const timeText = timerEl ? timerEl.textContent : '00:00';
+  const timeTaken = (totalTimeMinutes * 60) - timerSeconds;
+  const minutesTaken = Math.floor(timeTaken / 60);
+  const secondsTaken = timeTaken % 60;
+  const timeTakenText = `${minutesTaken}m ${secondsTaken}s`;
+  
+  let html = `
+    <div class="score-card">
+      <h2>${score}/${totalQuestions}</h2>
+      <p>Your Score: ${percentage}%</p>
+      <p>Time Taken: ${timeTakenText}</p>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card correct">
+        <h3>${correct}</h3>
+        <p>Correct</p>
+      </div>
+      <div class="stat-card wrong">
+        <h3>${wrong}</h3>
+        <p>Wrong</p>
+      </div>
+      <div class="stat-card unattempted">
+        <h3>${unattempted}</h3>
+        <p>Unattempted</p>
+      </div>
+      <div class="stat-card">
+        <h3>${totalQuestions}</h3>
+        <p>Total</p>
+      </div>
+    </div>
+  `;
+  
+  questions.forEach(q => {
+    const userAns = answers[q.sr_no];
+    let questionDisplay = '';
+    if (isImageURL(q.question)) {
+      questionDisplay = `<img src="${q.question}" class="question-image" alt="Question ${q.sr_no}">`;
+    } else {
+      questionDisplay = q.question;
+    }
+    html += `<div class="question-review">
+      <h4>Q${q.sr_no}: ${questionDisplay}</h4>`;
+    
+    for (let i = 1; i <= 4; i++) {
+      const isCorrect = i.toString() === q.answer;
+      const isUserAnswer = userAns == i.toString();
+      
+      let className = 'review-option';
+      if (isCorrect) className += ' correct';
+      if (isUserAnswer && !isCorrect) className += ' wrong';
+      if (isUserAnswer) className += ' user-selected';
+      
+      const optionValue = q[`option${i}`];
+      
+      if (isImageURL(optionValue)) {
+        html += `<div class="${className}">
+          ${isCorrect ? '✓ ' : ''}${isUserAnswer ? '➤ ' : ''} 
+          <img src="${optionValue}" class="option-image" alt="Option ${i}">
+        </div>`;
+      } else {
+        html += `<div class="${className}">
+          ${isCorrect ? '✓ ' : ''}${isUserAnswer ? '➤ ' : ''}${optionValue}
+        </div>`;
+      }
+    }
+    
+    if (q.solution && q.solution.trim() !== '') {
+      let solutionDisplay = '';
+      if (isImageURL(q.solution)) {
+        solutionDisplay = `<img src="${q.solution}" class="solution-image" alt="Solution" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;">`;
+      } else {
+        solutionDisplay = q.solution;
+      }
+      
+      html += `<div class="solution-section" style="margin-top: 15px; padding: 15px; background: #f0f8ff; border-left: 4px solid #007bff; border-radius: 8px;">
+        <strong style="color: #007bff;">💡 Solution:</strong>
+        <div style="margin-top: 8px; color: #333;">${solutionDisplay}</div>
+      </div>`;
+    }
+    
+    html += `</div>`;
+  });
+  
+  html += `
+    <div class="action-buttons">
+      <button class="action-btn restart" onclick="restartQuiz()">Restart Quiz</button>
+      <button class="action-btn download" onclick="downloadResults()">Download Results</button>
+      <button class="action-btn print" onclick="window.print()">Print Results</button>
+    </div>
+  `;
+  
+  const resultSection = document.getElementById('resultSection');
+  const questionSection = document.getElementById('questionSection');
+  const progressSection = document.querySelector('.progress-section');
+  
+  if (resultSection) {
+    resultSection.innerHTML = html;
+    resultSection.classList.remove('hidden');
+  }
+  if (questionSection) questionSection.classList.add('hidden');
+  if (progressSection) progressSection.classList.add('hidden');
+  
+  const quizContainer = document.getElementById('quizContainer');
+  if (quizContainer) {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  }
+}
+function isImageURL(str) {
+  return str && (str.startsWith('http') || str.startsWith('https')) &&
+    (str.match(/\.(jpeg|jpg|gif|png|svg|webp)$/i));
+}
+function restartQuiz() {
+  if (confirm('Are you sure you want to restart? All progress will be lost.')) {
+    currentQuestion = 0;
+    answers = {};
+    bookmarks.clear();
+    timerSeconds = totalTimeMinutes * 60;
+    
+    const resultSection = document.getElementById('resultSection');
+    const questionSection = document.getElementById('questionSection');
+    const progressSection = document.querySelector('.progress-section');
+    const fab = document.getElementById('paletteFab');
+    const nav = document.getElementById('navigation');
+    
+    if (resultSection) {
+      resultSection.classList.add('hidden');
+      resultSection.innerHTML = '';
+    }
+    if (questionSection) questionSection.classList.remove('hidden');
+    if (progressSection) progressSection.classList.remove('hidden');
+    if (fab) fab.style.display = 'flex';
+    if (nav) nav.style.display = 'grid';
+    
+    document.body.style.paddingBottom = 'var(--nav-height)';
+    
+    if (timerInterval) {
+      clearInterval(timerInterval);
+    }
+    updateTimer();
+    startTimer();
+    
+    loadQuestion(currentQuestion);
+    createPalette();
+  }
+}
+
+function downloadResults() {
+  const resultSection = document.getElementById('resultSection');
+  if (!resultSection) return;
+  
+  const resultHTML = resultSection.innerHTML;
+  const fullHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FULL LENGTH TEST - 3</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; max-width: 900px; margin: 0 auto; }
+    .score-card { background: linear-gradient(135deg, #007bff, #28a745); color: white; padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
+    .score-card h2 { font-size: 48px; margin-bottom: 10px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
+    .stat-card { background: white; padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #ddd; }
+    .stat-card h3 { font-size: 32px; margin-bottom: 8px; }
+    .stat-card.correct h3 { color: #28a745; }
+    .stat-card.wrong h3 { color: #dc3545; }
+    .stat-card.unattempted h3 { color: #6c757d; }
+    .question-review { background: white; border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin-bottom: 15px; }
+    .question-review h4 { margin-bottom: 15px; font-size: 16px; line-height: 1.6; }
+    .review-option { padding: 10px 15px; margin: 8px 0; border-radius: 8px; border: 2px solid #ddd; display: flex; align-items: center; gap: 10px; }
+    .option-image { max-width: 150px; max-height: 100px; border-radius: 8px; }
+    .review-option.correct { background: #d4edda; border-color: #28a745; color: #155724; }
+    .review-option.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+    .review-option.user-selected { border-width: 3px; font-weight: bold; }
+    @media print { body { background: white; } }
+    @media (max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center; color: #007bff;">MOTION 3.0 - Quiz Results</h1>
+  <p style="text-align: center; color: #666; margin-bottom: 30px;">Generated on: ${new Date().toLocaleString()}</p>
+  ${resultHTML.replace(/<div class="action-buttons">[\s\S]*?<\/div>/, '')}
+</body>
+</html>
+  `;
+  
+  try {
+    const blob = new Blob([fullHTML], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Quiz_Results_${new Date().getTime()}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    alert('Download failed. Please try using the Print option instead.');
+    console.error('Download error:', err);
+  }
+}
+
+function saveToLocalStorage() {
+  try {
+    const state = {
+      currentQuestion,
+      answers,
+      bookmarks: Array.from(bookmarks),
+      timerSeconds,
+      timestamp: Date.now()
+    };
+    localStorage.setItem('quizState', JSON.stringify(state));
+  } catch (err) {
+    console.error('Save error:', err);
+  }
+}
+
+function loadFromLocalStorage() {
+  try {
+    const saved = localStorage.getItem('quizState');
+    if (saved) {
+      const state = JSON.parse(saved);
+      if (Date.now() - state.timestamp < 24 * 60 * 60 * 1000) {
+        if (confirm('Resume previous quiz session?')) {
+          currentQuestion = state.currentQuestion || 0;
+          answers = state.answers || {};
+          bookmarks = new Set(state.bookmarks || []);
+          timerSeconds = state.timerSeconds || (totalTimeMinutes * 60); // MODIFIED
+          updateTimer();
+          loadQuestion(currentQuestion);
+        }
+      } else {
+        clearLocalStorage();
+      }
+    }
+  } catch (err) {
+    console.error('Load error:', err);
+    clearLocalStorage();
+  }
+}
+
+function clearLocalStorage() {
+  try {
+    localStorage.removeItem('quizState');
+  } catch (err) {
+    console.error('Clear storage error:', err);
+  }
+}
+
+window.addEventListener('beforeunload', (e) => {
+  const resultSection = document.getElementById('resultSection');
+  if (resultSection && !resultSection.classList.contains('hidden')) {
+    return;
+  }
+  e.preventDefault();
+  e.returnValue = '';
+});
+
+window.addEventListener('unload', () => {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+  }
+});
+</script>
+</body>
+</html>

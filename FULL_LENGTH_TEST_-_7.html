@@ -1,0 +1,3215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FULL LENGTH TEST - 7</title>
+<style>
+:root {
+  --primary-color: #007bff;
+  --primary-hover: #0069d9;
+  --success-color: #28a745;
+  --success-hover: #218838;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --secondary-color: #6c757d;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --shadow: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+  --overlay: rgba(0,0,0,0.5);
+  --nav-height: 80px;
+}
+
+[data-theme="dark"] {
+  --primary-color: #4dabf7;
+  --primary-hover: #339af0;
+  --success-color: #51cf66;
+  --success-hover: #40c057;
+  --danger-color: #ff6b6b;
+  --warning-color: #ffd43b;
+  --secondary-color: #868e96;
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #404040;
+  --text-primary: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --border-color: #495057;
+  --shadow: 0 4px 6px rgba(0,0,0,0.3);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.4);
+  --overlay: rgba(0,0,0,0.7);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
+  position: relative;
+  padding-bottom: var(--nav-height);
+}
+
+body.palette-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-primary);
+  padding: 20px 30px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.header h1 {
+  font-size: 28px;
+  color: var(--primary-color);
+  font-weight: 700;
+  user-select: none;
+}
+
+.header-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.theme-toggle, .fullscreen-btn {
+  background: var(--bg-tertiary);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s;
+  min-width: 44px;
+  min-height: 44px;
+  user-select: none;
+}
+
+.theme-toggle:active, .fullscreen-btn:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle:hover, .fullscreen-btn:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.timer {
+  background: var(--warning-color);
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  min-width: 100px;
+  text-align: center;
+  user-select: none;
+}
+
+.timer.warning {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.palette-fab {
+  position: fixed;
+  bottom: calc(var(--nav-height) + 20px);
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+  transition: all 0.3s ease;
+  z-index: 998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.palette-fab:active {
+  transform: scale(0.9);
+}
+
+.palette-fab:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,123,255,0.6);
+}
+
+.palette-fab.active {
+  background: var(--danger-color);
+}
+
+.palette-fab .badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--success-color);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-secondary);
+  pointer-events: none;
+}
+
+.palette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 999;
+  touch-action: none;
+}
+
+.palette-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.question-palette {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  max-width: 450px;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg-primary);
+  box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+  transition: right 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.question-palette.active {
+  right: 0;
+}
+
+.palette-header {
+  padding: 20px;
+  background: var(--primary-color);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.palette-header h3 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.palette-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 32px;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+  line-height: 1;
+  touch-action: manipulation;
+}
+
+.palette-close:active {
+  transform: scale(0.9);
+}
+
+.palette-close:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.palette-stats {
+  padding: 15px 20px;
+  background: var(--bg-tertiary);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  font-size: 13px;
+  text-align: center;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+}
+
+.palette-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.palette-stat .number {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.palette-stat.answered .number { color: var(--success-color); }
+.palette-stat.unanswered .number { color: var(--secondary-color); }
+.palette-stat.bookmarked .number { color: var(--warning-color); }
+
+.palette-search {
+  padding: 15px 20px;
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+}
+
+.palette-search input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.palette-search input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.palette-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+}
+
+.palette-btn {
+  aspect-ratio: 1;
+  border: 2px solid var(--border-color);
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  min-width: 40px;
+  min-height: 40px;
+  color: var(--text-primary);
+  position: relative;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.palette-btn:active {
+  transform: scale(0.9);
+}
+
+.palette-btn:hover {
+  transform: scale(1.1);
+  z-index: 10;
+  box-shadow: var(--shadow);
+}
+
+.palette-btn.current {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  animation: currentPulse 2s infinite;
+}
+
+@keyframes currentPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,123,255,0.7); }
+  50% { box-shadow: 0 0 0 8px rgba(0,123,255,0); }
+}
+
+.palette-btn.answered {
+  background: var(--success-color);
+  color: white;
+  border-color: var(--success-color);
+}
+
+.palette-btn.bookmarked::after {
+  content: '🔖';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.palette-btn.bookmarked.answered {
+  background: var(--success-color);
+}
+
+.palette-legend {
+  padding: 20px;
+  border-top: 1px solid var(--border-color);
+  font-size: 13px;
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.question-image, .option-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 10px 0;
+  display: block;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.legend-color {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.quiz-container {
+  background: var(--bg-primary);
+  border-radius: 15px;
+  box-shadow: var(--shadow-lg);
+  padding: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  scroll-margin-top: 20px;
+}
+
+.quiz-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.marking-info {
+  display: inline-block;
+  background: var(--bg-tertiary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.progress-section {
+  margin-bottom: 25px;
+}
+
+.progress-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.progress-bar-container {
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 10px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+  transition: width 0.4s ease;
+  border-radius: 12px;
+}
+
+.question-section {
+  min-height: 300px;
+  scroll-margin-top: 80px;
+  margin-bottom: 20px;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.question-number {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-color);
+  user-select: none;
+}
+
+.bookmark-btn {
+  background: transparent;
+  border: 2px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.bookmark-btn:active {
+  transform: scale(0.95);
+}
+
+.bookmark-btn.active {
+  background: var(--warning-color);
+  border-color: var(--warning-color);
+  color: #000;
+}
+
+.question {
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  color: var(--text-primary);
+  user-select: text;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--border-color);
+  padding: 16px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg-secondary);
+  min-height: 60px;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.option-label:active {
+  transform: scale(0.98);
+}
+
+.option-label:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-color);
+}
+
+.option-label.selected {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.option-label input[type="radio"] {
+  margin-right: 15px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.option-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.option-image {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: var(--bg-primary);
+  padding: 10px;
+}
+
+.option-label.selected .option-image {
+  background: rgba(255,255,255,0.1);
+}
+
+.navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-primary);
+  border-top: 2px solid var(--border-color);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  z-index: 997;
+  padding: 15px 20px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  max-width: 100%;
+}
+
+.nav-btn {
+  padding: 14px 20px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.nav-btn:active {
+  transform: scale(0.97);
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.nav-btn.prev {
+  background: var(--secondary-color);
+  color: white;
+}
+
+.nav-btn.prev:hover:not(:disabled) {
+  background: #5a6268;
+}
+
+.nav-btn.next {
+  background: var(--primary-color);
+  color: white;
+}
+
+.nav-btn.next:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.nav-btn.clear {
+  background: var(--danger-color);
+  color: white;
+}
+
+.nav-btn.clear:hover {
+  background: #c82333;
+}
+
+.nav-btn.submit {
+  background: var(--success-color);
+  color: white;
+  grid-column: 1 / -1;
+}
+
+.nav-btn.submit:hover {
+  background: var(--success-hover);
+}
+
+.result-section {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.score-card {
+  background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+  color: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  margin-bottom: 30px;
+  user-select: none;
+}
+
+.score-card h2 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.score-card p {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: var(--bg-secondary);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid var(--border-color);
+  user-select: none;
+}
+
+.stat-card h3 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.stat-card.correct h3 { color: var(--success-color); }
+.stat-card.wrong h3 { color: var(--danger-color); }
+.stat-card.unattempted h3 { color: var(--secondary-color); }
+
+.question-review {
+  border: 2px solid var(--border-color);
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 20px;
+  background: var(--bg-secondary);
+}
+
+.question-review h4 {
+  margin-bottom: 15px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.review-option {
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 2px solid var(--border-color);
+  background: var(--bg-primary);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-option .option-image {
+  max-width: 150px;
+  max-height: 100px;
+}
+
+.review-option.correct {
+  background: #d4edda;
+  border-color: var(--success-color);
+  color: #155724;
+}
+
+.review-option.wrong {
+  background: #f8d7da;
+  border-color: var(--danger-color);
+  color: #721c24;
+}
+
+.review-option.user-selected {
+  border-width: 3px;
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  padding: 14px 30px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  min-width: 150px;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.action-btn.restart {
+  background: var(--danger-color);
+  color: white;
+}
+
+.action-btn.restart:hover {
+  background: #c82333;
+}
+
+.action-btn.download {
+  background: var(--primary-color);
+  color: white;
+}
+
+.action-btn.download:hover {
+  background: var(--primary-hover);
+}
+
+.action-btn.print {
+  background: var(--secondary-color);
+  color: white;
+}
+
+.action-btn.print:hover {
+  background: #5a6268;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.palette-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.palette-content::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+.palette-content::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+.palette-content::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 140px;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .quiz-container {
+    padding: 20px 15px;
+  }
+
+  .question-palette {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .palette-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+
+  .palette-btn {
+    font-size: 13px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .palette-fab {
+    bottom: calc(var(--nav-height) + 10px);
+    right: 15px;
+    width: 56px;
+    height: 56px;
+    font-size: 22px;
+  }
+
+  .navigation {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px 15px;
+  }
+
+  .nav-btn {
+    min-height: 44px;
+    font-size: 15px;
+  }
+
+  .nav-btn.clear {
+    order: 3;
+  }
+
+  .nav-btn.submit {
+    grid-column: auto;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .legend-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .question {
+    font-size: 16px;
+  }
+
+  .option-label {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+
+  .option-image {
+    max-height: 150px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .palette-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .palette-btn {
+    font-size: 12px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+
+  .timer {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  .option-image {
+    max-height: 120px;
+  }
+}
+
+@media (max-width: 360px) {
+  .palette-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media print {
+  .header-controls, .navigation, .palette-fab, .palette-overlay, .question-palette, .action-buttons, .bookmark-btn {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    padding-bottom: 0;
+  }
+
+  .container {
+    padding-bottom: 20px;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .palette-fab {
+    bottom: calc(var(--nav-height) + 5px);
+    right: 10px;
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .palette-fab .badge {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🎯 FULL LENGTH TEST - 7</h1>
+    <div class="header-controls">
+      <div class="timer" id="timer">00:00</div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle Theme">🌙</button>
+      <button class="fullscreen-btn" id="fullscreenBtn" aria-label="Toggle fullscreen" title="Fullscreen">⛶</button>
+    </div>
+  </div>
+
+  <div class="quiz-container" id="quizContainer">
+    <div class="quiz-header">
+      <div class="marking-info" id="markingInfo">Marking: +1, -0</div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-stats">
+        <span>Progress: <strong id="progressText">1/2</strong></span>
+        <span>Attempted: <strong id="attemptedText">0</strong></span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <div class="question-section" id="questionSection">
+      <div class="question-header">
+        <div class="question-number" id="questionNumber">Question 1 of 2</div>
+        <button class="bookmark-btn" id="bookmarkBtn" aria-label="Bookmark question">
+          <span>🔖</span> <span>Bookmark</span>
+        </button>
+      </div>
+      
+      <div class="question" id="questionText"></div>
+      
+      <div class="options" id="optionsContainer"></div>
+    </div>
+
+    <div class="result-section hidden" id="resultSection"></div>
+  </div>
+</div>
+
+<button class="palette-fab" id="paletteFab" aria-label="Toggle question palette" title="Question Palette">
+  📋
+  <span class="badge" id="answeredBadge">0</span>
+</button>
+
+<div class="palette-overlay" id="paletteOverlay"></div>
+
+<div class="question-palette" id="questionPalette">
+  <div class="palette-header">
+    <h3>Question Palette</h3>
+    <button class="palette-close" id="paletteClose" aria-label="Close palette">×</button>
+  </div>
+
+  <div class="palette-stats">
+    <div class="palette-stat answered">
+      <div class="number" id="paletteAnswered">0</div>
+      <div>Answered</div>
+    </div>
+    <div class="palette-stat unanswered">
+      <div class="number" id="paletteUnanswered">2</div>
+      <div>Not Answered</div>
+    </div>
+    <div class="palette-stat bookmarked">
+      <div class="number" id="paletteBookmarked">0</div>
+      <div>Bookmarked</div>
+    </div>
+  </div>
+
+  <div class="palette-search">
+    <input type="number" id="paletteSearch" placeholder="Jump to question number..." aria-label="Search questions" inputmode="numeric" pattern="[0-9]*">
+  </div>
+
+  <div class="palette-content">
+    <div class="palette-grid" id="paletteGrid"></div>
+  </div>
+
+  <div class="palette-legend">
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--success-color)"></div>
+        <span>Answered</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--bg-secondary); border: 2px solid var(--border-color)"></div>
+        <span>Not Answered</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--primary-color)"></div>
+        <span>Current Question</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--warning-color)"></div>
+        <span>🔖 Bookmarked</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="navigation" id="navigation">
+  <button class="nav-btn prev" id="prevBtn" aria-label="Previous question">
+    <span>←</span> Previous
+  </button>
+  <button class="nav-btn clear" id="clearBtn" aria-label="Clear answer">Clear</button>
+  <button class="nav-btn next" id="nextBtn" aria-label="Next question">
+    Next <span>→</span>
+  </button>
+  <button class="nav-btn submit hidden" id="submitBtn" aria-label="Submit quiz">Submit Quiz</button>
+</div>
+
+<script>
+// MODIFIED: Quiz data structure with time_minutes
+const quizData = {
+  "time_minutes": 120,
+  "questions": [
+    {
+      "sr_no": 1,
+      "question": "<p> Paytm (Financial Technology Company) is headquartered in:</p>",
+      "option1": "<p> Kochi, Kerala</p>",
+      "option2": "<p> Noida, Uttar Pradesh</p>",
+      "option3": "<p> Hyderabad, Telangana</p>",
+      "option4": "<p> Ranchi, Jharkhand</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p><b>Headquarters:</b> <b>Noida, Uttar Pradesh</b>.</p><p><b>Founder:</b> <b>Vijay Shekhar Sharma</b> (often asked in banking exams).</p><p><b>Established:</b> <b>2010</b>.</p><p><b>Key Fact:</b> It was one of the first companies to receive a <b>Payments Bank license</b> from the RBI.</p>"
+    },
+    {
+      "sr_no": 2,
+      "question": "<p> In which year was Chaudhary Charan Singh awarded the Bharat Ratna?</p>",
+      "option1": "<p> 2020</p>",
+      "option2": "<p> 2023</p>",
+      "option3": "<p> 2024</p>",
+      "option4": "<p> 2022</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> Chaudhary Charan Singh was awarded the Bharat Ratna in the year 2024. He was Uttar Pradesh's first non-congress Chief Minister and went on to become Prime Minister of India in 1979. He was also regarded as a ‘Champion of Peasants’</p>"
+    },
+    {
+      "sr_no": 3,
+      "question": "<p> In terms of population (Census 2011), Uttar Pradesh ranks at which position among Indian states?</p>",
+      "option1": "<p> Third</p>",
+      "option2": "<p> Fourth</p>",
+      "option3": "<p> Second</p>",
+      "option4": "<p> First</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> At the time of the 2011 Census, Uttar Pradesh's population was approximately <b>19.98 crore</b> (nearly 200 million). To put this in perspective, if UP were a country, it would be the <b>5th most populous country</b> in the world (after China, India, USA, and Indonesia).</p><p><b>Top 5 States by Population (Census 2011):</b></p><p><b>Uttar Pradesh</b> (~19.98 Crore)</p><p><b>Maharashtra</b> (~11.23 Crore)</p><p><b>Bihar</b> (~10.40 Crore)</p><p><b>West Bengal</b> (~9.12 Crore)</p><p><b>Andhra Pradesh</b> (Pre-bifurcation: ~8.45 Crore)</p><p><b>Highlighted Facts (UP Census 2011)</b></p><p><b>Total Population Share:</b> UP accounts for <b>16.5%</b> of India’s total population.</p><p><b>Most Populous District:</b> <b>Prayagraj</b> (formerly Allahabad).</p><p><b>Least Populous District:</b> <b>Mahoba</b>.</p><p><b>Decadal Growth Rate (2001-2011):</b> <b>20.23%</b>.</p><p><b>Density:</b> <b>829 persons per sq. km</b> (Higher than the national average of 382).</p><p><b>Sex Ratio:</b> <b>912</b> females per 1000 males (National average is 943).</p><p><b>Child Sex Ratio (0-6 years):</b> <b>902</b>.</p><p><b>Literacy Rate:</b> <b>67.7%</b> (Male: 77.3%, Female: 57.2%).</p>"
+    },
+    {
+      "sr_no": 4,
+      "question": "<p> Gokul Puraskar Yojana is related to:</p>",
+      "option1": "<p> Ghee production</p>",
+      "option2": "<p> Milk production</p>",
+      "option3": "<p> Petha production</p>",
+      "option4": "<p> Fisheries</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The <b>Gokul Puraskar Yojana</b> is a prestigious award scheme launched by the <b>Government of Uttar Pradesh</b> to promote and incentivize the dairy sector.</p><p><b>Objective:</b> To encourage healthy competition among milk producers and increase milk productivity in the state.</p><p><b>Eligibility:</b> It is awarded to the <b>highest milk producer</b> who supplies milk to the Cooperative Milk Societies (under the Pradeshik Co-operative Dairy Federation - PCDF) at the district and state levels.</p><p><b>Significance:</b> Since Uttar Pradesh is one of the leading milk-producing states in India, this scheme plays a vital role in the \"White Revolution\" at the state level.</p>"
+    },
+    {
+      "sr_no": 5,
+      "question": "<p> <b>Regarding Uttar Pradesh Right to Information Rules, 2015, which statements are correct?</b></p><p>Complaints filed before commencement continue to be processed.</p><p>Checklist system is available.</p><p>Rules do not define structured workflow.</p><p>Departmental documents are studied for automation.</p>",
+      "option1": "<p> 2 and 4 only</p>",
+      "option2": "<p> 1 and 3 only</p>",
+      "option3": "<p> 1, 2, 3 and 4</p>",
+      "option4": "<p> 1, 2 and 4 only</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct statements are:</p><p><b>Complaints filed before commencement continue to be processed.</b></p><p><b>Checklist system is available.</b></p><p><b>Departmental documents are studied for automation.</b></p><p>Statement 3 is <b>incorrect</b> because the 2015 Rules and subsequent government orders (GOs) specifically aimed to <b>structure the workflow</b> for transparency.</p>"
+    },
+    {
+      "sr_no": 6,
+      "question": "<p> <b>Jagatguru Rambhadracharya Handicapped University is located in:</b></p>",
+      "option1": "<p> Chitrakoot</p>",
+      "option2": "<p> Kanpur</p>",
+      "option3": "<p> Lucknow</p>",
+      "option4": "<p> Barabanki</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>Jagatguru Rambhadracharya Handicapped University (JRhu)</b>, now officially known as <b>Jagatguru Rambhadracharya Divyang University</b>, is a unique institution located in <b>Chitrakoot, Uttar Pradesh</b>.</p><p><b>Founder:</b> It was established in <b>2001</b> by <b>Jagatguru Rambhadracharya</b>, a renowned spiritual leader and scholar who has been blind since infancy.</p><p><b>Unique Status:</b> It is the <b>first university in the world</b> exclusively established for the disabled (Divyangjan).</p><p><b>Recent Update:</b> In <b>2023</b>, the Uttar Pradesh government approved a proposal to upgrade it to a <b>State University</b> to enhance its funding and reach.</p>"
+    },
+    {
+      "sr_no": 7,
+      "question": "<p> Match the following Institutes with their Locations:</p><p> V.V. Giri National Labour Institute</p><p> Agra</p><p> Central Drug Research Institute</p><p> Meerut</p><p> National Jalma Institute for Leprosy</p><p> Lucknow</p><p> Central Institute for Research on Cattle</p><p> Noida</p><p><br/> </p>",
+      "option1": "<p> A-3, B-4, C-2, D-1</p>",
+      "option2": "<p> A-1, B-2, C-3, D-4</p>",
+      "option3": "<p> A-4, B-3. C-2, D-1</p>",
+      "option4": "<p> A-4, B-3, C-1, D-2</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>Institute</b></p><p> <b>Location</b></p><p> <b>Key Exam Fact</b></p><p> <b>A. V.V. Giri National Labour Institute</b></p><p> <b>4. Noida</b></p><p> Named after India’s 4th President; it is a premier institution for labor-related research.</p><p> <b>B. Central Drug Research Institute (CDRI)</b></p><p> <b>3. Lucknow</b></p><p> Established in 1951; famous for developing the non-hormonal contraceptive pill <b>'Saheli'</b>.</p><p> <b>C. National Jalma Institute for Leprosy</b></p><p> <b>1. Agra</b></p><p> Originally a Japanese leprosy mission, it is now a major research center under <b>ICMR</b>.</p><p> <b>D. Central Institute for Research on Cattle</b></p><p> <b>2. Meerut</b></p><p> Focuses on the genetic improvement and productivity of indigenous cattle breeds.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 8,
+      "question": "<p> The oldest university in Uttar Pradesh is:</p>",
+      "option1": "<p> Banaras Hindu University</p>",
+      "option2": "<p> Allahabad University</p>",
+      "option3": "<p> Chaudhary Charan Singh University</p>",
+      "option4": "<p> Lucknow University</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>Allahabad University</b> (officially the University of Allahabad) is the oldest university in Uttar Pradesh and the fourth oldest modern university in India.</p><p><b>Established:</b> <b>September 23, 1887</b>.</p><p><b>Historical Significance:</b> It was once known as the <b>\"Oxford of the East\"</b> due to its high academic standards and the large number of civil servants (IAS/IPS) it produced.</p><p><b>Central Status:</b> It was granted the status of a <b>Central University</b> by the Government of India in 2005.</p><p> <b>University</b></p><p> <b>Location</b></p><p> <b>Established Year</b></p><p> <b>Allahabad University</b></p><p> <b>Prayagraj</b></p><p> <b>1887</b> (Oldest)</p><p> <b>Aligarh Muslim University</b></p><p> <b>Aligarh</b></p><p> <b>1920</b> (as University)*</p><p> <b>Banaras Hindu University</b></p><p> <b>Varanasi</b></p><p> <b>1916</b></p><p> <b>Lucknow University</b></p><p> <b>Lucknow</b></p><p> <b>1921</b></p><p> <b>Chaudhary Charan Singh Univ.</b></p><p> <b>Meerut</b></p><p> <b>1965</b></p><p><br/> </p>"
+    },
+    {
+      "sr_no": 9,
+      "question": "<p> Which of the following is NOT a composition of Rahul Sankrityayan?</p>",
+      "option1": "<p> Jeene Ke Liye</p>",
+      "option2": "<p> Jai Yaudheya</p>",
+      "option3": "<p> Shanti Dharma</p>",
+      "option4": "<p> Divodas</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>Rahul Sankrityayan</b> (1893–1963), known as the <b>\"Father of Indian Travelogues\"</b> (Prakand Panditya), was a prolific writer in Hindi and Pali. While he wrote extensively on Buddhism, history, and fiction, the specific work <b>\"Shanti Dharma\"</b> is not attributed to him.</p><p><br/> </p><p><b>Verified Works of Rahul Sankrityayan (Options A, B, D, &amp; E):</b></p><p><b>Jeene Ke Liye (1940):</b> A famous social novel depicting the struggles of the common man.</p><p><b>Jai Yaudheya (1944):</b> A historical novel based on the Yaudheya republic of ancient India.</p><p><b>Divodas (1950):</b> A historical fiction set in the Vedic era.</p><p><b>Bhago Nahi Duniya Ko Badlo:</b> One of his most influential philosophical/social call-to-action books, emphasizing social change over escapism.</p>"
+    },
+    {
+      "sr_no": 10,
+      "question": "<p> The most widely spoken language in Uttar Pradesh after Hindi is:</p>",
+      "option1": "<p> Urdu</p>",
+      "option2": "<p> Bodo</p>",
+      "option3": "<p> Santhali</p>",
+      "option4": "<p> Konkani</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> According to the <b>Census 2011</b> (the most reliable and standard reference for exams), <b>Urdu</b> is the second most widely spoken language in Uttar Pradesh after Hindi.</p><p><b>Official Status:</b> Urdu was declared the <b>second official language</b> of Uttar Pradesh in <b>1989</b> through an amendment to the Uttar Pradesh Official Language Act, 1951.</p><p><b>Percentage:</b> Approximately <b>5.42%</b> of the state's population recorded Urdu as their mother tongue.</p><p><b>Cultural Hubs:</b> It has a massive presence in cities like <b>Lucknow, Aligarh, Saharanpur, and Bareilly</b>, which are historical centers of Urdu literature and poetry.</p>"
+    },
+    {
+      "sr_no": 11,
+      "question": "<p> Bada Imambara and Chota Imambara are located in:</p>",
+      "option1": "<p> Varanasi</p>",
+      "option2": "<p> Lucknow</p>",
+      "option3": "<p> Kanpur</p>",
+      "option4": "<p> Aligarh</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> Both of these world-famous monuments are situated in the old city of <b>Lucknow</b>, the capital of Uttar Pradesh. They are prime examples of Nawabi architecture and are central to the city's cultural identity.</p><p>Bara Imambara was built in 1784 by <b>Asaf-ud-Daula</b>, the Fourth Nawab of Awadh, as part of a famine relief project. It is famous for its massive central hall, which is one of the largest arched constructions in the world built without any supporting pillars or beams.</p><p>The complex features the <b>Bhulbhulaiya</b>, an intricate network of narrow underground and overhead passages designed to confuse intruders.</p><p>It also includes the Asafi Mosque and the Shahi Baoli (a unique step-well).</p><p>Chota Imambara, also known as the Imambara of Hussainabad, was built in 1838 by <b>Muhammad Ali Shah</b>, the third Nawab of Awadh. Known for its more delicate and ornate design, it is often called the \"Palace of Lights\" due to the numerous chandeliers and glass lamps that decorate its interior.</p><p>The structure serves as a mausoleum for the Nawab and his mother.</p><p>It features beautiful Persian and Indo-Islamic decorative motifs and a striking golden dome.</p><p><b>Essentials facts:</b></p><p><b>Architect of Bara Imambara:</b> Kifayatullah (from Delhi).</p><p><b>The Rumi Darwaza:</b> Located right between the two Imambaras, this gateway is the official symbol of the city of Lucknow.</p><p><b>Historical Context:</b> These structures were built as congregation halls for Shia Muslims during the remembrance of Muharram.</p><p><b>The Clock Tower:</b> Nearby is the Hussainabad Clock Tower, the tallest of its kind in India.</p>"
+    },
+    {
+      "sr_no": 12,
+      "question": "<p> Indus Valley Civilization artifacts were discovered in 2009 at:</p>",
+      "option1": "<p> Kanpur</p>",
+      "option2": "<p> Alamgirpur</p>",
+      "option3": "<p> Jhansi</p>",
+      "option4": "<p> Agra</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> While <b>Alamgirpur</b> (located in the Meerut district of Uttar Pradesh) was originally discovered in <b>1958</b> by Y.D. Sharma, it came back into significant focus in <b>2009</b> and the surrounding years due to renewed excavations and findings in the <b>Hindon River</b> basin.</p><p><b>Geographical Significance:</b> Alamgirpur marks the <b>Easternmost boundary</b> of the Indus Valley Civilization (IVC).</p><p><b>The 2009 context:</b> This period saw a surge in research regarding the \"Late Harappan\" phase in Western UP. Nearby sites like <b>Sinauli</b> (famous for the chariot discovery) and <b>Mandi</b> have redefined our understanding of IVC's reach in the Ganga-Yamuna Doab.</p><p><b>Findings:</b> Artifacts typically include copper tools, ceramics, terracotta cakes, and pottery with Harappan inscriptions/scripts.</p>"
+    },
+    {
+      "sr_no": 13,
+      "question": "<p> First airport in India to make announcements in Sanskrit:</p>",
+      "option1": "<p> Lal Bahadur Shastri International Airport, Varanasi</p>",
+      "option2": "<p> Netaji Subhash Chandra Bose International Airport, Kolkata</p>",
+      "option3": "<p> Sardar Vallabhbhai Patel International Airport, Ahmedabad</p>",
+      "option4": "<p> Jolly Grant Airport, Dehradun</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> In <b>July 2022</b>, the <b>Lal Bahadur Shastri International Airport (Varanasi)</b> became the first in India to introduce Sanskrit as a language for COVID-19 safety announcements and flight information, alongside Hindi and English.</p><p><b>Objective:</b> To promote and honor Sanskrit, which is regarded as one of the oldest and most significant languages of Indian heritage and culture.</p><p><b>The Collaboration:</b> The initiative was launched in coordination with the <b>Airports Authority of India (AAI)</b> and the <b>Banaras Hindu University (BHU)</b>.</p><p><b>Significance:</b> Varanasi (Kashi) is a global hub for Sanskrit learning, making it the most appropriate location for this cultural integration.</p>"
+    },
+    {
+      "sr_no": 14,
+      "question": "<p> Which river flows through Ayodhya and is associated with Lord Rama?</p>",
+      "option1": "<p> Yamuna</p>",
+      "option2": "<p> Ghaghara</p>",
+      "option3": "<p> Sarayu</p>",
+      "option4": "<p> Gomti</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The <b>Sarayu River</b> is inseparable from the identity of <b>Ayodhya</b>. It is an ancient river mentioned in the Rigveda and the Ramayana.</p><p><b>Religious Significance:</b> According to the Ramayana, Lord Rama, the seventh avatar of Lord Vishnu, was born in Ayodhya on the banks of the Sarayu. It is believed that at the end of his earthly journey, he entered the waters of the Sarayu to return to his celestial form.</p><p><b>Geographical Context:</b> The Sarayu is a perennial river that flows through the heart of Uttar Pradesh. It is technically a part of the <b>Ghaghara</b> river system. In fact, for a large stretch, the Ghaghara is locally referred to as the Sarayu, especially as it passes through the holy city of Ayodhya.</p><p><b>Deepotsav:</b> Every year during Deepawali, the banks of the Sarayu (Ram Ki Paidi) in Ayodhya witness a world-record-breaking lighting of lamps (<i>diyas</i>).</p><p> <b>City</b></p><p> <b>River</b></p><p> <b>Ayodhya</b></p><p> <b>Sarayu</b></p><p> <b>Lucknow</b></p><p> <b>Gomti</b></p><p> <b>Gorakhpur</b></p><p> <b>Rapti</b></p><p> <b>Varanasi</b></p><p> <b>Ganga</b></p><p> <b>Mathura</b></p><p> <b>Yamuna</b></p><p><br/> </p>"
+    },
+    {
+      "sr_no": 15,
+      "question": "<p> Nawabganj Bird Sanctuary is located in:</p>",
+      "option1": "<p> Ghaziabad</p>",
+      "option2": "<p> Gonda</p>",
+      "option3": "<p> Raebareli</p>",
+      "option4": "<p> Unnao</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>Nawabganj Bird Sanctuary</b>, one of the most famous wetland habitats in North India, is located in the <b>Unnao district</b> on the Kanpur-Lucknow highway.</p><p><b>Renaming:</b> In 2015, the sanctuary was officially renamed the <b>Chandra Shekhar Azad Bird Sanctuary</b> in honor of the great revolutionary freedom fighter who was born in the Unnao district (Bhadarka).</p><p><b>International Recognition:</b> It is a designated <b>Ramsar Site</b> (Wetland of International Importance).</p><p><b>Biodiversity:</b> It hosts about 250 species of migratory birds, mostly from the CIS (Commonwealth of Independent States) countries during the winter months. Common sightings include the Pintail, Red-crested Pochard, and the Sarus Crane (the state bird of UP).</p><p> <b>Bird Sanctuary</b></p><p> <b>District</b></p><p> <b>Note</b></p><p> <b>Nawabganj</b></p><p> <b>Unnao</b></p><p> Renamed after Chandra Shekhar Azad.</p><p> <b>Sur Sarovar</b></p><p> <b>Agra</b></p><p> Also known as Keetham Lake.</p><p> <b>Sandi</b></p><p> <b>Hardoi</b></p><p> Important stop for migratory birds.</p><p> <b>Bakhira</b></p><p> <b>Sant Kabir Nagar</b></p><p> One of the latest Ramsar sites in UP.</p><p> <b>Saman</b></p><p> <b>Mainpuri</b></p><p> Significant population of Sarus Cranes.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 16,
+      "question": "<p> Who led the uprising of 1857 against the British from Lucknow?</p>",
+      "option1": "<p> Nana Sahib</p>",
+      "option2": "<p> Kunwar Singh</p>",
+      "option3": "<p> Begum Hazrat Mahal</p>",
+      "option4": "<p> Tatya Tope</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>C) Begum Hazrat Mahal</b>.</p><p><b>Role:</b> Regent of Awadh and wife of the exiled Nawab Wajid Ali Shah.</p><p><b>Action:</b> Seized Lucknow during the 1857 Revolt and crowned her son, <b>Birjis Qadr</b>, as the ruler.</p><p><b>Key Site:</b> Led the prolonged <b>Siege of the Lucknow Residency</b>.</p><p><b>Fate:</b> Never surrendered; escaped to <b>Nepal</b> after the British regained control in 1858.</p><p><b>1857 Leaders &amp; Centers</b></p><p> <b>Leader</b></p><p> <b>Center of Revolt</b></p><p> <b>Nana Sahib</b></p><p> Kanpur</p><p> <b>Kunwar Singh</b></p><p> Jagdispur (Bihar)</p><p> <b>Begum Hazrat Mahal</b></p><p> <b>Lucknow</b></p><p> <b>Tatya Tope</b></p><p> Kanpur / Gwalior</p><p> <b>Rani Lakshmibai</b></p><p> Jhansi / Gwalior</p><p> <b>Khan Bahadur Khan</b></p><p> Bareilly</p><p> <b>Maulvi Liyakat Ali</b></p><p> Allahabad (Prayagraj)</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 17,
+      "question": "<p> Who was the first ruler to introduce the silver coin known as the ‘Rupiya’?</p>",
+      "option1": "<p> Sher Shah Suri</p>",
+      "option2": "<p> Humayun</p>",
+      "option3": "<p> Aurangzeb</p>",
+      "option4": "<p> Muhammad Shah</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>A) Sher Shah Suri</b>.</p><p><b>Sher Shah Suri</b> (founder of the Sur Empire) introduced the <b>Rupiya</b> during his brief but highly influential reign (1540–1545). It is the direct precursor to the modern Rupee.</p><p><b>Specifications:</b> The original Rupiya was a silver coin weighing <b>178 grains</b> (approx. 11.5 grams).</p><p><b>Legacy:</b> His currency system was so robust that it remained the standard for the Mughal Empire and was later adopted by the British East India Company.</p><p><b>Tri-Metalism:</b> He introduced a systematic currency based on three metals:</p><p><b>Rupiya:</b> Silver coin.</p><p><b>Mohur:</b> Gold coin.</p><p><b>Dam:</b> Copper coin (used for smaller transactions).</p>"
+    },
+    {
+      "sr_no": 18,
+      "question": "<p> What is ‘Udranga’ under Gupta administration?</p>",
+      "option1": "<p> A type of army</p>",
+      "option2": "<p> A tax</p>",
+      "option3": "<p> Name of a king</p>",
+      "option4": "<p> Title of a king</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>B) A tax</b>.</p><p>In the <b>Gupta Administration</b>, <b>Udranga</b> was a specific type of <b>land tax</b> levied on permanent tenants.</p><p><b>Nature:</b> It is often interpreted by historians as a <b>\"Water Tax\"</b> or a tax on <b>\"permanent tenants\"</b> (those who were permanently settled on the land).</p><p><b>Counterpart (Uparika):</b> It is frequently mentioned alongside <b>Uparika</b>, which was a tax levied on <b>temporary tenants</b> or an additional \"extra\" tax.</p><p><b>Payment:</b> Taxes during this period were generally collected in both <b>Hiranya</b> (gold/cash) and <b>Meya</b> (kind/produce).</p><p><b>Key Revenue Terms (Gupta Era)</b></p><p> <b>Term</b></p><p> <b>Meaning</b></p><p> <b>Bhaga</b></p><p> King’s share of the produce (usually 1/6th).</p><p> <b>Bhoga</b></p><p> Periodic supplies of fruit, firewood, and flowers to the King.</p><p> <b>Bali</b></p><p> Originally a voluntary offering, became a compulsory tribute/tax.</p><p> <b>Hiranya</b></p><p> Tax paid specifically in <b>Gold/Cash</b>.</p><p> <b>Visti</b></p><p> <b>Forced labor</b> (unpaid labor provided to the state).</p><p> <b>Klpta</b></p><p> A fixed tax or small tax on the purchase/sale of land.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 19,
+      "question": "<p> <b>With reference to Gwalior Fort, consider the following statements:</b></p><p>The fort is situated atop a hill extending nearly 2 km in length.</p><p>Several rock-cut Jain sculptures adorn the southern approach.</p><p>The Chaturbhuj Temple inside the fort is dedicated to Lord Vishnu.</p><p>Which of the statements given above is/are correct?</p>",
+      "option1": "<p> 1 only</p>",
+      "option2": "<p> 2 and 3 only</p>",
+      "option3": "<p> 1 and 2 only</p>",
+      "option4": "<p> 1, 2 and 3</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>D) 1, 2 and 3</b>.</p><p><b>1. The fort is situated atop a hill extending nearly 2 km in length.</b></p><p><b>Correct.</b> Gwalior Fort is built on a massive, isolated sandstone hill called <b>Gopachal</b>. It stretches approximately <b>2.4 km (1.5 miles)</b> in length and varies in width, making it one of the largest and most impenetrable forts in India. Babur famously described it as <i>\"the pearl in the necklace of the castles of Hind.\"</i></p><p><b>2. Several rock-cut Jain sculptures adorn the southern approach.</b></p><p><b>Correct.</b> The slopes of the fort hill (specifically the <b>Gopachal Parvat</b> and the <b>Siddhachal Caves</b>) contain nearly <b>1,500 rock-cut Jain Tirthankara sculptures</b>. These were carved during the Tomar rule in the 15th century. They include massive standing (Kayotsarga) and seated (Padmasana) figures.</p><p><b>3. The Chaturbhuj Temple inside the fort is dedicated to Lord Vishnu.</b></p><p><b>Correct.</b> The Chaturbhuj Temple is a 9th-century rock-cut temple dedicated to <b>Lord Vishnu</b> (Chaturbhuj meaning \"four-armed\").</p><p><b>Mathematical Significance:</b> This temple is globally famous because it contains one of the oldest inscriptions of the <b>symbol \"0\" (zero)</b> in India, dating back to 876 AD.</p><p><b>Key Landmarks of Gwalior Fort</b></p><p> <b>Monument</b></p><p> <b>Built By</b></p><p> <b>Significance</b></p><p> <b>Man Mandir Palace</b></p><p> Raja Man Singh Tomar</p><p> Famous for its beautiful blue-tiled (citadel) mosaics.</p><p> <b>Sash-Bahu Temple</b></p><p> Kachchhapaghata Dynasty</p><p> Dedicated to Vishnu; famous for its intricate carvings.</p><p> <b>Teli Ka Mandir</b></p><p> Pratihara Dynasty</p><p> The tallest structure in the fort; blends North and South Indian styles.</p><p> <b>Gurudwara Data Bandi Chhor</b></p><p> —</p><p> Commemorates Guru Hargobind Sahib’s release of 52 kings.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 20,
+      "question": "<p> Which ruler’s empire is known for having a highly centralised system of administration?</p>",
+      "option1": "<p> Chandragupta Maurya</p>",
+      "option2": "<p> Samudragupta</p>",
+      "option3": "<p> Harshavardhana</p>",
+      "option4": "<p> Bindusara</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>A) Chandragupta Maurya</b>.</p><p>While all the rulers listed were powerful, the <b>Mauryan Empire</b> under <b>Chandragupta Maurya</b> (with the guidance of <b>Chanakya/Kautilya</b>) established the most <b>highly centralized</b> administrative structure in ancient Indian history.</p><p><b>The King as the Pivot:</b> The King was the supreme authority in military, judicial, and executive matters.</p><p><b>Saptanga Theory:</b> Administration followed the seven elements of the state (Swami, Amatya, Janapada, Durga, Kosha, Danda, and Mitra).</p><p><b>Bureaucracy:</b> A vast hierarchy of officers called <b>Adhyakshas</b> (Superintendents) and <b>Mahamatras</b> monitored every aspect of the economy, from weights and measures to agriculture and trade.</p><p><b>Spy System (Gudha Purushas):</b> A sophisticated network of spies ensured that the central authority maintained control over the farthest corners of the empire.</p><p><b>Key Mauryan Officers:</b></p><p> <b>Officer</b></p><p> <b>Responsibility</b></p><p> <b>Samaharta</b></p><p> Chief Collector of Revenue</p><p> <b>Sannidhata</b></p><p> Chief Treasurer / In-charge of the State Treasury</p><p> <b>Sitadhyaksha</b></p><p> Superintendent of Agriculture</p><p> <b>Pautavadhyaksha</b></p><p> Superintendent of Weights and Measures</p><p> <b>Antapal</b></p><p> Governor of the Frontier Forts</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 21,
+      "question": "<p> <b>Which of the following statements regarding Tropical Cyclones and Western Disturbances in India are correct?</b></p><p>Tropical cyclones in India generally develop over the Arabian Sea and Bay of Bengal, especially during the southwest monsoon season.</p><p>Some tropical cyclones also occur during the retreating monsoon or winter months.</p><p>Western Disturbances originate over the Bay of Bengal and bring heavy rainfall to southern India.</p><p>Western Disturbances are associated with summer rainfall and drought in northern India, especially the Western Himalayas.</p>",
+      "option1": "<p> 1, 2 and 3 only</p>",
+      "option2": "<p> 2 and 4 only</p>",
+      "option3": "<p> 1 and 2 only</p>",
+      "option4": "<p> 1 and 4 only</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>Statement 1: Correct</b></p><p>Tropical cyclones in India primarily develop over the <b>Bay of Bengal</b> and the <b>Arabian Sea</b>. While they can occur during the monsoon, they are most frequent during the <b>pre-monsoon</b> (April–May) and <b>post-monsoon</b> (October–November) periods.</p><p><b>Statement 2: Correct</b></p><p>The months of October, November, and December are peak times for tropical cyclones in the <b>Bay of Bengal</b>. These often impact the eastern coast (Odisha, Andhra Pradesh, and Tamil Nadu) during the <b>retreating monsoon</b>.</p><p><b>Statement 3: Incorrect</b></p><p><b>Western Disturbances</b> do <b>not</b> originate over the Bay of Bengal. They originate over the <b>Mediterranean Sea</b> and travel eastward across West Asia and Pakistan to reach India. Furthermore, they bring precipitation to <b>Northern India</b>, not Southern India.</p><p><b>Statement 4: Incorrect</b></p><p>Western Disturbances are associated with <b>Winter</b> rainfall (December–February), not summer. They are crucial for the <b>Rabi crops</b> (like wheat) and provide essential snow to the <b>Western Himalayas</b>. They help prevent drought during the winter, rather than being associated with it.</p><p><br/> </p><p><b>Climate Comparison Table</b></p><p> <b>Feature</b></p><p> <b>Tropical Cyclones</b></p><p> <b>Western Disturbances</b></p><p> <b>Origin</b></p><p> Bay of Bengal / Arabian Sea</p><p> Mediterranean Sea</p><p> <b>Season</b></p><p> Pre &amp; Post Monsoon</p><p> Winter (Dec–Feb)</p><p> <b>Region Affected</b></p><p> Coastal India (East/West)</p><p> North &amp; NW India (Himalayas/Plains)</p><p> <b>Nature</b></p><p> High-pressure/Low-pressure intensity</p><p> Extra-tropical Cyclones</p><p> <b>Impact</b></p><p> Heavy rain, Storm surges, Destruction</p><p> Light rain in plains, Snow in mountains</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 22,
+      "question": "<p> <b>Match the following Wildlife Sites with their corresponding States:</b></p><p> <b>List-I (Wildlife Site)</b></p><p> <b>List-II (State)</b></p><p> A. Clouded Leopard National Park</p><p> 1. Tripura</p><p> B. Mayurjharna Elephant Reserve</p><p> 2. West Bengal</p><p> C. Lemru Elephant Reserve</p><p> 3. Chhattisgarh</p><p> D. Chandra Shekhar Azad Bird Sanctuary</p><p> 4. Uttar Pradesh</p><p><br/> </p>",
+      "option1": "<p> A-3, B-2, C-1, D-4</p>",
+      "option2": "<p> A-1, B-2, C-3, D-4</p>",
+      "option3": "<p> A-1, B-3, C-2, D-4</p>",
+      "option4": "<p> A-2, B-1, C-3, D-4</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>B) A-1, B-2, C-3, D-4</b>.</p><p><b>A. Clouded Leopard National Park — 1. Tripura</b></p><p>Located in the <b>Sipahijala Wildlife Sanctuary</b>, this is India's first dedicated park for the clouded leopard. It is a prime biodiversity hotspot in the North East.</p><p><b>B. Mayurjharna Elephant Reserve — 2. West Bengal</b></p><p>This reserve is spread across the Paschim Medinipur, Jhargram, and Bankura districts. It was established to provide a corridor and habitat for elephants in the eastern region.</p><p><b>C. Lemru Elephant Reserve — 3. Chhattisgarh</b></p><p>Located in the Korba district, this reserve was created to prevent human-elephant conflict and provide a permanent habitat for wild elephants moving through the coal-rich regions of Chhattisgarh.</p><p><b>D. Chandra Shekhar Azad Bird Sanctuary — 4. Uttar Pradesh</b></p><p>As discussed in our previous query, this is the official name of the <b>Nawabganj Bird Sanctuary</b> in Unnao. It is a critical Ramsar site for migratory birds.</p><p><b>Regional Wildlife Highlights:</b></p><p> <b>Site</b></p><p> <b>State</b></p><p> <b>Key Species/Note</b></p><p> <b>Sipahijala</b></p><p> Tripura</p><p> Phayre's Leaf Monkey (State Animal)</p><p> <b>Jaldapara</b></p><p> West Bengal</p><p> One-horned Rhinoceros</p><p> <b>Indravati</b></p><p> Chhattisgarh</p><p> Wild Water Buffalo (State Animal)</p><p> <b>Dudhwa</b></p><p> Uttar Pradesh</p><p> Swamp Deer (Barasingha)</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 23,
+      "question": "<p> Under the Union Budget 2025–26, a new Makhana Board is to be established in which state?</p>",
+      "option1": "<p> Bihar</p>",
+      "option2": "<p> Assam</p>",
+      "option3": "<p> Uttar Pradesh</p>",
+      "option4": "<p> Jharkhand</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>A) Bihar</b>.</p><p>In the <b>Union Budget 2025–26</b>, Finance Minister Nirmala Sitharaman announced the establishment of a <b>Makhana Board</b> in <b>Bihar</b>. This move aims to formalize and boost one of the state's most iconic agricultural sectors.</p><p><b>Production Hub:</b> Bihar accounts for approximately <b>85% to 90%</b> of India's total makhana (fox nut) production.</p><p><b>Key Regions:</b> The board will primarily benefit farmers in the <b>Mithilanchal, Kosi, and Seemanchal</b> regions, including districts like Madhubani, Darbhanga, Purnea, and Saharsa.</p><p><b>Objectives:</b> * Enhance production and processing technologies.</p><p>Organize farmers into <b>Farmer Producer Organizations (FPOs)</b>.</p><p>Provide branding and marketing support to take \"Mithila Makhana\" (which has a <b>GI Tag</b>) to global markets.</p><p><b>Inauguration:</b> Following the budget announcement, the National Makhana Board was officially launched by Prime Minister Narendra Modi in <b>Purnea</b> in September 2025.</p>"
+    },
+    {
+      "sr_no": 24,
+      "question": "<p> What is the ranking of the Thar Desert in terms of its size among subtropical deserts worldwide?</p>",
+      "option1": "<p> 9ᵗʰ largest</p>",
+      "option2": "<p> 5ᵗʰ largest</p>",
+      "option3": "<p> 7ᵗʰ largest</p>",
+      "option4": "<p> 11ᵗʰ largest</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>A) 9</b><b>ᵗʰ</b><b> largest</b>.</p><p>The <b>Thar Desert</b>, also known as the <b>Great Indian Desert</b>, holds two distinct global rankings depending on the classification used:</p><p><b>Among Subtropical Deserts:</b> it is the <b>9</b><b>ᵗʰ</b><b> largest</b> in the world.</p><p><b>Among all Deserts (including Polar):</b> it is the <b>20</b><b>ᵗʰ</b><b> largest</b>.</p><p><u><b>Key Geographical Facts</b></u></p><p><b>Location:</b> About <b>85%</b> of the desert is in <b>India</b> (primarily Rajasthan, with parts in Gujarat, Punjab, and Haryana), and the remaining <b>15%</b> is in <b>Pakistan</b>.</p><p><b>Population Density:</b> It is the <b>most densely populated desert</b> in the world, with a population density of about 83 people per km2.</p><p><b>Boundaries:</b> * <b>West:</b> Indus River plain.</p><p><b>East:</b> Aravalli Range.</p><p><b>South:</b> Rann of Kutch.</p><p><b>North/Northeast:</b> Punjab Plains.</p>"
+    },
+    {
+      "sr_no": 25,
+      "question": "<p> What is the primary geological composition of the Lakshadweep and Minicoy Islands?</p>",
+      "option1": "<p> Sandstone and shale</p>",
+      "option2": "<p> Volcanic rocks</p>",
+      "option3": "<p> Coral deposits</p>",
+      "option4": "<p> Granite and basalt</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>C) Coral deposits</b></p><p>The <b>Lakshadweep and Minicoy Islands</b> are unique in the Indian subcontinent because they are entirely <b>atolls</b>—ring-shaped coral reefs that encircle a lagoon.</p><p><b>Origin:</b> These islands are formed by the accumulation of coral polyps (tiny marine organisms) over thousands of years. They are situated on the <b>Chagos-Laccadive Ridge</b>, which is a submarine volcanic ridge in the Arabian Sea.</p><p><b>Composition:</b> The islands consist of calcium carbonate derived from the skeletons of corals. Unlike the Andaman and Nicobar Islands, which are extensions of mountain ranges (Arakan Yoma), Lakshadweep has no hills or mountains.</p><p><b>Topography:</b> The islands are very low-lying, rarely rising more than <b>5 meters</b> above sea level. They are characterized by white coral sands and turquoise lagoons.</p>"
+    },
+    {
+      "sr_no": 26,
+      "question": "<p> <b>Consider the following statements about the powers and tenure of the Governor in India:</b></p><p>The Governor’s discretionary authority to recommend the President's Rule is provided under Article 356(1).</p><p>The 41st Constitutional Amendment reduced the Governor’s tenure from five years to four years.</p><p>The Sarkaria Commission recommended that Governors should not be removed before completing their term except in exceptional and compelling situations.</p>",
+      "option1": "<p> 2 and 3 only</p>",
+      "option2": "<p> 1 and 3 only</p>",
+      "option3": "<p> 1 and 2 only</p>",
+      "option4": "<p> Only 3</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>B) 1 and 3 only</b>.</p><p><b>Statement 1: Correct</b></p><p>Under <b>Article 356(1)</b>, if the Governor is satisfied that the government of the state cannot be carried on in accordance with the provisions of the Constitution, they can send a report to the President. This is a significant <b>discretionary power</b>, as the Governor does not need to act on the advice of the State Council of Ministers when making this recommendation.</p><p><b>Statement 2: Incorrect</b></p><p>The <b>41st Constitutional Amendment Act (1976)</b> raised the retirement age of members of State Public Service Commissions from 60 to 62 years. It did <b>not</b> change the tenure of the Governor. According to <b>Article 156</b>, the Governor holds office during the <b>pleasure of the President</b>, though the normal term is <b>five years</b>.</p><p><b>Statement 3: Correct</b></p><p>The <b>Sarkaria Commission (1983)</b>, which examined Centre-State relations, recommended that the Governor’s five-year term should be secure. It suggested they should only be removed in <b>exceptional circumstances</b> (such as physical/mental incapacity or prejudicial conduct) and that the Governor should be given an opportunity to show cause.</p><p><br/> </p><p><u><b>Summary of Commissions on Governors:</b></u></p><p> <b>Commission</b></p><p> <b>Key Recommendation</b></p><p> <b>Sarkaria Commission</b></p><p> Term security; Governor should be an \"eminent person\" from outside the state.</p><p> <b>Punchhi Commission</b></p><p> Suggested the phrase \"during the pleasure of the President\" be deleted; Governor should be removed only by a resolution of the State Legislature (similar to impeachment).</p><p> <b>Venkatachaliah (NCRWC)</b></p><p> Governor should be appointed by a committee including the PM, Home Minister, and Speaker.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 27,
+      "question": "<p> <b>What authority does the Supreme Court have over laws infringing on fundamental rights?</b></p>",
+      "option1": "<p> It can rewrite the law</p>",
+      "option2": "<p> It can declare the law null and void</p>",
+      "option3": "<p> It can delay its implementation</p>",
+      "option4": "<p> It can request Parliament to amend it</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>B) It can declare the law null and void</b>.</p><p>This power is known as <b>Judicial Review</b>. It is primarily derived from <b>Article 13</b> of the Indian Constitution, which acts as a protector of Fundamental Rights (Part III).</p><p><b>Article 13(2):</b> Explicitly states that the State shall not make any law that takes away or abridges the rights conferred by Part III. Any law made in contravention of this shall, to the extent of the contravention, be <b>void</b>.</p><p><b>The Power Source:</b> While Article 13 provides the ground, <b>Article 32</b> (Supreme Court) and <b>Article 226</b> (High Courts) provide the \"teeth\" by allowing citizens to move the court for enforcement.</p><p><b>Doctrine of Severability:</b> If only a specific part of a law is unconstitutional, the Court usually declares only that part void, rather than the entire Act (unless the parts are inseparable).</p>"
+    },
+    {
+      "sr_no": 28,
+      "question": "<p> In 2025, a State High Court’s ruling on virginity tests was based on which Article of the Indian Constitution?</p>",
+      "option1": "<p> Article 32</p>",
+      "option2": "<p> Article 21</p>",
+      "option3": "<p> Article 19</p>",
+      "option4": "<p> Article 14</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>B) Article 21</b>.</p><p>In 2025, judicial discourse (following precedents set by the Delhi High Court and reaffirmed in subsequent rulings) firmly established that \"virginity tests\" are unconstitutional. These rulings primarily invoke <b>Article 21</b>, which guarantees the <b>Right to Life and Personal Liberty</b>.</p><p><b>Dignity and Privacy:</b> The courts have ruled that such tests are sexist, invasive, and a violation of a woman's right to dignity, bodily integrity, and mental privacy—all of which are integral components of Article 21.</p><p><b>No Scientific Basis:</b> The judiciary has noted that these tests have no legal or scientific standing in proving sexual history and serve only to re-traumatize victims.</p><p><b>Custodial Context:</b> The 2025 legal focus often highlights that even for female detainees or accused individuals, the state cannot perform such tests as they constitute \"custodial torture.\"</p>"
+    },
+    {
+      "sr_no": 29,
+      "question": "<p> The ‘Basic Structure Doctrine’ of the Constitution of India implies that:</p>",
+      "option1": "<p> It establishes judicial supremacy over legislature</p>",
+      "option2": "<p> It allows unlimited amendments</p>",
+      "option3": "<p> It prevents amendment of the fundamental framework</p>",
+      "option4": "<p> It limits powers of judiciary</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>C) It prevents amendment of the fundamental framework</b>.</p><p>The <b>Basic Structure Doctrine</b> is a judicial principle established by the Supreme Court of India. It dictates that while Parliament has the power to amend the Constitution under <b>Article 368</b>, it cannot alter or destroy its \"basic features\"—the core pillars that give the Constitution its identity.</p><p><b>Origin:</b> It was established in the landmark <b>Kesavananda Bharati v. State of Kerala (1973)</b> case.</p><p><b>Purpose:</b> To prevent the legislature from using its amending power to turn the democracy into a totalitarian regime or to abolish essential freedoms.</p><p><b>Evolution:</b> The Court has never provided a fixed list of \"basic features.\" Instead, it decides on a case-by-case basis.</p>"
+    },
+    {
+      "sr_no": 30,
+      "question": "<p> Which Constitutional Amendment introduced GST in India?</p>",
+      "option1": "<p> 101st</p>",
+      "option2": "<p> 103rd</p>",
+      "option3": "<p> 100th</p>",
+      "option4": "<p> 102nd</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct option is <b>A) 101st</b>.</p><p>The <b>101st Constitutional Amendment Act, 2016</b> paved the way for the introduction of the Goods and Services Tax (GST) in India, which officially came into effect on <b>July 1, 2017</b>.</p><p><b>Objective:</b> To replace a complex web of indirect taxes (like Excise Duty, VAT, and Service Tax) with a single, unified tax based on the principle of <b>\"One Nation, One Tax.\"</b></p><p><b>Article 246A:</b> This amendment gave both Parliament and State Legislatures the power to make laws with respect to GST.</p><p><b>GST Council (Article 279A):</b> It established a joint forum of the Centre and the States to make recommendations on GST rates, exemptions, and thresholds.</p>"
+    },
+    {
+      "sr_no": 31,
+      "question": "<p> Assertion (A) : In heavy container trucks, more number of tyres are used to reduce the pressure on the ground.</p><p>Reason (R) : Larger the surface area, less is the pressure for the same thrust.</p>",
+      "option1": "<p> Both A and R are true and R is the correct explanation of A</p><p><br/> </p>",
+      "option2": "<p> Both A and R are true and R is not the correct explanation of A</p>",
+      "option3": "<p> Assertion is true but reason is false</p>",
+      "option4": "<p> Assertion is false but reason is true</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_91d2ad01f79ef2d.gif"
+    },
+    {
+      "sr_no": 32,
+      "question": "<p> <b>Assertion (A): Cerebellum enables us to remember, think and reason.</b></p><p><b>Reason (R): It is the largest portion of the brain and occupies the whole central area.</b></p>",
+      "option1": "<p> Both A and R are true</p>",
+      "option2": "<p> Both A and R are false.</p>",
+      "option3": "<p> A is true and R is false.</p>",
+      "option4": "<p> A is false and R is true</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The <b>main function of cerebellum are muscular coordination and body balance.</b></p><p>Cerebrum, the largest portion of the brain, is the seat of intelligence, consciousness and will power.</p><p>Hence, it enables us to remember, think and reason. <b>Therefore both the Assertion and the Reason are incorrect.</b></p><p><br/> </p>"
+    },
+    {
+      "sr_no": 33,
+      "question": "<p> Assertion (A): The nucleus of an atom is a centrally located mass containing protons only.</p><p><br/> </p><p>Reason (R): The nucleus of an atom is positively charged.</p>",
+      "option1": "<p> Both A and R are true and R is the correct explanation of A.</p><p><br/> </p><p><br/> </p>",
+      "option2": "<p> Both A and R are true but R is not the correct explanation of A.</p>",
+      "option3": "<p> A is true but R is false.</p>",
+      "option4": "<p> A is false but R is true.</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The <b>nucleus of an atom is a centrally located mass containing protons and neutrons both.</b></p><p>However, neutrons have no charge so the nucleus of an atom is positively charged.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 34,
+      "question": "<p> When a piece of copper is added to silver nitrate solution, it turns in which color ?</p>",
+      "option1": "<p> Blue</p>",
+      "option2": "<p> Crimson red</p>",
+      "option3": "<p> Dirty Green</p>",
+      "option4": "<p> Yellow</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>When a <b>piece of copper is added to a silver nitrate solution, it turns the solution blue </b>and coats the copper with greyish-white silver crystals.</p><p>This occurs because copper is more reactive than silver, causing a <b>displacement reaction that forms copper nitrate—a blue solution</b></p><p><br/> </p>"
+    },
+    {
+      "sr_no": 35,
+      "question": "<p> Correct the sequence of the following steps to describe the process of fertilization in plants</p><p>1. The pollen grain is deposited on the stigma.</p><p>A. A male gamete travels down each pollen tube.</p><p>B. The nucleus of pollen tube divides to form male gametes.</p><p>C. The pollen grain begins to grow a pollen tube.</p><p>D. The pollen tube grows down through the style to the ovary.</p><p>6. The fusion of the male gamete with the female gamete occurs inside an ovule.</p>",
+      "option1": "<p> BACD</p>",
+      "option2": "<p> CDBA</p>",
+      "option3": "<p> BDCA</p>",
+      "option4": "<p> BADC</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> CDBA is the correct sequence.</p><p>The pollen grain is deposited on the stigma.</p><p>The pollen grain begins to grow a pollen tube.</p><p>The pollen tube grows down through the style to the ovary.</p><p>The nucleus of pollen tube divides to form male gametes.</p><p>A male gamete travels down each pollen tube.</p><p>The fusion of the male gamete with the female gamete occurs inside an ovule.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 36,
+      "question": "<p> According to the Ministry of Mines, the largest resources of primary gold ore in India are located in:</p>",
+      "option1": "<p> Bihar</p>",
+      "option2": "<p> Karnataka</p>",
+      "option3": "<p> West Bengal</p>",
+      "option4": "<p> Rajasthan</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct answer is <b>A. Bihar</b>.</p><p>This fact often surprises people because the <b>Kolar Gold Fields (KGF)</b> in Karnataka are the most famous in Indian history. However, there is a technical distinction between \"current production\" and \"estimated resources.\"</p><p>In 2021, the Geological Survey of India (GSI) and the Ministry of Mines reported a massive find in Bihar. According to the National Mineral Inventory:</p><p><b>Bihar's Dominance:</b> Bihar holds the largest share of India's <b>primary gold ore resources</b>, accounting for roughly <b>44%</b> of the country's total.</p><p><b>Location:</b> These resources are primarily concentrated in the <b>Jamui district</b> (specifically the Sono area).</p><p><b>The Numbers:</b> It is estimated that Bihar has about <b>222.88 million tonnes</b> of gold ore, which includes around 37.6 tonnes of metal-in-ore.</p>"
+    },
+    {
+      "sr_no": 37,
+      "question": "<p> In the context of economic Growth, which of the following statements Is/are correct?</p><p>(1)The Indian economy is an Underdeveloped economy.</p><p>(2)The Indian economy is a mixed Economy.</p><p>(3)Adam Smith is called the father of Modern economics.</p>",
+      "option1": "<p> Only 1 and 2 are correct.</p>",
+      "option2": "<p> Only 3 is correct.</p>",
+      "option3": "<p> Only 1 is correct.</p>",
+      "option4": "<p> Only 2 and 3 are correct.</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>India is now a developing/emerging economy, not an underdeveloped one.</p><p>India is a Mixed economy.</p><p>Adam Smith Is regarded as the father of modern Economics. He explained self-interest, Competition, supply and demand, and the role of labour in a free market in His book “Wealth of Nations.”</p>"
+    },
+    {
+      "sr_no": 38,
+      "question": "<p> The Bombay Plan was published in how many parts?</p>",
+      "option1": "<p> Three</p>",
+      "option2": "<p> Four</p>",
+      "option3": "<p> Five</p>",
+      "option4": "<p> Two</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct answer is <b>D. Two</b>.</p><p>The <b>Bombay Plan</b>, formally titled <i>\"A Plan of Economic Development for India,\"</i> was a set of proposals for the post-war economic development of India. It was authored by eight leading Indian industrialists, including J.R.D. Tata and G.D. Birla.</p><p><b>The Publication Structure</b></p><p>The plan was published in two distinct parts due to the evolving nature of the economic vision:</p><p><b>Part I (January 1944):</b> This part focused on the <b>overall objectives</b> and the <b>required investment</b>. It proposed doubling the per capita income and tripling the national income over a 15-year period. It emphasized the development of basic industries (like steel and power).</p><p><b>Part II (1945):</b> This part delved into the <b>structural and distribution aspects</b> of the economy. It addressed issues like land reforms, the role of the state in the economy, and the method of financing the plan (which included the controversial idea of \"created money\" or deficit financing).</p>"
+    },
+    {
+      "sr_no": 39,
+      "question": "<p> The literacy rates exclude Assam where the Census could not be conducted in:</p>",
+      "option1": "<p> 1981</p>",
+      "option2": "<p> 1951</p>",
+      "option3": "<p> 1961</p>",
+      "option4": "<p> 1971</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct answer is <b>A. 1981</b>.</p><p>In the history of the Indian Census, there have been two notable instances where a state was excluded due to disturbed conditions: <b>Assam in 1981</b> and <b>Jammu &amp; Kashmir in 1991</b>.</p><p> <b>Year</b></p><p> <b>Excluded State</b></p><p> <b>Reason</b></p><p> <b>1981</b></p><p> <b>Assam</b></p><p> Anti-foreigners agitation/Assam Movement.</p><p> <b>1991</b></p><p> <b>Jammu &amp; Kashmir</b></p><p> Peak of militancy and internal disturbances.</p><p> <b>2021</b></p><p> <b>Entire Country</b></p><p> Postponed due to the COVID-19 pandemic.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 40,
+      "question": "<p> The Service Tax, a tax on services like telephone services, stock brokers, health clubs, beauty parlours, dry cleaning services, etc., was introduced in:</p>",
+      "option1": "<p> 1992–93</p>",
+      "option2": "<p> 1991–92</p>",
+      "option3": "<p> 1994–95</p>",
+      "option4": "<p> 1993–94</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The correct answer is <b>C. 1994–95</b>.</p><p>Service Tax was introduced in India based on the recommendations of the <b>Dr. Raja Chelliah Committee</b> (Tax Reforms Committee). It marked a shift in the Indian tax regime from being heavily dependent on taxes on goods (excise and customs) to including the rapidly growing service sector.</p><p><u><b>The Initial Phase (1994):</b></u></p><p>When the tax was first introduced by the then Finance Minister <b>Dr. Manmohan Singh</b>, it was very limited in scope. It began with a modest rate of <b>5%</b> and covered only <b>three services</b>:</p><p><b>Telephones</b></p><p><b>Stock Broking</b></p><p><b>General Insurance</b></p>"
+    },
+    {
+      "sr_no": 41,
+      "question": "<p> In the context of ecological succession, which term describes the final, stable, and self-perpetuating community that is in equilibrium with the local climate?</p>",
+      "option1": "<p> Pioneer Stage</p>",
+      "option2": "<p> Seral Stage</p>",
+      "option3": "<p> Climax Community</p>",
+      "option4": "<p> Niche Community</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Climax Community: This is the mature, stable, and final stage of ecological succession that remains relatively unchanged until destroyed by an event like fire or human interference. </p><p>​Pioneer Stage: Represents the initial colonization by first hardy species (like lichens on bare rock) in a new or disturbed area. </p><p>​Seral Stages: These are the intermediate communities that progressively replace each other during the transition from pioneer to climax. </p><p>​Significance: Succession is vital for ecosystem recovery and building long-term resilience after disturbances. </p>"
+    },
+    {
+      "sr_no": 42,
+      "question": "<p> Consider the following statements regarding the Sendai Framework for Disaster Risk Reduction (2015–2030):</p><p>It shifted the global focus from \"Managing Disasters\" to \"Managing Risk.\"</p><p>It succeeded the Yokohama Strategy for a Safer World.</p><p>It emphasizes \"Building Back Better\" in the recovery, rehabilitation, and reconstruction phases.</p><p>Which of the statements given above are correct?</p>",
+      "option1": "<p> 1 and 2 only</p>",
+      "option2": "<p> 2 and 3 only</p>",
+      "option3": "<p> 1 and 3 only</p>",
+      "option4": "<p> 1, 2, and 3</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Shift in Focus: The Sendai Framework (SFDRR) introduced a landmark shift from reactive disaster response to proactive risk prevention and reduction. </p><p>Predecessor: It actually succeeded the Hyogo Framework for Action (2005–2015), not the Yokohama Strategy directly (though Yokohama was an earlier foundation). </p><p>Priority 4: One of its four core priorities is enhancing disaster preparedness for effective response and to \"Build Back Better\" during recovery. </p><p>Global Alignment: It is closely aligned with the Sustainable Development Goals (SDGs) and the Paris Climate Agreement.</p>"
+    },
+    {
+      "sr_no": 43,
+      "question": "<p> According to the \"10% Law\" of energy flow in an ecosystem, if the Net Primary Productivity (NPP) at the producer level is 5,000 kcal, how much energy is available to the secondary consumers?</p>",
+      "option1": "<p> 5,000 kcal</p>",
+      "option2": "<p> 500 kcal</p>",
+      "option3": "<p> 50 kcal</p>",
+      "option4": "<p> 5 kcal</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The 10% Law: States that only approximately 10% of the energy from one trophic level is transferred to the next. </p><p>Calculation: * Producers (5,000 kcal) → Primary Consumers (10% of 5,000 = 500 kcal). </p><p>Primary Consumers (500 kcal) → Secondary Consumers (10% of 500 = 50 kcal). </p><p>Energy Loss: Most energy is lost as heat during metabolic processes (respiration) at each level.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 44,
+      "question": "<p> Regarding the Environment (Protection) Act (EPA), 1986, evaluate these statements:</p><p>​It is considered \"umbrella\" legislation that empowers the Centre to coordinate activities of various state and central authorities.</p><p>​It was enacted in the wake of the 1984 Bhopal Gas Tragedy.</p><p>The Act prohibits the National Green Tribunal (NGT) from taking <i>suo motu</i> (on its own motion) actions based on media reports.</p><p>Which of the statements given above are correct?</p>",
+      "option1": "<p> 1 and 2 only</p>",
+      "option2": "<p> 2 and 3 only</p>",
+      "option3": "<p> 1 and 3 only</p>",
+      "option4": "<p> 1, 2, and 3</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Umbrella Legislation: The EPA 1986 provides a unified national framework for environmental governance, allowing the Union Government to frame rules for pollution and emergency response. </p><p>Origin: It was designed to fill gaps in existing laws identified after the Bhopal Gas disaster. </p><p>NGT Intervention: Contrary to Statement 3, the Act and subsequent judicial interpretations allow for proactive NGT intervention, often based on media reports of environmental harm. </p><p>Penalties: Under Section 15, violations can lead to penalties up to ₹15 lakh and daily fines for ongoing non-compliance.</p>"
+    },
+    {
+      "sr_no": 45,
+      "question": "<p> Which ecosystem service category includes \"nutrient cycling\" and \"soil formation,\" which are necessary for the production of all other ecosystem services?</p>",
+      "option1": "<p> Provisioning Services</p>",
+      "option2": "<p> Regulating Services</p>",
+      "option3": "<p> Cultural Services</p>",
+      "option4": "<p> Supporting Services</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Supporting Services: These are foundational services like nutrient cycling, soil formation, and primary production that sustain the other categories. </p><p>Provisioning Services: Direct products like food, fresh water, and timber. </p><p>Regulating Services: Benefits such as climate regulation, water purification, and pollination. </p><p>Cultural Services: Non-material benefits including recreational, spiritual, and aesthetic values.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 46,
+      "question": "<p> With reference to the Environmental Impact Assessment (EIA) in India, consider the following:</p><p>EIA is a statutory requirement under the Wildlife Protection Act, 1972.</p><p>Strategic Environmental Assessment (SEA) is used to evaluate environmental impacts at the policy or programme level, rather than just individual projects.</p><p>The 2006 Notification introduced a decentralized framework involving State Environment Impact Assessment Authorities (SEIAAs).</p><p>Which of the statements given above are correct?</p>",
+      "option1": "<p> 1 and 2 only</p>",
+      "option2": "<p> 2 and 3 only</p>",
+      "option3": "<p> 1 and 3 only</p>",
+      "option4": "<p> 1, 2, and 3</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Legal Basis: EIA is actually governed by the Ministry of Environment, Forest and Climate Change (MoEFCC) under the Environment (Protection) Act, 1986, not the Wildlife Protection Act. </p><p>SEA Concept: SEA is a forward-looking tool that assesses sector-wide and regional impacts (like the Gati Shakti programme) before individual projects are conceived. </p><p>Decentralization: The 2006 Notification aimed to devolve power to state-level SEIAAs to manage project clearances.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 47,
+      "question": "<p> The \"Appiko Movement,\" a famous grassroots environmental conservation effort in 1983, took place in which Indian state?</p>",
+      "option1": "<p> Uttarakhand</p>",
+      "option2": "<p> Rajasthan</p>",
+      "option3": "<p> Karnataka</p>",
+      "option4": "<p> Kerala</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Appiko Movement: Inspired by the northern Chipko movement, \"Appiko\" (meaning \"hug\" in Kannada) started in Karnataka in 1983 to protect local forests from felling. </p><p>Significance: These movements empower local communities, particularly marginalized groups and women, to participate in environmental governance. </p><p>Impact: Such citizen actions have historically influenced major policy changes like the Forest Conservation Act.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 48,
+      "question": "<p> Regarding Climate Change Adaptation and Mitigation in India, identify the correct statements:</p><p>Climate mitigation focuses on reducing greenhouse gas (GHG) emissions.</p><p>Ecosystem-Based Adaptation (EbA) utilizes traditional knowledge for water conservation and coastal resilience.</p><p>India has committed to achieving net-zero emissions by the year 2050.</p>",
+      "option1": "<p> 1 and 2 only</p>",
+      "option2": "<p> 2 and 3 only</p>",
+      "option3": "<p> 1 and 3 only</p>",
+      "option4": "<p> 1, 2, and 3</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Mitigation: Involves transitioning to renewable energy and enhancing carbon sinks to limit global warming. </p><p>EbA: India integrates traditional practices (like Jal Shakti Abhiyan) and nature-based solutions (like mangrove restoration) to build climate resilience. </p><p>Net-Zero Target: India has committed to achieving net-zero emissions by 2070, not 2050. </p><p>NAP: India is currently developing its first-ever National Adaptation Plan (NAP) for submission by 2025.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 49,
+      "question": "<p> The term \"Carrying Capacity\" in environmental planning refers to:</p>",
+      "option1": "<p> The maximum weight a bridge can hold during a flood.</p>",
+      "option2": "<p> The total number of species in a biodiversity hotspot.</p>",
+      "option3": "<p> The maximum population size of a species that an environment can sustain indefinitely without degradation.</p>",
+      "option4": "<p> The amount of waste a landfill can accommodate before closing.</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Concept: Carrying capacity is vital for sustainable development; exceeding it leads to resource depletion, such as acute water scarcity. </p><p>Equilibrium: It represents the point where natural resource consumption and waste production stay within the ecosystem's ability to regenerate and assimilate. </p><p>Application: Understanding this is essential for regional planning to prevent ecological collapse.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 50,
+      "question": "<p> Which international treaty, adopted in 1992 at the Rio Earth Summit, focuses on the conservation of biological diversity and the \"Access and Benefit Sharing\" (ABS) of biological resources?</p>",
+      "option1": "<p> CITES</p>",
+      "option2": "<p> CMS (Bonn Convention)</p>",
+      "option3": "<p> UN CBD</p>",
+      "option4": "<p> Ramsar Convention</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>UN CBD: The United Nations Convention on Biological Diversity (1992) provides a global framework for national strategies to protect biodiversity and ensure sustainable use. </p><p>ABS: A key policy established under CBD is \"Access and Benefit Sharing\" to ensure fair distribution of benefits from genetic resources. </p><p>Other Treaties: CITES (1973) regulates trade in endangered species; CMS (1979) protects migratory species like birds and whales.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 51,
+      "question": "<p> Which of the following sectors received the largest budget allocation share (percentage) in UP Budget 2026-27?</p>",
+      "option1": "<p> Health</p>",
+      "option2": "<p> Agriculture</p>",
+      "option3": "<p> Education</p>",
+      "option4": "<p> Social welfare</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> In the <b>Uttar Pradesh Budget 2026–27</b>, <b>Education</b> received the <b>largest share—about 12.4 %</b> of the total budget outlay</p>"
+    },
+    {
+      "sr_no": 52,
+      "question": "<p> <b>The UP FPO Policy is mainly for:</b></p>",
+      "option1": "<p> Urban traders</p>",
+      "option2": "<p> Industrial workers</p>",
+      "option3": "<p> Farmer Producer Organisations</p>",
+      "option4": "<p> Export companies</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The <b>Uttar Pradesh FPO Policy</b> aims to strengthen <b>Farmer Producer Organisations</b> by:</p><p>Organising small &amp; marginal farmers into collectives</p><p>Improving <b>input access, storage, processing, and marketing</b></p><p>Enhancing <b>farmers’ income and bargaining power</b></p>"
+    },
+    {
+      "sr_no": 53,
+      "question": "<p> <b>Which of the following is NOT a duty of Lekhpal?</b></p>",
+      "option1": "<p> Mutation of land records</p>",
+      "option2": "<p> Measurement of land</p>",
+      "option3": "<p> Maintenance of village maps</p>",
+      "option4": "<p> Conducting criminal trials</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> Criminal trials are judicial functions, not Lekhpal’s duty.</p>"
+    },
+    {
+      "sr_no": 54,
+      "question": "<p> <b>Which official verifies the field report submitted by Lekhpal?</b></p>",
+      "option1": "<p> District Magistrate</p>",
+      "option2": "<p> SDM</p>",
+      "option3": "<p> Kanungo</p>",
+      "option4": "<p> Gram Pradhan</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>Kanungo</b> supervises and verifies Lekhpal’s work.</p>"
+    },
+    {
+      "sr_no": 55,
+      "question": "<p> A major focus area of UP Budget 2026-27 was:</p>",
+      "option1": "<p> Space research</p>",
+      "option2": "<p> Youth digital skills and empowerment</p>",
+      "option3": "<p> Shipbuilding</p>",
+      "option4": "<p> Coal mining</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The <b>UP Budget 2026–27</b> put a strong emphasis on <b>youth-centric initiatives</b>, especially:</p><p><b>Digital skills &amp; skilling</b> (vocational/tech training)</p><p><b>Employment &amp; entrepreneurship support</b></p><p><b>Access to devices and digital platforms</b> for learning and jobs</p><p>These measures aimed to boost <b>employability, innovation, and participation in the digital economy</b>.</p>"
+    },
+    {
+      "sr_no": 56,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_dd9f7c785fba9cea.png",
+      "option1": "<p> 170</p>",
+      "option2": "<p> 180</p>",
+      "option3": "<p> 190</p>",
+      "option4": "<p> 200</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> Average monthly sale =<u> (120+150+180+210+240)</u></p><p> 5</p><p> = <u>900</u> = 180</p><p> 5</p>"
+    },
+    {
+      "sr_no": 57,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_dd9f7c785fba9cea.png",
+      "option1": "<p> March</p>",
+      "option2": "<p> April</p>",
+      "option3": "<p> May</p>",
+      "option4": "<p> February </p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> 25% more than average sale = (125/100) (Average monthly sale)</p><p> = (125/100)(180)</p><p> = 225</p><p>Hence, correct answer would be May.</p>"
+    },
+    {
+      "sr_no": 58,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_78832fa7ed43ae27.png",
+      "option1": "<p> 2%</p>",
+      "option2": "<p> 4%</p>",
+      "option3": "<p> 5%</p>",
+      "option4": "<p> 6%</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> Decrease = 500 - 480 = 20 tonnes</p><p>% decrease = (20/500)(100) = 4%</p>"
+    },
+    {
+      "sr_no": 59,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_78832fa7ed43ae27.png",
+      "option1": "<p> 11:10</p>",
+      "option2": "<p> 115:1</p>",
+      "option3": "<p> 12:10</p>",
+      "option4": "<p> 11:17</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> Production in 2017 &amp; 2018 = 400 + 450 = 850</p><p>Production in 2021 = 550</p><p>Ratio = <u>550</u> = <u>11</u></p><p> 850 17</p><p>Ratio = 11 : 17</p>"
+    },
+    {
+      "sr_no": 60,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_146648420dbda52a.png",
+      "option1": "<p> 18,00,000</p>",
+      "option2": "<p> 20,00,000</p>",
+      "option3": "<p> 22,00,000</p>",
+      "option4": "<p> 25,00,000</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> Sales of C = 20% of total sales</p><p>4,00,000 = (20/100) (total sales)</p><p>Total sales = <u>(4,00,000)(100)</u> = 20,00,000</p><p> (20)</p>"
+    },
+    {
+      "sr_no": 61,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_146648420dbda52a.png",
+      "option1": "<p> 4,50,000</p>",
+      "option2": "<p> 5,00,000</p>",
+      "option3": "<p> 5,50,000</p>",
+      "option4": "<p> 6,00,000</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Sales of A = 35% of total = 0.35×20,00,000=7,00,000</p><p>Sales of D = 10% of total = 0.10×20,00,000=2,00,000</p><p>Difference = 7,00,000 - 2,00,000 = 5,00,000</p>"
+    },
+    {
+      "sr_no": 62,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_f43035e18a7ad46c.png",
+      "option1": "<p> 320</p>",
+      "option2": "<p> 325</p>",
+      "option3": "<p> 330</p>",
+      "option4": "<p> 335</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_25d2eebf08fd5abe.jpg"
+    },
+    {
+      "sr_no": 63,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_f43035e18a7ad46c.png",
+      "option1": "<p> 3:2</p>",
+      "option2": "<p> 4:3</p>",
+      "option3": "<p> 5:3</p>",
+      "option4": "<p> 2:1</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> workers earning above ₹300 = 28+16+4 = 48</p><p>workers earning below ₹300 = 12+20 = 32</p><p>Ratio = (workers earning above ₹300):(workers earning below ₹300)</p><p> = 48 : 32</p><p> = 3 : 2</p>"
+    },
+    {
+      "sr_no": 64,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_1cd15ed68cc24195.png",
+      "option1": "<p> 36</p>",
+      "option2": "<p> 38</p>",
+      "option3": "<p> 40</p>",
+      "option4": "<p> 42</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> Cumulative frequency = sum of frequencies <b>up to and including that class</b>:</p><p>6+14+20=40</p>"
+    },
+    {
+      "sr_no": 65,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1771729808348_html_1cd15ed68cc24195.png",
+      "option1": "<p> 2:1</p>",
+      "option2": "<p> 5:2</p>",
+      "option3": "<p> 3:1</p>",
+      "option4": "<p> 4:3</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Middle class = 25–35 → frequency = 20</p><p>Extreme classes = 5–15 and 45–55</p><p>6+2=8</p><p><br/> <br/> </p><p>Ratio = 20 : 8 = 5 : 2</p>"
+    },
+    {
+      "sr_no": 66,
+      "question": "<p> According to Uttar Pradesh's first-ever Economic Survey, what is the state's rank in the startup ecosystem?</p>",
+      "option1": "<p> 2nd</p>",
+      "option2": "<p> 3rd</p>",
+      "option3": "<p> 4th</p>",
+      "option4": "<p> 5th</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> According to Uttar Pradesh’s first-ever Economic Survey (2025-26), tabled in the state legislature in February 2026, the state is ranked as the 4th largest startup ecosystem in India.</p>"
+    },
+    {
+      "sr_no": 67,
+      "question": "<p> In the Export Preparedness Index 2024 released by NITI Aayog, to which position has Uttar Pradesh climbed, becoming the top among landlocked states?</p>",
+      "option1": "<p> 2nd</p>",
+      "option2": "<p> 3rd</p>",
+      "option3": "<p> 4th</p>",
+      "option4": "<p> 5th</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>In the Export Preparedness Index (EPI) 2024, released by NITI Aayog in January 2026, Uttar Pradesh has climbed to the 4th position overall.</p><p>1st rank: Maharashtra </p><p>2nd rank: Tamil Nadu</p><p>3rd rank: Gujarat </p><p><br/> </p>"
+    },
+    {
+      "sr_no": 68,
+      "question": "<p> According to Uttar Pradesh's first-ever Economic Survey, what is the state's Debt-to-GSDP ratio, noted as lower than the national average and providing room for capital expenditure? </p>",
+      "option1": "<p> 25%</p>",
+      "option2": "<p> 27%</p>",
+      "option3": "<p> 30%</p>",
+      "option4": "<p> 32%</p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> According to Uttar Pradesh’s first-ever Economic Survey (2025-26), the state’s Debt-to-GSDP ratio stands at 28%.</p>"
+    },
+    {
+      "sr_no": 69,
+      "question": "<p> Under the CM Youth Entrepreneur Scheme in Uttar Pradesh Budget 2026-27, what is the maximum amount of interest-free loans provided to aspiring entrepreneurs?</p>",
+      "option1": "<p> Up to ₹4 lakh</p>",
+      "option2": "<p> Up to ₹5 lakh</p>",
+      "option3": "<p> Up to ₹6 lakh</p>",
+      "option4": "<p> Up to ₹10 lakh</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Under the Mukhyamantri Yuva Udyami Vikas Abhiyan (MYUVA)—highlighted in the Uttar Pradesh Budget 2026-27 (aspiring entrepreneurs can receive interest-free loans through a two-phased approach): </p><p>Phase 1: An initial interest-free and collateral-free loan of up to ₹5 lakh. </p><p>Phase 2: Upon successful repayment of the first loan, entrepreneurs become eligible for a second loan of up to ₹10 lakh (or double the first phase amount).</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 70,
+      "question": "<p> The per capita income of Uttar Pradesh has more than doubled from ₹54,564 in 2016-17 to what current figure, with projections to reach ₹1,20,000 in 2025-26? </p>",
+      "option1": "<p> ₹1,09,840</p>",
+      "option2": "<p> ₹1,09,844</p>",
+      "option3": "<p> ₹1,09,848</p>",
+      "option4": "<p> ₹1,09,850</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>According to Uttar Pradesh's first-ever Economic Survey (2025-26), the state's per capita income reached ₹1,09,844 in the 2024-25 fiscal year.</p><p>This figure represents a significant milestone, as it has more than doubled from the ₹54,564 recorded in 2016-17. The survey further projects that this will rise to ₹1,20,000 in the 2025-26 fiscal year, reflecting the state's rapid economic expansion and its progress toward the $1 trillion economy goal.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 71,
+      "question": "<p> What is the total budget outlay for Uttar Pradesh for the financial year 2026-27?</p>",
+      "option1": "<p> ₹9,12,696.85 crore </p>",
+      "option2": "<p> ₹9,12,695.35 crore</p>",
+      "option3": "<p> ₹9,12,696.35 crore</p>",
+      "option4": "<p> ₹9,12,697.35 crore</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> For the financial year 2026-27, the Uttar Pradesh government presented a record-breaking budget with a total outlay of ₹9,12,696.35 crore. </p>"
+    },
+    {
+      "sr_no": 72,
+      "question": "<p> In the Global Hunger Index 2025, published by Concern Worldwide and Welthungerhilfe, which country has the lowest ranking (123rd), while India ranks 102nd?</p>",
+      "option1": "<p> Yemen</p>",
+      "option2": "<p> South Sudan</p>",
+      "option3": "<p> Somalia</p>",
+      "option4": "<p> Chad</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>In the Global Hunger Index (GHI) 2025, the country with the lowest ranking (123rd) is Somalia, which recorded a score of 42.6, placing it in the \"alarming\" category. </p><p>India, as you noted, is ranked 102nd out of the 123 countries assessed, with a score of 25.8. This classification falls under the \"serious\" hunger category.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 73,
+      "question": "<p> In the United Nations Development Programme (UNDP) Human Development Report 2025, which country ranks 1st with an HDI score of 0.972?</p>",
+      "option1": "<p> Norway</p>",
+      "option2": "<p> Switzerland</p>",
+      "option3": "<p> Sweden</p>",
+      "option4": "<p> Denmark</p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> In the UNDP Human Development Report 2025 (released in May 2025), Iceland ranks 1st in the world with an HDI score of 0.972. </p>"
+    },
+    {
+      "sr_no": 74,
+      "question": "<p> On which date was the Jan Vishwas (Amendment of Provisions) Bill, 2025 introduced in the Lok Sabha? </p>",
+      "option1": "<p> August 18, 2025</p>",
+      "option2": "<p> August 11, 2025</p>",
+      "option3": "<p> September 18, 2025</p>",
+      "option4": "<p> July 18, 2025</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The Jan Vishwas (Amendment of Provisions) Bill, 2025 (commonly referred to as Jan Vishwas 2.0) was introduced in the Lok Sabha on August 18, 2025. </p><p>Introduced by Union Minister for Commerce and Industry Piyush Goyal.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 75,
+      "question": "<p> The Viksit Bharat—Guarantee for Rozgar and Ajeevika Mission (Gramin) (VB—G RAM G) Bill, 2025, which replaces MGNREGA, increases the guaranteed employment days per financial year from 100 to how many days?</p>",
+      "option1": "<p> 100 days</p>",
+      "option2": "<p> 115 days</p>",
+      "option3": "<p> 125 days</p>",
+      "option4": "<p> 150 days</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The Viksit Bharat—Guarantee for Rozgar and Ajeevika Mission (Gramin), or VB—G RAM G Bill, 2025, increases the guaranteed employment days from 100 to 125 days per financial year for every rural household. </p><p>This legislation, which received Presidential assent in December 2025, officially replaces the MGNREGA Act of 2005.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 76,
+      "question": "<p> <b>निविदा</b><b>, </b><b>भुगतान</b><b>, </b><b>आपूर्ति या अनुबंध से संबंधित पत्र किस श्रेणी में आएगा</b><b>?</b></p>",
+      "option1": "<p> वैयक्तिक पत्र </p>",
+      "option2": "<p> शासकीय पत्र </p>",
+      "option3": "<p> व्यावसायिक पत्र </p>",
+      "option4": "<p> अर्द्धशासकीय पत्र </p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>व्याख्या</b><b>:</b><br/> व्यावसायिक पत्र व्यापार, लेन-देन, अनुबंध और भुगतान से जुड़े होते हैं।</p>"
+    },
+    {
+      "sr_no": 77,
+      "question": "<p> <b>निम्न में से कौन</b><b>-</b><b>सा स्वर</b><b> </b><i><b>ह्रस्व</b></i><b> </b><b>नहीं है</b><b>?</b></p>",
+      "option1": "<p> अ </p>",
+      "option2": "<p> इ </p>",
+      "option3": "<p> उ </p>",
+      "option4": "<p> ऋ </p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>व्याख्या</b><b>:</b><br/> <b>ह्रस्व स्वर</b><b>:</b> अ, इ, उ, ऋ<br/> <b>दीर्घ स्वर</b><b>:</b> आ, ई, ऊ, ए, ऐ, ओ, औ<br/> अतः <b>ए</b> ह्रस्व नहीं है।</p>"
+    },
+    {
+      "sr_no": 78,
+      "question": "<p>‘<b>चतुरानन’</b> में कौन-सा समास है?</p>",
+      "option1": "<p> कर्मधारय </p>",
+      "option2": "<p> तत्पुरुष </p>",
+      "option3": "<p> द्वंद्व </p>",
+      "option4": "<p> बहुव्रीहि <br/> <br/> </p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>व्याख्या</b><b>:</b></p><p>चतुरानन = <b>जिसके चार मुख हों </b><b>(</b><b>ब्रह्मा</b><b>)</b></p><p>अर्थ किसी <i>अन्य</i> के लिए जा रहा है → <b>बहुव्रीहि समास</b></p><p>चार मुख = चतुर + आनन (सीधा अर्थ नहीं)</p>"
+    },
+    {
+      "sr_no": 79,
+      "question": "<p> निम्नलिखित में से <i><b>देशज शब्द</b></i> कौन-सा है?</p>",
+      "option1": "<p> खाट </p>",
+      "option2": "<p> सिंह</p>",
+      "option3": "<p> कुटीर </p>",
+      "option4": "<p> शय्या </p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>व्याख्या</b><b>:</b></p><p><b>खाट</b> →</p><p>लोकभाषा से उत्पन्न हुआ शब्द है।</p><p>यह शब्द संस्कृत से नहीं आया इसलिए <b>देशज</b> है।</p>"
+    },
+    {
+      "sr_no": 80,
+      "question": "<p>‘<b>अवसर – उपसर’ का सही अर्थ</b><b>-</b><b>भेद है—</b></p>",
+      "option1": "<p> समय – स्थान </p>",
+      "option2": "<p> मौका – समीप आना </p>",
+      "option3": "<p> लाभ – हानि </p>",
+      "option4": "<p> कार्य – कारण </p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>विस्तृत स्पष्टीकरण</b><b>:</b></p><p><b>अवसर</b></p><p>अर्थ: मौका, उचित समय, अनुकूल परिस्थिति</p><p>प्रयोग: <i>यह काम करने का अच्छा अवसर है।</i></p><p><b>उपसर</b></p><p>अर्थ: पास आना, निकट पहुँचना, समीप जाना</p><p>प्रयोग: <i>शत्रु धीरे</i><i>-</i><i>धीरे नगर की ओर उपसर कर रहा था।</i></p><p>दोनों शब्दों का <b>उच्चारण लगभग समान</b> है, लेकिन</p><p><b>अवसर</b> → भाव <i>समय</i><i>/</i><i>मौका</i> से जुड़ा है</p><p><b>उपसर</b> → भाव <i>गति</i><i>/</i><i>निकटता</i> से जुड़ा है</p><p>इसी कारण ये <b>शब्द</b><b>-</b><b>युग्म </b><b>(</b><b>अर्थ</b><b>-</b><b>भेद</b><b>)</b> का उत्कृष्ट उदाहरण हैं।</p>"
+    },
+    {
+      "sr_no": 81,
+      "question": "<p> निम्नलिखित में से कौन-सा शब्द <b>शुद्ध नहीं है</b>?</p>",
+      "option1": "<p> निर्वाचित </p>",
+      "option2": "<p> निर्वाचन</p>",
+      "option3": "<p> निर्वाह </p>",
+      "option4": "<p> निर्वचित </p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>व्याख्या</b><b>:</b></p><p>शुद्ध शब्द → <b>निर्वाचित</b></p><p>‘निर्वचित’ अपूर्ण/अशुद्ध रूप</p><p>यह प्रश्न <b>क्रिया</b><b>-</b><b>विशेषण बनाम विशेषण</b> की ट्रिक पर है</p>"
+    },
+    {
+      "sr_no": 82,
+      "question": "<p> निम्नलिखित वाक्य में कौन-सी <b>वृत्ति</b> है?</p><p><b>वह प्रतिदिन योग करता है।</b></p>",
+      "option1": "<p> आकस्मिक</p>",
+      "option2": "<p> स्वाभाविक </p>",
+      "option3": "<p> अभ्यस्त </p>",
+      "option4": "<p> अनिवार्य </p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>व्याख्या</b><b>:</b><br/> “प्रतिदिन” शब्द <b>नियमित आदत</b> को दर्शाता है → अभ्यस्त वृत्त</p>"
+    },
+    {
+      "sr_no": 83,
+      "question": "<p> निम्नलिखित वाक्य में अशुद्धि है—<br/> <b>“</b><b>उसने मुझसे कहा कि वह कल आएगा था।”</b></p>",
+      "option1": "<p> उसने मुझसे कहा </p>",
+      "option2": "<p> कि वह </p>",
+      "option3": "<p> कल आएगा था </p>",
+      "option4": "<p> पूरा वाक्य सही है </p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>व्याख्या</b><b>:</b><br/> यहाँ <b>काल</b><b>-</b><b>संगति दोष</b> है।<br/> सही रूप होगा—<br/> <b>“</b><b>कि वह कल आएगा।”</b> या<br/> <b>“</b><b>कि वह कल आया था।”</b></p>"
+    },
+    {
+      "sr_no": 84,
+      "question": "<p> निम्नलिखित वाक्य में सही विकल्प चुनिए—<br/> <br/> </p><p><b>सभा में अधिकारी कर्मचारी छात्र और अभिभावक उपस्थित थे</b></p>",
+      "option1": "<p> सभा में अधिकारी, कर्मचारी छात्र और अभिभावक उपस्थित थे। </p>",
+      "option2": "<p> सभा में अधिकारी, कर्मचारी, छात्र और अभिभावक उपस्थित थे। </p>",
+      "option3": "<p> सभा में अधिकारी कर्मचारी, छात्र और अभिभावक उपस्थित थे। </p>",
+      "option4": "<p> सभा में अधिकारी; कर्मचारी, छात्र और अभिभावक उपस्थित थे। </p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>व्याख्या</b><b>:</b><br/> <b>समान पदों की सूची</b> में प्रत्येक पद के बाद <b>अल्पविराम </b><b>(</b><b>,)</b> लगाया जाता है,<br/> अंतिम से पहले “और” आता है।</p>"
+    },
+    {
+      "sr_no": 85,
+      "question": "<p>“<b>जिसकी लाठी उसकी भैंस”</b> लोकोक्ति का आशय क्या है?</p>",
+      "option1": "<p> न्याय का पालन</p>",
+      "option2": "<p> नियमों का सम्मान</p>",
+      "option3": "<p> ईमानदारी की जीत </p>",
+      "option4": "<p> मेहनत का फल </p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> <b>व्याख्या</b><b>:</b><br/> इस लोकोक्ति का अर्थ है—<br/> <b>जिसके पास शक्ति होती है</b><b>, </b><b>वही अपना अधिकार जमा लेता है।</b></p>"
+    },
+    {
+      "sr_no": 86,
+      "question": "<p> Which of the following has the capacity of maximum storage ?</p>",
+      "option1": "<p> Hard disk</p>",
+      "option2": "<p> Floppy disk </p>",
+      "option3": "<p> Magnetic Optical disk</p>",
+      "option4": "<p> Compact disc </p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Floppy Disk Maximum capacity of Storage Data is: 2.8 MB (i.e. in MB)</p><p>Compact Disk Maximum capacity of Storage Data is: CD-700MB DVD - 4GB to 16GB (i.e. in GB)</p><p>Magnetic Optical disk has Storage Capacity is: 1GB to 28,64 GB</p><p>but <b>Hard Disk can Store data in Terabyte (TB) like 1 TB and so on so the Hard Disk has the height Capacity to Store Data.</b></p><p><br/> </p>"
+    },
+    {
+      "sr_no": 87,
+      "question": "<p> Which of the following is the correct three sequential function of CPU operations ?</p>",
+      "option1": "<p> Decode, Fetch, Execute</p>",
+      "option2": "<p> Fetch , Decode, Execute </p>",
+      "option3": "<p> Fetch, Execute, Decode</p>",
+      "option4": "<p> Execute, Decode, Fetch</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p> The three sequential functions of CPU (Central Processing Unit) operations are typically referred to as the <b>fetch-decode-execute</b> cycle:</p><p>Fetch: The CPU retrieves instructions from memory, typically from RAM (Random Access Memory).</p><p>Decode: The fetched instruction is decoded to determine what operation needs to be performed and what data it needs.</p><p>Execute: The CPU carries out the operation specified by the decoded instruction. </p><p><br/> </p>"
+    },
+    {
+      "sr_no": 88,
+      "question": "<p> Which of the following is the access method used for magnetic tape ?</p>",
+      "option1": "<p> Direct</p>",
+      "option2": "<p> Random</p>",
+      "option3": "<p> Sequential </p>",
+      "option4": "<p> Indexed</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>In magnetic tape <b>only one side of the ribbon is used for storing data</b>.</p><p>It is sequential memory which <b>contains thin plastic ribbon to store data and coated by magnetic oxide.</b></p><p>Data read/write speed is slower because of sequential access. It is highly reliable which requires magnetic tape drive writing and reading data.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 89,
+      "question": "<p> Which of the following coordinates the sequencing of events within the central processor of a computer ?</p>",
+      "option1": "<p> Control Unit </p>",
+      "option2": "<p> Arithmetic unit</p>",
+      "option3": "<p> Control Unit </p>",
+      "option4": "<p> Storage Unit</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The <b>control unit coordinates the sequencing of events within the central processor (CPU) of a computer.</b></p><p>The <b>control unit is a critical component of the CPU and is responsible for managing the execution of instructions</b>, fetching data and instructions from memory, decoding instructions, and controlling the flow of data within the processor.</p><p>It ensures that the various components of the CPU work in a synchronized manner to execute program instructions and perform tasks. The control unit plays a key role in the overall functioning and coordination of the CPU, which is often referred to as the brain of the computer</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 90,
+      "question": "<p> The instructions or programs that are loaded into main memory when a computer is booted are</p>",
+      "option1": "<p> Utility Program </p>",
+      "option2": "<p> Bootloader </p>",
+      "option3": "<p> Internal Commands</p>",
+      "option4": "<p> External Commands</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p><b>When a computer is booted, the process involves loading the operating system and other essential programs into the main memory (RAM) to enable the computer to execute tasks</b>. The component responsible for loading these instructions or programs into memory is called a \"loader.\"</p><p>So, the <b>instructions or programs loaded into main memory during the boot process are managed by a loader.</b> The loader is part of the operating system and is responsible for loading the necessary system files and programs from the storage</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 91,
+      "question": "<p> Which of the following types of memory loses data when power is switched off?</p>",
+      "option1": "<p> Static Random Access Memory </p>",
+      "option2": "<p> Bar code reader</p>",
+      "option3": "<p> Magnetic disk</p>",
+      "option4": "<p> CD ROM </p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>RAM is <b>volatile memory used to hold instructions and data of currently running programs. It loses integrity after loss of power</b>.</p><p><b>Static random access memory (SRAM) loses its content when powered down, and is classified as volatile memory. </b>The memory is volatile because there is no data when power is restored to the device. Another example of volatile memory is the dynamic random access memory (DRAM) used in all desktop computers and laptops.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 92,
+      "question": "<p> Which of the following are the three main components of a digital computer system ?</p>",
+      "option1": "<p> Memory, Input/Output, CPU</p>",
+      "option2": "<p> ALU, CPU, Memory </p>",
+      "option3": "<p> Memory, Input/Output, DMA</p>",
+      "option4": "<p> Control, ALU, Circuits, Registers</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The three <b>main components of a digital computer system are the Central Processing Unit (CPU), Memory, and Input/Output (I/O) devices</b>.</p><p>The CPU processes data, memory stores instructions and data temporarily, and I/O devices enable user interaction and data transfer.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 93,
+      "question": "<p> Which output device is used for translating information from a computer into pictorial form on paper?</p>",
+      "option1": "<p> Mouse </p>",
+      "option2": "<p> Plotter </p>",
+      "option3": "<p> Card punch </p>",
+      "option4": "<p> Touch Panel </p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>A <b>plotter is an output device that translates computer data into high-quality, continuous line drawings on paper, acting as a specialized printer for vector graphics</b>.</p><p>Often used for engineering, architecture, and design, it utilizes pens or markers for tasks like creating, mapping, and charting.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 94,
+      "question": "<p> Chief component of first generation computer was which of the following ?</p>",
+      "option1": "<p> Transistors</p>",
+      "option2": "<p> Vacuum and Valves</p>",
+      "option3": "<p> Integrated Circuits </p>",
+      "option4": "<p> Coaxial cable </p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Transistors were used for second generation computers and integrated circuits in third generation</p><p><b>First generation computers used vacuum tubes and valves as their main electronic component.</b></p><p>Vacuum Tubes were invented by Lee DeForest in 1908</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 95,
+      "question": "<p> A device that does the function of both modulator and demodulator is called which of the following ?</p>",
+      "option1": "<p> Modem</p>",
+      "option2": "<p> Server</p>",
+      "option3": "<p> Client </p>",
+      "option4": "<p> Router</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>A <b>modem (short for modulator-demodulator) is the device that performs both modulation and demodulation</b>.</p><p>It converts digital data from a computer into analog signals for transmission (modulation) and reverses the process for incoming data (demodulation).</p><p>Modems are essential for enabling communication over analog networks like telephone lines.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 96,
+      "question": "<p> A term that is used in spreadsheet which forces a line break in a cell when the cell entry is too large to fit in the cell is which of the following ?</p>",
+      "option1": "<p> Wrap</p>",
+      "option2": "<p> Cell Break</p>",
+      "option3": "<p> Line Break </p>",
+      "option4": "<p> Multiline Cell</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p><b>The term used in spreadsheets (such as Excel) that forces a line break within a cell when the entry is too large to fit the column width is Wrap Text.</b></p><p>This feature automatically increases the row height to display all content on multiple lines.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 97,
+      "question": "<p> Which among the following is not a malicious website ?</p>",
+      "option1": "<p> Address, Phone Number and/or E-mail address is present.</p><p><br/> </p>",
+      "option2": "<p> The website address is not mis-spelled.</p>",
+      "option3": "<p> The https:// at the beginning of the website.</p>",
+      "option4": "<p> The link shows a different address than what is mentioned.</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>A <b>misspelled web address is a major indicator of a malicious website, often part of a technique called typosquatting</b>.</p><p>These sites are intentionally registered to impersonate popular brands—like \"gogle.com\" instead of \"google.com\"—to steal credentials, deliver malware, or display scams.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 98,
+      "question": "<p> Shreyansh notices that his computer slows down when he opens too many applications at once. Which component is most likely limiting his system's performance in this case ?</p>",
+      "option1": "<p> CPU</p>",
+      "option2": "<p> Hard drive </p>",
+      "option3": "<p> Floppy disk </p>",
+      "option4": "<p> ROM</p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>A <b>computer slows down with too many open applications primarily due to RAM (memory) overload and CPU saturation.</b></p><p>When RAM is exhausted, the system uses slower storage (hard drive) as temporary memory. It is also caused by too many background apps, fragmented storage, or inefficient multi-threading.</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 99,
+      "question": "<p> What is an Excel feature that displays only the data in column (s) according to specified criteria? </p>",
+      "option1": "<p> Filtering</p>",
+      "option2": "<p> Sorting </p>",
+      "option3": "<p> Formula </p>",
+      "option4": "<p> Pivot</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The Filter feature in Excel (found under the Data tab) <b>allows users to temporarily hide data and display only rows that meet specific criteria within one or more columns</b></p><p>It is a powerful tool for analyzing large datasets by narrowing down information. It includes options for number, text, or date filtering</p><p><br/> </p>"
+    },
+    {
+      "sr_no": 100,
+      "question": "<p> Which of the following logical function indicates TRUE only if all arguments are assessed as TRUE, and FALSE otherwise ?</p>",
+      "option1": "<p> OR</p><p><br/> </p>",
+      "option2": "<p> AND </p>",
+      "option3": "<p> IF </p>",
+      "option4": "<p> ANDIF</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The <b>AND logical function is a fundamental tool in Excel and other spreadsheet applications that evaluates multiple conditions</b></p><p>Returning TRUE if all arguments are TRUE, and FALSE if at least one argument is FALSE.</p><p>It is commonly used within IF functions to verify if several criteria are met simultaneously.</p><p><br/> </p>"
+    }
+  ]
+};
+
+// Extract questions and time from new structure
+const questions = quizData.questions;
+const totalTimeMinutes = quizData.time_minutes;
+
+let currentQuestion = 0;
+let answers = {};
+let bookmarks = new Set();
+let timerSeconds = totalTimeMinutes * 60;
+let timerInterval = null;
+let isPaletteOpen = false;
+
+function isImageURL(str) {
+  return str && (str.startsWith('http') || str.startsWith('https'));
+}
+
+function createOptionContent(optionText) {
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'option-content';
+    
+    if (isImageURL(optionText)) {
+        const img = document.createElement('img');
+        img.src = optionText;
+        img.className = 'option-image';
+        img.alt = 'Option image';
+        img.loading = 'lazy';
+        img.onerror = function() {
+            this.style.display = 'none';
+            const errorText = document.createTextNode('Image failed to load');
+            contentDiv.appendChild(errorText);
+        };
+        contentDiv.appendChild(img);
+    } else {
+        contentDiv.innerHTML = optionText;  // FIXED: Use innerHTML
+    }
+    
+    return contentDiv;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initQuiz();
+  initEventListeners();
+  loadFromLocalStorage();
+  startTimer();
+  createPalette();
+  preventDoubleTapZoom();
+});
+
+function preventDoubleTapZoom() {
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', (event) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+      event.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, { passive: false });
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('quizTheme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeIcon();
+}
+
+function updateThemeIcon() {
+  const theme = document.documentElement.getAttribute('data-theme');
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) {
+    themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('quizTheme', newTheme);
+  updateThemeIcon();
+}
+
+function initQuiz() {
+  loadQuestion(currentQuestion);
+  updateMarkingInfo();
+}
+
+function initEventListeners() {
+  const themeBtn = document.getElementById('themeToggle');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  
+  if (themeBtn) {
+    themeBtn.addEventListener('click', toggleTheme);
+    themeBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      toggleTheme();
+    });
+  }
+  
+  if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    fullscreenBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      toggleFullscreen();
+    });
+  }
+  
+  addButtonListener('prevBtn', prevQuestion);
+  addButtonListener('nextBtn', nextQuestion);
+  addButtonListener('clearBtn', clearAnswer);
+  addButtonListener('submitBtn', confirmSubmit);
+  addButtonListener('bookmarkBtn', toggleBookmark);
+  
+  addButtonListener('paletteFab', togglePalette);
+  addButtonListener('paletteClose', closePalette);
+  
+  const overlay = document.getElementById('paletteOverlay');
+  if (overlay) {
+    overlay.addEventListener('click', closePalette);
+    overlay.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      closePalette();
+    });
+  }
+  
+  const searchInput = document.getElementById('paletteSearch');
+  if (searchInput) {
+    searchInput.addEventListener('input', handleSearch);
+    searchInput.addEventListener('change', jumpToQuestion);
+  }
+  
+  document.addEventListener('keydown', handleKeyPress);
+  
+  setInterval(saveToLocalStorage, 5000);
+  
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      updatePalette();
+    }
+  });
+}
+
+function addButtonListener(id, handler) {
+  const btn = document.getElementById(id);
+  if (btn) {
+    btn.addEventListener('click', handler);
+    btn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      handler();
+    });
+  }
+}
+
+function jumpToQuestion(e) {
+  const questionNum = parseInt(e.target.value);
+  if (questionNum >= 1 && questionNum <= questions.length) {
+    goToQuestion(questionNum - 1);
+    closePalette();
+    e.target.value = '';
+  }
+}
+
+function togglePalette() {
+  isPaletteOpen = !isPaletteOpen;
+  const palette = document.getElementById('questionPalette');
+  const overlay = document.getElementById('paletteOverlay');
+  const fab = document.getElementById('paletteFab');
+  
+  if (isPaletteOpen) {
+    palette.classList.add('active');
+    overlay.classList.add('active');
+    fab.classList.add('active');
+    fab.innerHTML = `📋 <span class="badge" id="answeredBadge">${Object.keys(answers).length}</span>`;
+    document.body.classList.add('palette-open');
+  } else {
+    closePalette();
+  }
+}
+
+function closePalette() {
+  isPaletteOpen = false;
+  const palette = document.getElementById('questionPalette');
+  const overlay = document.getElementById('paletteOverlay');
+  const fab = document.getElementById('paletteFab');
+  
+  if (palette) palette.classList.remove('active');
+  if (overlay) overlay.classList.remove('active');
+  if (fab) {
+    fab.classList.remove('active');
+    fab.innerHTML = `📋 <span class="badge" id="answeredBadge">${Object.keys(answers).length}</span>`;
+  }
+  document.body.classList.remove('palette-open');
+}
+
+function handleSearch(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  if (!searchTerm) {
+    document.querySelectorAll('.palette-btn').forEach(btn => {
+      btn.style.display = '';
+    });
+    return;
+  }
+  
+  const buttons = document.querySelectorAll('.palette-btn');
+  buttons.forEach((btn, index) => {
+    const questionNum = (index + 1).toString();
+    if (questionNum.includes(searchTerm)) {
+      btn.style.display = '';
+    } else {
+      btn.style.display = 'none';
+    }
+  });
+}
+
+function handleKeyPress(e) {
+  if (document.getElementById('resultSection').classList.contains('hidden')) {
+    if (e.key === 'Escape') {
+      if (isPaletteOpen) {
+        closePalette();
+      }
+    } else if (!isPaletteOpen && e.target.tagName !== 'INPUT') {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevQuestion();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextQuestion();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        nextQuestion();
+      } else if (e.key === 'b' || e.key === 'B') {
+        e.preventDefault();
+        toggleBookmark();
+      } else if (e.key === 'c' || e.key === 'C') {
+        e.preventDefault();
+        clearAnswer();
+      } else if (e.key === 'p' || e.key === 'P') {
+        e.preventDefault();
+        togglePalette();
+      } else if (e.key >= '1' && e.key <= '4') {
+        e.preventDefault();
+        selectOption(parseInt(e.key));
+      }
+    }
+  }
+}
+
+function selectOption(optionNum) {
+  const q = questions[currentQuestion];
+  const radio = document.querySelector(`input[name="q${q.sr_no}"][value="${optionNum}"]`);
+  if (radio) {
+    radio.checked = true;
+    const label = radio.closest('.option-label');
+    if (label) {
+      document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+      label.classList.add('selected');
+      saveAnswer();
+    }
+  }
+}
+
+function toggleFullscreen() {
+  try {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.log('Fullscreen error:', err);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  } catch (err) {
+    console.log('Fullscreen not supported');
+  }
+}
+
+function startTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+  }
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimer();
+    
+    // Auto-submit when time runs out
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      alert('Time is up! Submitting quiz automatically.');
+      submitQuiz();
+      return;
+    }
+    
+    if (timerSeconds <= 120) {
+      const timer = document.getElementById('timer');
+      if (timer) timer.classList.add('warning');
+    }
+  }, 1000);
+}
+
+function updateTimer() {
+  const minutes = Math.floor(timerSeconds / 60);
+  const seconds = timerSeconds % 60;
+  const timer = document.getElementById('timer');
+  if (timer) {
+    timer.textContent = 
+      `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+}
+
+function createPalette() {
+  const grid = document.getElementById('paletteGrid');
+  if (!grid) return;
+  
+  grid.innerHTML = '';
+  questions.forEach((q, index) => {
+    const btn = document.createElement('button');
+    btn.textContent = index + 1;
+    btn.className = 'palette-btn';
+    btn.setAttribute('aria-label', `Go to question ${index + 1}`);
+    btn.setAttribute('type', 'button');
+    
+    btn.addEventListener('click', () => {
+      goToQuestion(index);
+      closePalette();
+    });
+    
+    btn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      goToQuestion(index);
+      closePalette();
+    });
+    
+    grid.appendChild(btn);
+  });
+  updatePalette();
+}
+
+function updatePalette() {
+  const buttons = document.querySelectorAll('.palette-btn');
+  buttons.forEach((btn, index) => {
+    btn.className = 'palette-btn';
+    if (index === currentQuestion) btn.classList.add('current');
+    if (answers[questions[index].sr_no]) btn.classList.add('answered');
+    if (bookmarks.has(questions[index].sr_no)) btn.classList.add('bookmarked');
+  });
+  
+  updatePaletteStats();
+}
+
+function updatePaletteStats() {
+  const answered = Object.keys(answers).length;
+  const unanswered = questions.length - answered;
+  const bookmarkedCount = bookmarks.size;
+  
+  const answeredEl = document.getElementById('paletteAnswered');
+  const unansweredEl = document.getElementById('paletteUnanswered');
+  const bookmarkedEl = document.getElementById('paletteBookmarked');
+  
+  if (answeredEl) answeredEl.textContent = answered;
+  if (unansweredEl) unansweredEl.textContent = unanswered;
+  if (bookmarkedEl) bookmarkedEl.textContent = bookmarkedCount;
+  
+  const badge = document.querySelector('.palette-fab .badge');
+  if (badge) badge.textContent = answered;
+}
+
+function goToQuestion(index) {
+  if (index < 0 || index >= questions.length) return;
+  saveAnswer();
+  currentQuestion = index;
+  loadQuestion(currentQuestion);
+  
+  const questionSection = document.getElementById('questionSection');
+  if (questionSection) {
+    setTimeout(() => {
+      questionSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+}
+
+function loadQuestion(index) {
+  const q = questions[index];
+  
+  const questionNumber = document.getElementById('questionNumber');
+  const questionText = document.getElementById('questionText');
+  
+  if (questionNumber) {
+    questionNumber.textContent = `Question ${index + 1} of ${questions.length}`;
+  }
+  
+  if (questionText) {
+    questionText.innerHTML = '';
+    const questionContent = createOptionContent(q.question);
+    questionText.appendChild(questionContent);
+  }
+  
+  const container = document.getElementById('optionsContainer');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  for (let i = 1; i <= 4; i++) {
+    const label = document.createElement('label');
+    label.className = 'option-label';
+    if (answers[q.sr_no] == i) label.classList.add('selected');
+    
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = `q${q.sr_no}`;
+    radio.value = i;
+    radio.checked = answers[q.sr_no] == i;
+    
+    const changeHandler = () => {
+      document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+      label.classList.add('selected');
+      saveAnswer();
+    };
+    
+    radio.addEventListener('change', changeHandler);
+    label.addEventListener('click', (e) => {
+      if (e.target !== radio) {
+        radio.checked = true;
+        changeHandler();
+      }
+    });
+    
+    label.appendChild(radio);
+    
+    const optionContent = createOptionContent(q[`option${i}`]);
+    label.appendChild(optionContent);
+    
+    container.appendChild(label);
+  }
+  
+  const bookmarkBtn = document.getElementById('bookmarkBtn');
+  if (bookmarkBtn) {
+    if (bookmarks.has(q.sr_no)) {
+      bookmarkBtn.classList.add('active');
+    } else {
+      bookmarkBtn.classList.remove('active');
+    }
+  }
+  
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const submitBtn = document.getElementById('submitBtn');
+  
+  if (prevBtn) prevBtn.disabled = index === 0;
+  
+  if (index === questions.length - 1) {
+    if (nextBtn) nextBtn.classList.add('hidden');
+    if (submitBtn) submitBtn.classList.remove('hidden');
+  } else {
+    if (nextBtn) nextBtn.classList.remove('hidden');
+    if (submitBtn) submitBtn.classList.add('hidden');
+  }
+  
+  updateProgress();
+  updatePalette();
+}
+
+function updateMarkingInfo() {
+  const q = questions[0];
+  const markingInfo = document.getElementById('markingInfo');
+  if (markingInfo) {
+    markingInfo.textContent = `Marking: +${q.positive_marking}, -${q.negative_marking}`;
+  }
+}
+
+function updateProgress() {
+  const attempted = Object.keys(answers).length;
+  const currentProgress = ((currentQuestion + 1) / questions.length) * 100;
+  
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const attemptedText = document.getElementById('attemptedText');
+  
+  if (progressBar) progressBar.style.width = `${currentProgress}%`;
+  if (progressText) progressText.textContent = `${currentQuestion + 1}/${questions.length}`;
+  if (attemptedText) attemptedText.textContent = attempted;
+}
+
+function saveAnswer() {
+  const q = questions[currentQuestion];
+  const selected = document.querySelector(`input[name="q${q.sr_no}"]:checked`);
+  
+  if (selected) {
+    answers[q.sr_no] = selected.value;
+  }
+  
+  updateProgress();
+  updatePalette();
+  saveToLocalStorage();
+}
+
+function clearAnswer() {
+  const q = questions[currentQuestion];
+  delete answers[q.sr_no];
+  
+  const selected = document.querySelector(`input[name="q${q.sr_no}"]:checked`);
+  if (selected) selected.checked = false;
+  
+  document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+  
+  updateProgress();
+  updatePalette();
+  saveToLocalStorage();
+}
+
+function toggleBookmark() {
+  const q = questions[currentQuestion];
+  const btn = document.getElementById('bookmarkBtn');
+  
+  if (bookmarks.has(q.sr_no)) {
+    bookmarks.delete(q.sr_no);
+    if (btn) btn.classList.remove('active');
+  } else {
+    bookmarks.add(q.sr_no);
+    if (btn) btn.classList.add('active');
+  }
+  
+  updatePalette();
+  saveToLocalStorage();
+}
+
+function nextQuestion() {
+  saveAnswer();
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    loadQuestion(currentQuestion);
+  }
+}
+
+function prevQuestion() {
+  saveAnswer();
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    loadQuestion(currentQuestion);
+  }
+}
+
+function confirmSubmit() {
+  const unattempted = questions.length - Object.keys(answers).length;
+  let message = 'Are you sure you want to submit the quiz?';
+  
+  if (unattempted > 0) {
+    message = `You have ${unattempted} unanswered questions. ${message}`;
+  }
+  
+  if (confirm(message)) {
+    submitQuiz();
+  }
+}
+
+function submitQuiz() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  saveAnswer();
+  closePalette();
+  
+  let correct = 0, wrong = 0, unattempted = 0, score = 0;
+  
+  questions.forEach(q => {
+    const userAns = answers[q.sr_no];
+    const posMark = parseFloat(q.positive_marking) || 0;
+    const negMark = parseFloat(q.negative_marking) || 0;
+    
+    if (!userAns) {
+      unattempted++;
+    } else if (userAns == q.answer) {
+      correct++;
+      score += posMark;
+    } else {
+      wrong++;
+      score -= negMark;
+    }
+  });
+  
+  displayResults(correct, wrong, unattempted, score);
+  
+  const fab = document.getElementById('paletteFab');
+  const nav = document.getElementById('navigation');
+  if (fab) fab.style.display = 'none';
+  if (nav) nav.style.display = 'none';
+  
+  document.body.style.paddingBottom = '20px';
+  
+  clearLocalStorage();
+}
+
+function displayResults(correct, wrong, unattempted, score) {
+  const totalQuestions = questions.length;
+  const percentage = ((correct / totalQuestions) * 100).toFixed(1);
+  const timerEl = document.getElementById('timer');
+  const timeText = timerEl ? timerEl.textContent : '00:00';
+  const timeTaken = (totalTimeMinutes * 60) - timerSeconds;
+  const minutesTaken = Math.floor(timeTaken / 60);
+  const secondsTaken = timeTaken % 60;
+  const timeTakenText = `${minutesTaken}m ${secondsTaken}s`;
+  
+  let html = `
+    <div class="score-card">
+      <h2>${score}/${totalQuestions}</h2>
+      <p>Your Score: ${percentage}%</p>
+      <p>Time Taken: ${timeTakenText}</p>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card correct">
+        <h3>${correct}</h3>
+        <p>Correct</p>
+      </div>
+      <div class="stat-card wrong">
+        <h3>${wrong}</h3>
+        <p>Wrong</p>
+      </div>
+      <div class="stat-card unattempted">
+        <h3>${unattempted}</h3>
+        <p>Unattempted</p>
+      </div>
+      <div class="stat-card">
+        <h3>${totalQuestions}</h3>
+        <p>Total</p>
+      </div>
+    </div>
+  `;
+  
+  questions.forEach(q => {
+    const userAns = answers[q.sr_no];
+    let questionDisplay = '';
+    if (isImageURL(q.question)) {
+      questionDisplay = `<img src="${q.question}" class="question-image" alt="Question ${q.sr_no}">`;
+    } else {
+      questionDisplay = q.question;
+    }
+    html += `<div class="question-review">
+      <h4>Q${q.sr_no}: ${questionDisplay}</h4>`;
+    
+    for (let i = 1; i <= 4; i++) {
+      const isCorrect = i.toString() === q.answer;
+      const isUserAnswer = userAns == i.toString();
+      
+      let className = 'review-option';
+      if (isCorrect) className += ' correct';
+      if (isUserAnswer && !isCorrect) className += ' wrong';
+      if (isUserAnswer) className += ' user-selected';
+      
+      const optionValue = q[`option${i}`];
+      
+      if (isImageURL(optionValue)) {
+        html += `<div class="${className}">
+          ${isCorrect ? '✓ ' : ''}${isUserAnswer ? '➤ ' : ''} 
+          <img src="${optionValue}" class="option-image" alt="Option ${i}">
+        </div>`;
+      } else {
+        html += `<div class="${className}">
+          ${isCorrect ? '✓ ' : ''}${isUserAnswer ? '➤ ' : ''}${optionValue}
+        </div>`;
+      }
+    }
+    
+    if (q.solution && q.solution.trim() !== '') {
+      let solutionDisplay = '';
+      if (isImageURL(q.solution)) {
+        solutionDisplay = `<img src="${q.solution}" class="solution-image" alt="Solution" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;">`;
+      } else {
+        solutionDisplay = q.solution;
+      }
+      
+      html += `<div class="solution-section" style="margin-top: 15px; padding: 15px; background: #f0f8ff; border-left: 4px solid #007bff; border-radius: 8px;">
+        <strong style="color: #007bff;">💡 Solution:</strong>
+        <div style="margin-top: 8px; color: #333;">${solutionDisplay}</div>
+      </div>`;
+    }
+    
+    html += `</div>`;
+  });
+  
+  html += `
+    <div class="action-buttons">
+      <button class="action-btn restart" onclick="restartQuiz()">Restart Quiz</button>
+      <button class="action-btn download" onclick="downloadResults()">Download Results</button>
+      <button class="action-btn print" onclick="window.print()">Print Results</button>
+    </div>
+  `;
+  
+  const resultSection = document.getElementById('resultSection');
+  const questionSection = document.getElementById('questionSection');
+  const progressSection = document.querySelector('.progress-section');
+  
+  if (resultSection) {
+    resultSection.innerHTML = html;
+    resultSection.classList.remove('hidden');
+  }
+  if (questionSection) questionSection.classList.add('hidden');
+  if (progressSection) progressSection.classList.add('hidden');
+  
+  const quizContainer = document.getElementById('quizContainer');
+  if (quizContainer) {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  }
+}
+function isImageURL(str) {
+  return str && (str.startsWith('http') || str.startsWith('https')) &&
+    (str.match(/\.(jpeg|jpg|gif|png|svg|webp)$/i));
+}
+function restartQuiz() {
+  if (confirm('Are you sure you want to restart? All progress will be lost.')) {
+    currentQuestion = 0;
+    answers = {};
+    bookmarks.clear();
+    timerSeconds = totalTimeMinutes * 60;
+    
+    const resultSection = document.getElementById('resultSection');
+    const questionSection = document.getElementById('questionSection');
+    const progressSection = document.querySelector('.progress-section');
+    const fab = document.getElementById('paletteFab');
+    const nav = document.getElementById('navigation');
+    
+    if (resultSection) {
+      resultSection.classList.add('hidden');
+      resultSection.innerHTML = '';
+    }
+    if (questionSection) questionSection.classList.remove('hidden');
+    if (progressSection) progressSection.classList.remove('hidden');
+    if (fab) fab.style.display = 'flex';
+    if (nav) nav.style.display = 'grid';
+    
+    document.body.style.paddingBottom = 'var(--nav-height)';
+    
+    if (timerInterval) {
+      clearInterval(timerInterval);
+    }
+    updateTimer();
+    startTimer();
+    
+    loadQuestion(currentQuestion);
+    createPalette();
+  }
+}
+
+function downloadResults() {
+  const resultSection = document.getElementById('resultSection');
+  if (!resultSection) return;
+  
+  const resultHTML = resultSection.innerHTML;
+  const fullHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FULL LENGTH TEST - 7</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; max-width: 900px; margin: 0 auto; }
+    .score-card { background: linear-gradient(135deg, #007bff, #28a745); color: white; padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
+    .score-card h2 { font-size: 48px; margin-bottom: 10px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
+    .stat-card { background: white; padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #ddd; }
+    .stat-card h3 { font-size: 32px; margin-bottom: 8px; }
+    .stat-card.correct h3 { color: #28a745; }
+    .stat-card.wrong h3 { color: #dc3545; }
+    .stat-card.unattempted h3 { color: #6c757d; }
+    .question-review { background: white; border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin-bottom: 15px; }
+    .question-review h4 { margin-bottom: 15px; font-size: 16px; line-height: 1.6; }
+    .review-option { padding: 10px 15px; margin: 8px 0; border-radius: 8px; border: 2px solid #ddd; display: flex; align-items: center; gap: 10px; }
+    .option-image { max-width: 150px; max-height: 100px; border-radius: 8px; }
+    .review-option.correct { background: #d4edda; border-color: #28a745; color: #155724; }
+    .review-option.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+    .review-option.user-selected { border-width: 3px; font-weight: bold; }
+    @media print { body { background: white; } }
+    @media (max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center; color: #007bff;">MOTION 3.0 - Quiz Results</h1>
+  <p style="text-align: center; color: #666; margin-bottom: 30px;">Generated on: ${new Date().toLocaleString()}</p>
+  ${resultHTML.replace(/<div class="action-buttons">[\s\S]*?<\/div>/, '')}
+</body>
+</html>
+  `;
+  
+  try {
+    const blob = new Blob([fullHTML], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Quiz_Results_${new Date().getTime()}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    alert('Download failed. Please try using the Print option instead.');
+    console.error('Download error:', err);
+  }
+}
+
+function saveToLocalStorage() {
+  try {
+    const state = {
+      currentQuestion,
+      answers,
+      bookmarks: Array.from(bookmarks),
+      timerSeconds,
+      timestamp: Date.now()
+    };
+    localStorage.setItem('quizState', JSON.stringify(state));
+  } catch (err) {
+    console.error('Save error:', err);
+  }
+}
+
+function loadFromLocalStorage() {
+  try {
+    const saved = localStorage.getItem('quizState');
+    if (saved) {
+      const state = JSON.parse(saved);
+      if (Date.now() - state.timestamp < 24 * 60 * 60 * 1000) {
+        if (confirm('Resume previous quiz session?')) {
+          currentQuestion = state.currentQuestion || 0;
+          answers = state.answers || {};
+          bookmarks = new Set(state.bookmarks || []);
+          timerSeconds = state.timerSeconds || (totalTimeMinutes * 60); // MODIFIED
+          updateTimer();
+          loadQuestion(currentQuestion);
+        }
+      } else {
+        clearLocalStorage();
+      }
+    }
+  } catch (err) {
+    console.error('Load error:', err);
+    clearLocalStorage();
+  }
+}
+
+function clearLocalStorage() {
+  try {
+    localStorage.removeItem('quizState');
+  } catch (err) {
+    console.error('Clear storage error:', err);
+  }
+}
+
+window.addEventListener('beforeunload', (e) => {
+  const resultSection = document.getElementById('resultSection');
+  if (resultSection && !resultSection.classList.contains('hidden')) {
+    return;
+  }
+  e.preventDefault();
+  e.returnValue = '';
+});
+
+window.addEventListener('unload', () => {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,3215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FULL LENGTH TEST - 4</title>
+<style>
+:root {
+  --primary-color: #007bff;
+  --primary-hover: #0069d9;
+  --success-color: #28a745;
+  --success-hover: #218838;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --secondary-color: #6c757d;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --shadow: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+  --overlay: rgba(0,0,0,0.5);
+  --nav-height: 80px;
+}
+
+[data-theme="dark"] {
+  --primary-color: #4dabf7;
+  --primary-hover: #339af0;
+  --success-color: #51cf66;
+  --success-hover: #40c057;
+  --danger-color: #ff6b6b;
+  --warning-color: #ffd43b;
+  --secondary-color: #868e96;
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #404040;
+  --text-primary: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --border-color: #495057;
+  --shadow: 0 4px 6px rgba(0,0,0,0.3);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.4);
+  --overlay: rgba(0,0,0,0.7);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
+  position: relative;
+  padding-bottom: var(--nav-height);
+}
+
+body.palette-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-primary);
+  padding: 20px 30px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.header h1 {
+  font-size: 28px;
+  color: var(--primary-color);
+  font-weight: 700;
+  user-select: none;
+}
+
+.header-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.theme-toggle, .fullscreen-btn {
+  background: var(--bg-tertiary);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s;
+  min-width: 44px;
+  min-height: 44px;
+  user-select: none;
+}
+
+.theme-toggle:active, .fullscreen-btn:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle:hover, .fullscreen-btn:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.timer {
+  background: var(--warning-color);
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  min-width: 100px;
+  text-align: center;
+  user-select: none;
+}
+
+.timer.warning {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.palette-fab {
+  position: fixed;
+  bottom: calc(var(--nav-height) + 20px);
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+  transition: all 0.3s ease;
+  z-index: 998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.palette-fab:active {
+  transform: scale(0.9);
+}
+
+.palette-fab:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,123,255,0.6);
+}
+
+.palette-fab.active {
+  background: var(--danger-color);
+}
+
+.palette-fab .badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--success-color);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-secondary);
+  pointer-events: none;
+}
+
+.palette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 999;
+  touch-action: none;
+}
+
+.palette-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.question-palette {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  max-width: 450px;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg-primary);
+  box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+  transition: right 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.question-palette.active {
+  right: 0;
+}
+
+.palette-header {
+  padding: 20px;
+  background: var(--primary-color);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.palette-header h3 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.palette-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 32px;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+  line-height: 1;
+  touch-action: manipulation;
+}
+
+.palette-close:active {
+  transform: scale(0.9);
+}
+
+.palette-close:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.palette-stats {
+  padding: 15px 20px;
+  background: var(--bg-tertiary);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  font-size: 13px;
+  text-align: center;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+}
+
+.palette-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.palette-stat .number {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.palette-stat.answered .number { color: var(--success-color); }
+.palette-stat.unanswered .number { color: var(--secondary-color); }
+.palette-stat.bookmarked .number { color: var(--warning-color); }
+
+.palette-search {
+  padding: 15px 20px;
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+}
+
+.palette-search input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.palette-search input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.palette-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+}
+
+.palette-btn {
+  aspect-ratio: 1;
+  border: 2px solid var(--border-color);
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  min-width: 40px;
+  min-height: 40px;
+  color: var(--text-primary);
+  position: relative;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.palette-btn:active {
+  transform: scale(0.9);
+}
+
+.palette-btn:hover {
+  transform: scale(1.1);
+  z-index: 10;
+  box-shadow: var(--shadow);
+}
+
+.palette-btn.current {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  animation: currentPulse 2s infinite;
+}
+
+@keyframes currentPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,123,255,0.7); }
+  50% { box-shadow: 0 0 0 8px rgba(0,123,255,0); }
+}
+
+.palette-btn.answered {
+  background: var(--success-color);
+  color: white;
+  border-color: var(--success-color);
+}
+
+.palette-btn.bookmarked::after {
+  content: '🔖';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.palette-btn.bookmarked.answered {
+  background: var(--success-color);
+}
+
+.palette-legend {
+  padding: 20px;
+  border-top: 1px solid var(--border-color);
+  font-size: 13px;
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.question-image, .option-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 10px 0;
+  display: block;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.legend-color {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.quiz-container {
+  background: var(--bg-primary);
+  border-radius: 15px;
+  box-shadow: var(--shadow-lg);
+  padding: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  scroll-margin-top: 20px;
+}
+
+.quiz-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.marking-info {
+  display: inline-block;
+  background: var(--bg-tertiary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.progress-section {
+  margin-bottom: 25px;
+}
+
+.progress-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.progress-bar-container {
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 10px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+  transition: width 0.4s ease;
+  border-radius: 12px;
+}
+
+.question-section {
+  min-height: 300px;
+  scroll-margin-top: 80px;
+  margin-bottom: 20px;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.question-number {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-color);
+  user-select: none;
+}
+
+.bookmark-btn {
+  background: transparent;
+  border: 2px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.bookmark-btn:active {
+  transform: scale(0.95);
+}
+
+.bookmark-btn.active {
+  background: var(--warning-color);
+  border-color: var(--warning-color);
+  color: #000;
+}
+
+.question {
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  color: var(--text-primary);
+  user-select: text;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--border-color);
+  padding: 16px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg-secondary);
+  min-height: 60px;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.option-label:active {
+  transform: scale(0.98);
+}
+
+.option-label:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-color);
+}
+
+.option-label.selected {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.option-label input[type="radio"] {
+  margin-right: 15px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.option-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.option-image {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: var(--bg-primary);
+  padding: 10px;
+}
+
+.option-label.selected .option-image {
+  background: rgba(255,255,255,0.1);
+}
+
+.navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-primary);
+  border-top: 2px solid var(--border-color);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  z-index: 997;
+  padding: 15px 20px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  max-width: 100%;
+}
+
+.nav-btn {
+  padding: 14px 20px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.nav-btn:active {
+  transform: scale(0.97);
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.nav-btn.prev {
+  background: var(--secondary-color);
+  color: white;
+}
+
+.nav-btn.prev:hover:not(:disabled) {
+  background: #5a6268;
+}
+
+.nav-btn.next {
+  background: var(--primary-color);
+  color: white;
+}
+
+.nav-btn.next:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.nav-btn.clear {
+  background: var(--danger-color);
+  color: white;
+}
+
+.nav-btn.clear:hover {
+  background: #c82333;
+}
+
+.nav-btn.submit {
+  background: var(--success-color);
+  color: white;
+  grid-column: 1 / -1;
+}
+
+.nav-btn.submit:hover {
+  background: var(--success-hover);
+}
+
+.result-section {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.score-card {
+  background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+  color: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  margin-bottom: 30px;
+  user-select: none;
+}
+
+.score-card h2 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.score-card p {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: var(--bg-secondary);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid var(--border-color);
+  user-select: none;
+}
+
+.stat-card h3 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.stat-card.correct h3 { color: var(--success-color); }
+.stat-card.wrong h3 { color: var(--danger-color); }
+.stat-card.unattempted h3 { color: var(--secondary-color); }
+
+.question-review {
+  border: 2px solid var(--border-color);
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 20px;
+  background: var(--bg-secondary);
+}
+
+.question-review h4 {
+  margin-bottom: 15px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.review-option {
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 2px solid var(--border-color);
+  background: var(--bg-primary);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-option .option-image {
+  max-width: 150px;
+  max-height: 100px;
+}
+
+.review-option.correct {
+  background: #d4edda;
+  border-color: var(--success-color);
+  color: #155724;
+}
+
+.review-option.wrong {
+  background: #f8d7da;
+  border-color: var(--danger-color);
+  color: #721c24;
+}
+
+.review-option.user-selected {
+  border-width: 3px;
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  padding: 14px 30px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  min-width: 150px;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.action-btn.restart {
+  background: var(--danger-color);
+  color: white;
+}
+
+.action-btn.restart:hover {
+  background: #c82333;
+}
+
+.action-btn.download {
+  background: var(--primary-color);
+  color: white;
+}
+
+.action-btn.download:hover {
+  background: var(--primary-hover);
+}
+
+.action-btn.print {
+  background: var(--secondary-color);
+  color: white;
+}
+
+.action-btn.print:hover {
+  background: #5a6268;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.palette-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.palette-content::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+.palette-content::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+.palette-content::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 140px;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .quiz-container {
+    padding: 20px 15px;
+  }
+
+  .question-palette {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .palette-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+
+  .palette-btn {
+    font-size: 13px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .palette-fab {
+    bottom: calc(var(--nav-height) + 10px);
+    right: 15px;
+    width: 56px;
+    height: 56px;
+    font-size: 22px;
+  }
+
+  .navigation {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px 15px;
+  }
+
+  .nav-btn {
+    min-height: 44px;
+    font-size: 15px;
+  }
+
+  .nav-btn.clear {
+    order: 3;
+  }
+
+  .nav-btn.submit {
+    grid-column: auto;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .legend-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .question {
+    font-size: 16px;
+  }
+
+  .option-label {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+
+  .option-image {
+    max-height: 150px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .palette-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .palette-btn {
+    font-size: 12px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+
+  .timer {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  .option-image {
+    max-height: 120px;
+  }
+}
+
+@media (max-width: 360px) {
+  .palette-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media print {
+  .header-controls, .navigation, .palette-fab, .palette-overlay, .question-palette, .action-buttons, .bookmark-btn {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    padding-bottom: 0;
+  }
+
+  .container {
+    padding-bottom: 20px;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .palette-fab {
+    bottom: calc(var(--nav-height) + 5px);
+    right: 10px;
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .palette-fab .badge {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🎯 FULL LENGTH TEST - 4</h1>
+    <div class="header-controls">
+      <div class="timer" id="timer">00:00</div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle Theme">🌙</button>
+      <button class="fullscreen-btn" id="fullscreenBtn" aria-label="Toggle fullscreen" title="Fullscreen">⛶</button>
+    </div>
+  </div>
+
+  <div class="quiz-container" id="quizContainer">
+    <div class="quiz-header">
+      <div class="marking-info" id="markingInfo">Marking: +1, -0</div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-stats">
+        <span>Progress: <strong id="progressText">1/2</strong></span>
+        <span>Attempted: <strong id="attemptedText">0</strong></span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <div class="question-section" id="questionSection">
+      <div class="question-header">
+        <div class="question-number" id="questionNumber">Question 1 of 2</div>
+        <button class="bookmark-btn" id="bookmarkBtn" aria-label="Bookmark question">
+          <span>🔖</span> <span>Bookmark</span>
+        </button>
+      </div>
+      
+      <div class="question" id="questionText"></div>
+      
+      <div class="options" id="optionsContainer"></div>
+    </div>
+
+    <div class="result-section hidden" id="resultSection"></div>
+  </div>
+</div>
+
+<button class="palette-fab" id="paletteFab" aria-label="Toggle question palette" title="Question Palette">
+  📋
+  <span class="badge" id="answeredBadge">0</span>
+</button>
+
+<div class="palette-overlay" id="paletteOverlay"></div>
+
+<div class="question-palette" id="questionPalette">
+  <div class="palette-header">
+    <h3>Question Palette</h3>
+    <button class="palette-close" id="paletteClose" aria-label="Close palette">×</button>
+  </div>
+
+  <div class="palette-stats">
+    <div class="palette-stat answered">
+      <div class="number" id="paletteAnswered">0</div>
+      <div>Answered</div>
+    </div>
+    <div class="palette-stat unanswered">
+      <div class="number" id="paletteUnanswered">2</div>
+      <div>Not Answered</div>
+    </div>
+    <div class="palette-stat bookmarked">
+      <div class="number" id="paletteBookmarked">0</div>
+      <div>Bookmarked</div>
+    </div>
+  </div>
+
+  <div class="palette-search">
+    <input type="number" id="paletteSearch" placeholder="Jump to question number..." aria-label="Search questions" inputmode="numeric" pattern="[0-9]*">
+  </div>
+
+  <div class="palette-content">
+    <div class="palette-grid" id="paletteGrid"></div>
+  </div>
+
+  <div class="palette-legend">
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--success-color)"></div>
+        <span>Answered</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--bg-secondary); border: 2px solid var(--border-color)"></div>
+        <span>Not Answered</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--primary-color)"></div>
+        <span>Current Question</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--warning-color)"></div>
+        <span>🔖 Bookmarked</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="navigation" id="navigation">
+  <button class="nav-btn prev" id="prevBtn" aria-label="Previous question">
+    <span>←</span> Previous
+  </button>
+  <button class="nav-btn clear" id="clearBtn" aria-label="Clear answer">Clear</button>
+  <button class="nav-btn next" id="nextBtn" aria-label="Next question">
+    Next <span>→</span>
+  </button>
+  <button class="nav-btn submit hidden" id="submitBtn" aria-label="Submit quiz">Submit Quiz</button>
+</div>
+
+<script>
+// MODIFIED: Quiz data structure with time_minutes
+const quizData = {
+  "time_minutes": 120,
+  "questions": [
+    {
+      "sr_no": 1,
+      "question": "<p>Consider the following statements about Lal Bahadur Shastri:</p><p>Which of the above statements is/are correct?</p>",
+      "option1": "<p>Only 2 and 3</p>",
+      "option2": "<p>Only 1 and 2</p>",
+      "option3": "<p>1, 2 and 3</p>",
+      "option4": "<p>Only 3</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Lal Bahadur Shastri was born in Mughalsarai city of Chandauli district (Uttar Pradesh). He served as the second Prime Minister of India after Jawahar Lal Nehru and coined the famous slogan \"Jai Jawan Jai Kisan\". Hence, all statements are correct.</p>"
+    },
+    {
+      "sr_no": 2,
+      "question": "<p>Which of the following was declared as the \"Intangible Cultural Heritage of Humanity\" by UNESCO in 2008?</p>",
+      "option1": "<p>Kalbelia</p>",
+      "option2": "<p>Chhau</p>",
+      "option3": "<p>Kumbh Mela</p>",
+      "option4": "<p>Ramlila</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Ramlila was declared as the Intangible Cultural Heritage of Humanity in 2008 by UNESCO. Kumbh Mela was included later in 2017.</p>"
+    },
+    {
+      "sr_no": 3,
+      "question": "<p>Match the following and choose the correct answer:</p><p>a. Abul Faiz Faizi</p><p>i. Varanasi</p><p>b. Subhadra Kumari Chauhan</p><p>ii. Farrukhabad</p><p>c. Mahadevi Verma</p><p>iii. Nihalpur</p><p>d. Jaishankar Prasad</p><p>iv. Agra</p>",
+      "option1": "<p>a-i, b-ii, c-iii, d-iv</p>",
+      "option2": "<p>a-iii, b-iv, c-i, d-ii</p>",
+      "option3": "<p>a-ii, b-iii, c-iv, d-i</p>",
+      "option4": "<p>a-iv, b-iii, c-ii, d-i</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 4,
+      "question": "<p>Agariya tribe reside in which of the following districts of Uttar Pradesh?</p>",
+      "option1": "<p>Ghaziabad</p>",
+      "option2": "<p>Ghazipur</p>",
+      "option3": "<p>Mirzapur</p>",
+      "option4": "<p>Sonbhadra</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Agariya, Baiga and Bhuiya Scheduled Tribes mainly reside in the Sonbhadra district of Uttar Pradesh.</p>"
+    },
+    {
+      "sr_no": 5,
+      "question": "<p>Which university in Uttar Pradesh was established in 2016 and is located in Kanpur?</p>",
+      "option1": "<p>Chhatrapati Shahu Ji Maharaj University</p>",
+      "option2": "<p>Harcourt Butler Technical University</p>",
+      "option3": "<p>Chandra Shekhar Azad University of Agriculture &amp; Technology</p>",
+      "option4": "<p>Dr. A.P.J. Abdul Kalam Technical University</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Harcourt Butler Technical University (HBTU) is located in Kanpur, Uttar Pradesh. It was granted university status in 2016 and was formerly known as Harcourt Butler Technical Institute.</p>"
+    },
+    {
+      "sr_no": 6,
+      "question": "<p>Sardar Vallabhbhai Patel University of Agriculture and Technology is located in which district of Uttar Pradesh?</p>",
+      "option1": "<p>Lucknow</p>",
+      "option2": "<p>Pantnagar</p>",
+      "option3": "<p>Meerut</p>",
+      "option4": "<p>Saharanpur</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Sardar Vallabhbhai Patel University of Agriculture and Technology was established on 2 October 2000 in Meerut, Uttar Pradesh.</p>"
+    },
+    {
+      "sr_no": 7,
+      "question": "<p>Who was the first Chief Minister of Uttar Pradesh?</p>",
+      "option1": "<p>Smt. Sucheta Kriplani</p>",
+      "option2": "<p>Chaudhari Charan Singh</p>",
+      "option3": "<p>Shri Govind Vallabh Pant</p>",
+      "option4": "<p>Shri Chandrabhanu Gupta</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Govind Vallabh Pant was the first Chief Minister of Uttar Pradesh. Smt. Sucheta Kriplani was the first female Chief Minister of U.P.</p>"
+    },
+    {
+      "sr_no": 8,
+      "question": "<p>Which of the following statements are correct?</p><p>(1) In UP the Panchayati Raj Act came into existence in 1947.</p><p>(2) In UP the Block Panchayat and District Panchayat Act was passed in 1961.</p>",
+      "option1": "<p>Only 1</p>",
+      "option2": "<p>Only 2</p>",
+      "option3": "<p>Both 1 and 2</p>",
+      "option4": "<p>None of the above</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The Panchayati Raj Act in Uttar Pradesh came into existence in 1947 and the Block Panchayat and District Panchayat Act was passed in 1961.</p>"
+    },
+    {
+      "sr_no": 9,
+      "question": "<p>Select the wrong pair of district–headquarter:</p>",
+      "option1": "<p>Amethi – Gauriganj</p>",
+      "option2": "<p>Sonbhadra – Robertsganj</p>",
+      "option3": "<p>Kushinagar – Padrauna</p>",
+      "option4": "<p>Kaushambi – Vaishali</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The headquarters of Kaushambi district is Manjhanpur, not Vaishali.</p>"
+    },
+    {
+      "sr_no": 10,
+      "question": "<p>What is the validity period of the Uttar Pradesh Startup Policy 2020 (amended in 2022)?</p>",
+      "option1": "<p>5 years from the notification date</p>",
+      "option2": "<p>10 years from the notification date</p>",
+      "option3": "<p>7 years from the notification date</p>",
+      "option4": "<p>3 years from the notification date</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The Uttar Pradesh Startup Policy 2020, amended in 2022, is valid for 5 years from the date of notification.</p>"
+    },
+    {
+      "sr_no": 11,
+      "question": "<p>The one-time incentive provided to consumers purchasing electric two wheelers under the Uttar Pradesh Electric Vehicle Manufacturing and Mobility Policy, 2022 is:</p>",
+      "option1": "<p>5%; ₹15,000</p>",
+      "option2": "<p>15%; ₹15,000</p>",
+      "option3": "<p>15%; ₹5,000</p>",
+      "option4": "<p>25%; ₹5,000</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Under the Uttar Pradesh Electric Vehicle Manufacturing and Mobility Policy, 2022, consumers receive a subsidy of 15% of ex-factory cost, up to ₹5,000 per electric two-wheeler.</p>"
+    },
+    {
+      "sr_no": 12,
+      "question": "<p>Assertion (A): Uttar Pradesh has the maximum population among all Indian states.</p><p>Reason (R): Uttar Pradesh is the largest state in India by area.</p>",
+      "option1": "<p>Both A and R are true, but R is not the correct explanation of A</p>",
+      "option2": "<p>Assertion (A) is true, but Reason (R) is false</p>",
+      "option3": "<p>Assertion (A) is false, but Reason (R) is true</p>",
+      "option4": "<p>Both A and R are true and R is the correct explanation of A</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>According to the 2011 Census, Uttar Pradesh is the most populous state in India, while Rajasthan is the largest state by area.</p>"
+    },
+    {
+      "sr_no": 13,
+      "question": "<p>What measure has been implemented in Uttar Pradesh to control pollution from brick kilns?</p>",
+      "option1": "<p>Mandating electric furnaces</p>",
+      "option2": "<p>Converting to zigzag technology</p>",
+      "option3": "<p>Banning brick kilns</p>",
+      "option4": "<p>Installing scrubbers and filters</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Zigzag technology improves airflow and fuel efficiency, resulting in reduced particulate matter (PM) pollution from brick kilns.</p>"
+    },
+    {
+      "sr_no": 14,
+      "question": "<p>Which of the following districts of Uttar Pradesh does not share a border with Madhya Pradesh?</p>",
+      "option1": "<p>Allahabad</p>",
+      "option2": "<p>Mirzapur</p>",
+      "option3": "<p>Etawah</p>",
+      "option4": "<p>Aligarh</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Aligarh district shares its border with Haryana, not Madhya Pradesh.</p>"
+    },
+    {
+      "sr_no": 15,
+      "question": "<p>Soil mainly deficient in potash is found in which district of Uttar Pradesh?</p>",
+      "option1": "<p>Jaunpur</p>",
+      "option2": "<p>Bahraich</p>",
+      "option3": "<p>Balrampur</p>",
+      "option4": "<p>Gonda</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The soils of Jaunpur, Azamgarh and Mau districts of Uttar Pradesh are mainly deficient in Potash.</p>"
+    },
+    {
+      "sr_no": 16,
+      "question": "<p>Who among the following freedom fighters of India is the author of the book ‘The Indian Struggle’?</p>",
+      "option1": "<p>Sardar Vallabhbhai Patel</p>",
+      "option2": "<p>Motilal Nehru</p>",
+      "option3": "<p>Mahatma Gandhi</p>",
+      "option4": "<p>Subhas Chandra Bose</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 17,
+      "question": "<p>Who was the revenue minister during the reign of Akbar?</p>",
+      "option1": "<p>Todar Mal</p>",
+      "option2": "<p>Abdul Rahim</p>",
+      "option3": "<p>Mulla Do-Piyaza</p>",
+      "option4": "<p>Tansen</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 18,
+      "question": "<p>Consider the following statements regarding the Home Rule Movement:</p><p>Which of the statements given above is/are correct?</p>",
+      "option1": "<p>Only Statement I</p>",
+      "option2": "<p>Only Statement I and II</p>",
+      "option3": "<p>Only Statement II and III</p>",
+      "option4": "<p>Only Statement I and III</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 19,
+      "question": "<p>Under which of the following Acts was the power to rule India transferred from the English East India Company to the British Crown?</p>",
+      "option1": "<p>Regulating Act, 1773</p>",
+      "option2": "<p>Pitt’s India Act, 1784</p>",
+      "option3": "<p>Government of India Act, 1858</p>",
+      "option4": "<p>Charter Act, 1833</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 20,
+      "question": "<p>Details about the Sudarshana Lake are given in a rock inscription at Girnar (Junagarh). This inscription was composed to record the achievements of which Shaka ruler?</p>",
+      "option1": "<p>Chashtana</p>",
+      "option2": "<p>Rudradaman I</p>",
+      "option3": "<p>Rudrasimha III</p>",
+      "option4": "<p>Maues</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 21,
+      "question": "<p>Which of the following is true about Fundamental Rights and Directive Principles of State Policy (DPSPs)?</p>",
+      "option1": "<p>Both are justiciable and enforceable by courts</p>",
+      "option2": "<p>DPSPs override Fundamental Rights when in conflict</p>",
+      "option3": "<p>Fundamental Rights are justiciable, but DPSPs are not</p>",
+      "option4": "<p>DPSPs are guaranteed; Fundamental Rights are optional</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 22,
+      "question": "<p>Education is placed under which list after the 42nd Constitutional Amendment Act, 1976?</p>",
+      "option1": "<p>Union List</p>",
+      "option2": "<p>State List</p>",
+      "option3": "<p>Concurrent List</p>",
+      "option4": "<p>Judicial List</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 23,
+      "question": "<p>Which of the following statements about Justice Sanjiv Khanna is/are correct?</p>",
+      "option1": "<p>1 and 2 only</p>",
+      "option2": "<p>2 and 3 only</p>",
+      "option3": "<p>1 and 3 only</p>",
+      "option4": "<p>1, 2 and 3</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 24,
+      "question": "<p>Who has the authority to dissolve the Lok Sabha before the completion of its term?</p>",
+      "option1": "<p>President on the advice of the Prime Minister</p>",
+      "option2": "<p>Speaker of the Lok Sabha</p>",
+      "option3": "<p>Chief Justice of India</p>",
+      "option4": "<p>Election Commission</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 25,
+      "question": "<p>Article 51 of the Indian Constitution relates to which of the following?</p>",
+      "option1": "<p>Promotion of Cooperative Societies</p>",
+      "option2": "<p>Promotion of international peace and security</p>",
+      "option3": "<p>Uniform Civil Code</p>",
+      "option4": "<p>Organization of agriculture and animal husbandry</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 26,
+      "question": "<p>Which of the following is NOT in India’s Very High Damage Risk Zone (Seismic Zone V) for earthquakes?</p>",
+      "option1": "<p>Dharamshala (Himachal Pradesh)</p>",
+      "option2": "<p>Kachchh (Gujarat)</p>",
+      "option3": "<p>Kashmir Valley (Jammu &amp; Kashmir)</p>",
+      "option4": "<p>Latur (Maharashtra)</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 27,
+      "question": "<p>The Mudumal Megalithic Menhirs, added to India’s Tentative List of UNESCO World Heritage Sites (2025), are located in:</p>",
+      "option1": "<p>Telangana</p>",
+      "option2": "<p>Tamil Nadu</p>",
+      "option3": "<p>Kerala</p>",
+      "option4": "<p>Karnataka</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 28,
+      "question": "<p>As of March 2025, how many officially declared Elephant Reserves does India have?</p>",
+      "option1": "<p>34</p>",
+      "option2": "<p>32</p>",
+      "option3": "<p>31</p>",
+      "option4": "<p>33</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 29,
+      "question": "<p>Which of the following is NOT classified as part of the Global Commons?</p>",
+      "option1": "<p>Outer space</p>",
+      "option2": "<p>Amazon Rainforest (within national territory)</p>",
+      "option3": "<p>Earth’s atmosphere</p>",
+      "option4": "<p>Ocean floor (deep seabed)</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 30,
+      "question": "<p>With reference to the Kyoto Protocol, consider the following statements:</p><p>Which of the statements given above is/are correct?</p>",
+      "option1": "<p>1 and 2 only</p>",
+      "option2": "<p>2 and 3 only</p>",
+      "option3": "<p>1 only</p>",
+      "option4": "<p>1, 2 and 3</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 31,
+      "question": "<p>Which of the following was NOT a goal of the 1991 Economic Reforms?</p>",
+      "option1": "<p>Promote industrial competitiveness<br/> </p>",
+      "option2": "<p>Expand public sector control</p>",
+      "option3": "<p>Boost foreign investment</p>",
+      "option4": "<p>Achieve fiscal discipline</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Expanding public sector control was never a goal.<br/>Instead, the reforms aimed to reduce the role of the public sector and promote privatization</p>"
+    },
+    {
+      "sr_no": 32,
+      "question": "<p>Assertion–Reason Question</p><p>Assertion (A): The Green Revolution led to regional imbalances in agricultural growth.</p><p>Reason (R): HYV technology and irrigation facilities were initially available only in select states.</p>",
+      "option1": "<p>Both A and R are true and R is the correct explanation of A</p>",
+      "option2": "<p>Both A and R are true but R is not the correct explanation of A</p>",
+      "option3": "<p>A is true but R is false</p>",
+      "option4": "<p>A is false but R is true</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The Green Revolution mainly benefited states like Punjab, Haryana, and Western Uttar Pradesh because these areas had:</p><p>Other regions like eastern India and rain-fed areas could not adopt the technology quickly.<br/>Therefore, agricultural growth became uneven across regions, creating regional imbalance.</p>"
+    },
+    {
+      "sr_no": 33,
+      "question": "<p>What is the impact of PSU disinvestment on the government’s financial structure?</p>",
+      "option1": "<p>It increases the government’s liabilities</p>",
+      "option2": "<p>It reduces the government’s financial assets</p>",
+      "option3": "<p>It increases the government’s earnings permanently</p>",
+      "option4": "<p>It does not affect government finances at all</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Disinvestment means the government sells part of its ownership in Public Sector Undertakings (PSUs).</p><p>When the government sells shares:</p><p>Thus, the correct impact is reduction in government financial assets.</p>"
+    },
+    {
+      "sr_no": 34,
+      "question": "<p>Which year marked the beginning of India’s First Five-Year Plan?</p>",
+      "option1": "<p>1948</p>",
+      "option2": "<p>1949</p>",
+      "option3": "<p>1950</p>",
+      "option4": "<p>1951</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>India adopted a planned economic system after independence.</p>"
+    },
+    {
+      "sr_no": 35,
+      "question": "<p>Read the following:</p><p>Assertion (A): The Minimum Needs Programme (MNP) was introduced in the Fifth Five-Year Plan.</p><p>Reason (R): It aimed at improving the quality of life through education, health, and drinking water.</p>",
+      "option1": "<p>Both A and R are true and R is the correct explanation of A</p>",
+      "option2": "<p>Both A and R are true but R is not the correct explanation of A</p>",
+      "option3": "<p>A is true but R is false</p>",
+      "option4": "<p>A is false but R is true</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The Minimum Needs Programme (MNP) was introduced during the Fifth Five-Year Plan (1974–79).</p><p>Its objective was to provide basic services such as:</p><p>So both the assertion and reason are correct, and the reason explains the assertion.</p>"
+    },
+    {
+      "sr_no": 36,
+      "question": "<p>Consider the following statements regarding the National Disaster Management Authority (NDMA):</p>",
+      "option1": "<p>1 and 2 only</p>",
+      "option2": "<p>2 and 3 only</p>",
+      "option3": "<p>1 and 3 only</p>",
+      "option4": "<p>1, 2 and 3</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 37,
+      "question": "<p>Match List–I with List–II:</p><p>1. Mitigation</p><p>A. Immediate actions during a disaster</p><p>2. Preparedness</p><p>B. Long-term measures to reduce disaster impact</p><p>3. Response</p><p>C. Restoration of livelihoods and infrastructure</p><p>4. Recovery</p><p>D. Capacity building before disaster occurrence</p>",
+      "option1": "<p>1-B, 2-D, 3-A, 4-C</p>",
+      "option2": "<p>1-A, 2-B, 3-C, 4-D</p>",
+      "option3": "<p>1-D, 2-C, 3-B, 4-A</p>",
+      "option4": "<p>1-C, 2-D, 3-A, 4-B</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 38,
+      "question": "<p>With reference to biodiversity hotspots, consider the following statements:</p><p>Which of the statements given above are correct?</p>",
+      "option1": "<p>1 and 2 only</p>",
+      "option2": "<p>2 and 3 only</p>",
+      "option3": "<p>1 and 3 only</p>",
+      "option4": "<p>1, 2 and 3</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 39,
+      "question": "<p>Which one of the following is the primary objective of Environmental Impact Assessment (EIA)?</p>",
+      "option1": "<p>Maximizing industrial output</p>",
+      "option2": "<p>Compensating affected populations</p>",
+      "option3": "<p>Anticipating environmental consequences before project approval</p>",
+      "option4": "<p>Monitoring disasters after they occur</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 40,
+      "question": "<p>Consider the following statements regarding the Disaster Management Act, 2005:</p><p>Which of the statements given above are correct?</p>",
+      "option1": "<p>1 and 2 only</p>",
+      "option2": "<p>2 and 3 only</p>",
+      "option3": "<p>1 and 3 only</p>",
+      "option4": "<p>1, 2 and 3</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 41,
+      "question": "<p>Match List–I with List–II:</p><p>1 Tsunami</p><p>A. Heavy rainfall and slope instability</p><p>2. Landslide</p><p>B. Sudden displacement of ocean water</p><p>3. Cyclone</p><p>C. Intense low-pressure system</p><p>4. Avalanche</p><p>D. Snow accumulation and gravity</p>",
+      "option1": "<p>1-B, 2-A, 3-C, 4-D</p>",
+      "option2": "<p>1-C, 2-B, 3-A, 4-D</p>",
+      "option3": "<p>1-B, 2-C, 3-D, 4-A</p>",
+      "option4": "<p>1-A, 2-B, 3-C, 4-D</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 42,
+      "question": "<p>Consider the following statements related to climate change:</p><p>Which of the statements given above are correct?</p>",
+      "option1": "<p>1 only</p>",
+      "option2": "<p>1 and 2 only</p>",
+      "option3": "<p>2 and 3 only</p>",
+      "option4": "<p>1, 2 and 3</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 43,
+      "question": "<p>Which of the following agencies is primarily responsible for specialized disaster response operations in India?</p>",
+      "option1": "<p>NDMA</p>",
+      "option2": "<p>SDMA</p>",
+      "option3": "<p>NDRF</p>",
+      "option4": "<p>Home Guards</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 44,
+      "question": "<p>Consider the following statements regarding wildlife conservation:</p><p>Which of the statements given above are correct?</p>",
+      "option1": "<p>1 and 3 only</p>",
+      "option2": "<p>2 and 3 only</p>",
+      "option3": "<p>1 only</p>",
+      "option4": "<p>1, 2 and 3</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 45,
+      "question": "<p>Disaster management is considered a non-traditional security challenge because it:</p>",
+      "option1": "<p>Requires military intervention only</p>",
+      "option2": "<p>Is limited to internal disturbances</p>",
+      "option3": "<p>Threatens human security, economy, and sustainable development</p>",
+      "option4": "<p>Occurs only due to climate change</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 46,
+      "question": "<p>Consider the following statements about One District One Product (ODOP – UP):</p><p>Which statements are correct?</p>",
+      "option1": "<p>1 only</p>",
+      "option2": "<p>1 and 2 only</p>",
+      "option3": "<p>1 and 3 only</p>",
+      "option4": "<p>2 and 3 only</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 47,
+      "question": "<p>The expansion of property card distribution under the SVAMITVA initiative in Uttar Pradesh is mainly intended to:</p>",
+      "option1": "<p>Increase tax burden</p>",
+      "option2": "<p>Provide legal ownership of residential land in villages</p>",
+      "option3": "<p>Promote tourism</p>",
+      "option4": "<p>Support export industries</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 48,
+      "question": "<p>In the UP Budget 2025-26, the fiscal deficit was targeted at about what percentage of GSDP?</p>",
+      "option1": "<p>1.5%</p>",
+      "option2": "<p>2.97%</p>",
+      "option3": "<p>4.5%</p>",
+      "option4": "<p>6.0%</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The fiscal deficit for UP in 2025-26 was projected at around 2.97% of GSDP, keeping it within the fiscal responsibility limits.</p>"
+    },
+    {
+      "sr_no": 49,
+      "question": "<p>Which of the following is NOT a component of Rural Development?</p>",
+      "option1": "<p>Rural infrastructure</p>",
+      "option2": "<p>Agricultural growth</p>",
+      "option3": "<p>Employment generation</p>",
+      "option4": "<p>Space technology missions</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 50,
+      "question": "<p>Which institution is responsible for planning and implementation of rural development at village level?</p>",
+      "option1": "<p>Zila Parishad</p>",
+      "option2": "<p>Block Development Office</p>",
+      "option3": "<p>Gram Sabha</p>",
+      "option4": "<p>Panchayat Samiti</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 51,
+      "question": "<p>In India, it is legally mandatory for which of the following to report on cyber security incidents ?</p>",
+      "option1": "<p>Service providers</p>",
+      "option2": "<p>Body corporate </p>",
+      "option3": "<p>Data centres</p>",
+      "option4": "<p>Both B and C </p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 52,
+      "question": "<p>Which of the following statements is/are correct regarding ‘Near Field Communication (NFC) Technology’ </p>",
+      "option1": "<p>It is a contactless communication technology that uses electromagnetic radio fields</p>",
+      "option2": "<p>NFC is designed for use by devices which can be at a distance of even a metre from each other.</p>",
+      "option3": "<p>NFC can use encryption when sending sensitive information.</p>",
+      "option4": "<p>Both options A and C </p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 53,
+      "question": "<p>“Membrane Bioreactors” are often discussed in the context of which of the following ?</p>",
+      "option1": "<p>Wastewater treatment technologies</p>",
+      "option2": "<p>Drug delivery nanotechnologies</p>",
+      "option3": "<p>Vaccine production technologies</p>",
+      "option4": "<p>Assisted reproductive technologies</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 54,
+      "question": "<p>Recombinant DNA technology (Genetic Engineering) allows genes to be transferred to which of the following ?</p>",
+      "option1": "<p>Across different species of plants</p>",
+      "option2": "<p>From microorganisms to higher organisms</p>",
+      "option3": "<p>From animals to plants </p>",
+      "option4": "<p>All options A B and C correct </p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 55,
+      "question": "<p>Many transplanted seedlings do not grow due to which of the following reason/s ?</p>",
+      "option1": "<p>most of the root hairs are lost during transplantation</p>",
+      "option2": "<p>most of the root hairs grip the new soil too hard</p>",
+      "option3": "<p>the new soil does not contain favourable minerals</p>",
+      "option4": "<p>leaves get damaged during transplantation</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 56,
+      "question": "<p>In which district of Uttar Pradesh is India's first biopolymer plant being established at Kumbhi?</p>",
+      "option1": "<p>Gorakhpur</p>",
+      "option2": "<p>Lakhimpur Kheri</p>",
+      "option3": "<p>Lucknow</p>",
+      "option4": "<p>Varanasi</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>On February 22, 2025, Uttar Pradesh CM Yogi Adityanath laid the foundation stone for India's first Polylactic Acid (PLA) biopolymer plant at Kumbhi, Lakhimpur Kheri, by Balrampur Chini Mills Limited.</p>"
+    },
+    {
+      "sr_no": 57,
+      "question": "<p>Under which scheme did the Uttar Pradesh government distribute loans worth Rs 100 crore to beneficiaries in Gorakhpur and Basti divisions?</p>",
+      "option1": "<p>One District One Product (ODOP)</p>",
+      "option2": "<p>Startup India</p>",
+      "option3": "<p>PMEGP</p>",
+      "option4": "<p>Mukhyamantri Yuva Udyami Vikas Abhiyan</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Uttar Pradesh government distributed ₹100 crore in interest-free loans to 2,500 young entrepreneurs from Gorakhpur and Basti divisions under Mukhyamantri Yuva Udyami Vikas Abhiyan (MYUVA). </p>"
+    },
+    {
+      "sr_no": 58,
+      "question": "<p>What is the primary objective of the RISE app implemented by the Uttar Pradesh government? </p>",
+      "option1": "<p>Track adult vaccinations</p>",
+      "option2": "<p>Manage hospital admissions</p>",
+      "option3": "<p>Monitor adult health checkups</p>",
+      "option4": "<p>Track maternal health records</p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Uttar Pradesh government launched the RISE (Rapid Immunization Skill Enhancement) app statewide to digitally monitor child vaccinations and train health workers. </p>"
+    },
+    {
+      "sr_no": 59,
+      "question": "<p>According to the Startup Ecosystem Report-2025, what is Uttar Pradesh's rank in India's startup ecosystem?</p>",
+      "option1": "<p>1st</p>",
+      "option2": "<p>2nd</p>",
+      "option3": "<p>3rd</p>",
+      "option4": "<p>4th</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Uttar Pradesh ranks third in India's startup ecosystem according to the 2025 report, boasting 26 unicorn startups amid rapid growth. </p>"
+    },
+    {
+      "sr_no": 60,
+      "question": "<p>Uttar Pradesh inaugurated its first state-level Braille library at which institution in Lucknow?</p>",
+      "option1": "<p>Dr. Shakuntala Misra National Rehabilitation University (DSMNRU)</p>",
+      "option2": "<p>King George's Medical University</p>",
+      "option3": "<p>Indian Institute of Technology Kanpur</p>",
+      "option4": "<p>Banaras Hindu University</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Uttar Pradesh has inaugurated its first state-level Braille library at the Dr. Shakuntala Misra National Rehabilitation University (DSMNRU) in Lucknow.</p>"
+    },
+    {
+      "sr_no": 61,
+      "question": "<p>Who represented India in signing the Comprehensive Economic Partnership Agreement (CEPA) with Oman? </p>",
+      "option1": "<p>S. Jaishankar</p>",
+      "option2": "<p>Piyush Goyal</p>",
+      "option3": "<p>Nirmala Sitharaman</p>",
+      "option4": "<p>Rajnath Singh</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>India and Oman signed a Comprehensive Economic Partnership Agreement (CEPA) on December 18, 2025, in Muscat, under PM Narendra Modi's leadership, with Piyush Goyal and Qais bin Mohammed Al Yousef as signatories. </p>"
+    },
+    {
+      "sr_no": 62,
+      "question": "<p>Where is India's first Dugong Conservation Reserve situated? </p>",
+      "option1": "<p>Gulf of Kutch</p>",
+      "option2": "<p>Lakshadweep</p>",
+      "option3": "<p>Andaman Sea</p>",
+      "option4": "<p>Tuticorin Port</p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The International Union for Conservation of Nature (IUCN) adopted a motion at its 2025 World Conservation Congress in Abu Dhabi, recognizing India's first Dugong Conservation Reserve in Palk Bay as a global model for marine conservation.</p>"
+    },
+    {
+      "sr_no": 63,
+      "question": "<p>Which nation hosted the 11th BRICS Parliamentary Forum as BRICS chair? </p>",
+      "option1": "<p>India</p>",
+      "option2": "<p>China</p>",
+      "option3": "<p>Russia</p>",
+      "option4": "<p>USA</p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>The 11th BRICS Parliamentary Forum took place in Brazil, on June 4–5, 2025, hosted by Brazil's National Congress amid its BRICS presidency. </p>"
+    },
+    {
+      "sr_no": 64,
+      "question": "<p>In which year was the Digital Personal Data Protection (DPDP) Act passed?</p>",
+      "option1": "<p>2021</p>",
+      "option2": "<p>2022</p>",
+      "option3": "<p>2023</p>",
+      "option4": "<p>2024</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>India's Digital Personal Data Protection (DPDP) Act, 2023, received presidential assent on August 11, 2023, to regulate digital personal data processing and safeguard privacy. </p>"
+    },
+    {
+      "sr_no": 65,
+      "question": "<p>In which year was the Code on Wages enacted?</p>",
+      "option1": "<p>2018</p>",
+      "option2": "<p>2019</p>",
+      "option3": "<p>2020</p>",
+      "option4": "<p>2021</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 66,
+      "question": "<p>यदि किसी गाँव में पेयजल की समस्या के समाधान हेतु जिला अधिकारी को पत्र लिखा जाए, तो वह होगा—</p>",
+      "option1": "<p>वैयक्तिक पत्र</p>",
+      "option2": "<p>अर्धशासकीय पत्र</p>",
+      "option3": "<p>शासकीय आवेदन पत्र</p>",
+      "option4": "<p>कार्यालय आदेश</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण:</p><p>समस्या + अधिकारी = आवेदन/शिकायत पत्र</p><p>आदेश या परिपत्र अधिकारी जारी करता है, नागरिक नहीं।</p><p>अक्सर “अर्धशासकीय” शब्द देखकर छात्र भ्रमित हो जाते हैं।</p>"
+    },
+    {
+      "sr_no": 67,
+      "question": "<p>निम्न में से कौन-सा संयुक्त वाक्य नहीं है?</p>",
+      "option1": "<p>उसने परिश्रम किया और सफल हुआ।</p>",
+      "option2": "<p>वह आया और बैठ गया।</p>",
+      "option3": "<p>उसने कहा और मैं चुप रहा।</p>",
+      "option4": "<p>वह आया लेकिन देर से।</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण:</p><p>“लेकिन देर से” → अधूरा उपवाक्य</p><p>दूसरा भाग स्वतंत्र नहीं है। </p><p>महत्वपूर्ण बात: संयुक्त वाक्य में दोनों भाग स्वतंत्र होने चाहिए। </p>"
+    },
+    {
+      "sr_no": 68,
+      "question": "<p>'बुराई' में किस प्रत्यय का प्रयोग हुआ है?</p>",
+      "option1": "<p>आई</p>",
+      "option2": "<p>इ</p>",
+      "option3": "<p>ई</p>",
+      "option4": "<p>उपर्युक्त में से को ई नहीं</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>व्याख्या:</p><p>'बुराई' शब्द में 'आई' प्रत्यय का प्रयोग किया गया है l</p><p>'आई' प्रत्यय का प्रयोग भाववाचक संज्ञा बनाने के लिए</p><p>किया जाता है l</p><p>यहां पर मूल शब्द 'बुरा' है, जिसका अर्थ है - ख़राब,</p><p>निकृष्ट।</p><p>अन्य वि कल्प :- अनुचित उत्तर है क्योंकि, इनमेंसे किसीके भी 'प्रत्यय-रूप' प्रयोग से 'बुराई' शब्द नहीं बना है l</p><p>'अय' का अर्थ होता है, 'चलनेवाला '। इस प्रकार प्रत्यय का अर्थ हुआ - शब्दों के साथ, पर बाद में चलनेवाला या लगनेवाला शब्दांश।</p><p>अत: जो शब्दांश के अंत में जोड़े जाते हैं, उन्हें प्रत्यय कहते हैं।</p><p>जैसे - 'बड़ा' शब्द में 'आई' प्रत्यय जोड़कर 'बड़ाई' शब्द</p><p>बनता है।</p><p>'आई' प्रत्यय से बने शब्द :-</p><p>पढ़ + आइ = पढ़ाई</p><p>लड़ + आइ = लड़ाई</p><p>सिल + आइ = सिलाई</p><p>जोत + आइ = जुताई</p>"
+    },
+    {
+      "sr_no": 69,
+      "question": "<p>‘विप्लव’ का पर्यायवाची शब्द है —</p>",
+      "option1": "<p>उत्पात</p>",
+      "option2": "<p>प्रसाद</p>",
+      "option3": "<p>सत्कार</p>",
+      "option4": "<p>उपकार</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>व्याख्या:</p><p>“विप्लव” का अर्थ है —</p><p>उथल-पुथल, विद्रोह, व्यवस्था का बदल जाना, अशांति या क्रांति ।</p><p>“उत्पात” भी अव्यवस्था, विद्रोह या भारी गड़बड़ी को दर्शाता है। इसलिए दोनों समान अर्थ रखते हैं।</p><p>‘विप्लव’ के पर्यायवाची शब्द - क्रांति, विद्रोह, उपद्रव, हंगामा, अशांति, उथल-पुथल, बलवा, विनाश, विपत्ति, और हलचल हैं।</p><p>अन्य विकल्पों का विश्लेषण:</p><p>B प्रसाद — भेंट / दान</p><p>C सत्कार — सम्मान</p><p>D उपकार — सहायता</p><p>इनका विप्लव से कोई संबंध नहीं ।</p><p>विप्लव = विद्रोह = उत्पात</p>"
+    },
+    {
+      "sr_no": 70,
+      "question": "<p>निम्नलिखित में से कौन-सी ध्वनि सघोष भी है और महाप्राण भी?</p>",
+      "option1": "<p>क</p>",
+      "option2": "<p>ग</p>",
+      "option3": "<p>घ</p>",
+      "option4": "<p>च</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>व्याख्या:</p><p>सघोष → कंपन होता है</p><p>महाप्राण → अधिक वायु</p><p>घ = सघोष + महाप्राण<br/>दो गुण जोड़कर पूछा गया।</p>"
+    },
+    {
+      "sr_no": 71,
+      "question": "<p>‘खून का घूँट पीना’ मुहावरे का सही अर्थ है—</p>",
+      "option1": "<p>घृणा करना</p>",
+      "option2": "<p>गुस्से को दबाकर सह जाना </p>",
+      "option3": "<p>भयभीत हो जाना </p>",
+      "option4": "<p>अत्यंत क्रोधित हो जाना</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण :</p><p>‘खून का घूँट पीना’ का अर्थ है — अत्यधिक अपमान, क्रोध या पीड़ा होने पर भी उसे बाहर न दिखाकर चुपचाप सह लेना।</p><p>इसमें क्रोध व्यक्त करना नहीं, बल्कि क्रोध को पी जाना (दबा लेना) मुख्य भाव है।</p>"
+    },
+    {
+      "sr_no": 72,
+      "question": "<p>‘दिग्गज’ का सही संधि-विच्छेद है—</p>",
+      "option1": "<p>दिक् + गज </p>",
+      "option2": "<p>दिग् + गज </p>",
+      "option3": "<p>दिश् + गज </p>",
+      "option4": "<p>दिक + गज</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण:</p><p>क् + ग = ग्ग (जश्त्व संधि)</p><p>दिक् + गज → दिग्गज</p><p>“दिग् + गज” यह बहुत ही भ्रामक गलती हो जाती है।</p>"
+    },
+    {
+      "sr_no": 73,
+      "question": "<p>निम्नलिखित में से शुद्ध शब्द कौन-सा है?</p>",
+      "option1": "<p>सम्मिलित</p>",
+      "option2": "<p>समिलित </p>",
+      "option3": "<p>सम्मिलीत</p>",
+      "option4": "<p>संमिलित</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण:</p><p>‘सम् + मिलित’ → म्म (द्वित्व)</p><p>अन्य विकल्पों में मात्रा / अनुस्वार का दोष है। </p><p>सम् + म = म्म</p>"
+    },
+    {
+      "sr_no": 74,
+      "question": "<p>निम्न में से कौन-सा शब्द अर्धतत्सम है?</p>",
+      "option1": "<p>मुख</p>",
+      "option2": "<p>मुँह</p>",
+      "option3": "<p>मुखड़ा </p>",
+      "option4": "<p>मुखिया </p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>स्पष्टीकरण:</p><p>मुख (तत्सम)</p><p>मुँह (तद्भव)</p><p>मुखड़ा = आंशिक परिवर्तन → अर्धतत्सम</p>"
+    },
+    {
+      "sr_no": 75,
+      "question": "<p>“वह दस वर्षों से इस कार्यालय में कार्यरत है।”<br/>यह वाक्य किस काल का है?</p>",
+      "option1": "<p>सामान्य वर्तमान</p>",
+      "option2": "<p>अपूर्ण वर्तमान</p>",
+      "option3": "<p>पूर्ण वर्तमान</p>",
+      "option4": "<p>सामान्य भूत</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>व्याख्या:</p><p>तोड़कर समझते है -</p><p>“से” + अवधि</p><p>कार्य शुरू भूत में, असर वर्तमान में</p><p>इसलिए पूर्ण वर्तमान</p><p>“है” देखकर सामान्य वर्तमान मान लेना।</p>"
+    },
+    {
+      "sr_no": 76,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image001.png",
+      "option1": "<p>60.5</p>",
+      "option2": "<p>50.4</p>",
+      "option3": "<p>48.6</p>",
+      "option4": "<p>56.7</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image002.jpeg"
+    },
+    {
+      "sr_no": 77,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image001.png",
+      "option1": "<p>1650</p>",
+      "option2": "<p>1450</p>",
+      "option3": "<p>1750</p>",
+      "option4": "<p>1550</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image003.jpeg"
+    },
+    {
+      "sr_no": 78,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image004.jpeg",
+      "option1": "<p>143</p>",
+      "option2": "<p>164</p>",
+      "option3": "<p>158</p>",
+      "option4": "<p>154</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image005.jpeg"
+    },
+    {
+      "sr_no": 79,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image006.jpeg",
+      "option1": "<p>312</p>",
+      "option2": "<p>332</p>",
+      "option3": "<p>344</p>",
+      "option4": "<p>364</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image007.jpeg"
+    },
+    {
+      "sr_no": 80,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image008.png",
+      "option1": "<p>75</p>",
+      "option2": "<p>67</p>",
+      "option3": "<p>68</p>",
+      "option4": "<p>73</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image009.jpeg"
+    },
+    {
+      "sr_no": 81,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image008.png",
+      "option1": "<p>35</p>",
+      "option2": "<p>22.5</p>",
+      "option3": "<p>25</p>",
+      "option4": "<p>53</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image010.jpeg"
+    },
+    {
+      "sr_no": 82,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image011.png",
+      "option1": "<p>1,20,000</p>",
+      "option2": "<p>1,15,000</p>",
+      "option3": "<p>1,29,000</p>",
+      "option4": "<p>84,000</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image012.jpeg"
+    },
+    {
+      "sr_no": 83,
+      "question": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image013.png",
+      "option1": "<p>15°</p>",
+      "option2": "<p>20°</p>",
+      "option3": "<p>18°</p>",
+      "option4": "<p>22°</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image014.jpeg"
+    },
+    {
+      "sr_no": 84,
+      "question": "<p>Study the table and answer the question that follows.</p><p>The table shows the number of students studying in six different classes of six different schools.</p><p>School</p><p>Class V</p><p>Class VI</p><p>Class VII</p><p>Class VIII</p><p>Class IX</p><p>Class X</p><p>P</p><p>152</p><p>160</p><p>145</p><p>156</p><p>147</p><p>144</p><p>Q</p><p>148</p><p>166</p><p>150</p><p>155</p><p>157</p><p>143</p><p>R</p><p>161</p><p>152</p><p>140</p><p>145</p><p>143</p><p>165</p><p>S</p><p>159</p><p>142</p><p>149</p><p>140</p><p>142</p><p>168</p><p>T</p><p>147</p><p>144</p><p>158</p><p>163</p><p>154</p><p>150</p><p>U</p><p>150</p><p>160</p><p>162</p><p>160</p><p>161</p><p>140</p><p>TOTAL</p><p>917</p><p>924</p><p>904</p><p>919</p><p>904</p><p>910</p><p>What is the respective ratio of students studying in class IX of schools Q and R together to those studying in class VI of schools S and T together?</p>",
+      "option1": "<p>181 : 127</p>",
+      "option2": "<p>143 : 150</p>",
+      "option3": "<p>150 : 143</p>",
+      "option4": "<p>127 : 181</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image015.jpeg"
+    },
+    {
+      "sr_no": 85,
+      "question": "<p>The given table represents the monthly income of 100 families of a locality.</p><p>Monthly income range</p><p>Number of families</p><p>Income more than ₹10,000</p><p>100</p><p>Income more than ₹13,000</p><p>85</p><p>Income more than ₹16,000</p><p>69</p><p>Income more than ₹19,000</p><p>50</p><p>Income more than ₹22,000</p><p>33</p><p>Income more than ₹25,000</p><p>15</p><p>The number of families having income range (in ) 19000 - 22000 is:</p>",
+      "option1": "<p>17</p>",
+      "option2": "<p>19</p>",
+      "option3": "<p>22</p>",
+      "option4": "<p>24</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "https://static-appxdb-v2.akamai.net.in/website/bulk_uploader_images/1769908376155_image016.jpeg"
+    },
+    {
+      "sr_no": 86,
+      "question": "<p>Which of the following is NOT an example of the cloud?</p>",
+      "option1": "<p>Amazon Web Services (AWS)</p>",
+      "option2": "<p>Cisco WebX</p>",
+      "option3": "<p>Dropbox </p>",
+      "option4": "<p>Both A and C </p>",
+      "answer": "5",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Amazon Web Services (AWS), Dropbox, and Cisco WebEx are examples of cloud.</p>"
+    },
+    {
+      "sr_no": 87,
+      "question": "<p>Which of the following is a weak AI ?</p>",
+      "option1": "<p>the study of mental faculties using mental models implemented on a computer</p>",
+      "option2": "<p>the embodiment of human intellectual capabilities within a computer</p>",
+      "option3": "<p>a set of computer programs that produce output that would be considered to reflect intelligence if it were generated by humans</p>",
+      "option4": "<p>Both options B and C </p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Weak AI is the study of mental faculties using mental models implemented on a computer.</p>"
+    },
+    {
+      "sr_no": 88,
+      "question": "<p>Which one of the following models is a generative model used in machine learning?</p>",
+      "option1": "<p>Support vector machines</p>",
+      "option2": "<p>Naive Bayes</p>",
+      "option3": "<p>Logistic Regression</p>",
+      "option4": "<p>Linear Regression</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 89,
+      "question": "<p>Which of the following is a commercial use of Image Subtraction ?</p>",
+      "option1": "<p>Mask mode radiography</p>",
+      "option2": "<p>MRI Scan</p>",
+      "option3": "<p>CT Scan</p>",
+      "option4": "<p>Geometric Spatial Scan</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Mask mode radiography, which is based on Image Subtraction, is an important medical imaging field. </p>"
+    },
+    {
+      "sr_no": 90,
+      "question": "<p>Which of the following is an application of Artificial Intelligence?</p>",
+      "option1": "<p>Easy to create a website</p>",
+      "option2": "<p>Language understanding and problem-solving (Text analytics and NLP)</p>",
+      "option3": "<p> It helps to exploit vulnerabilities to secure the firm</p>",
+      "option4": "<p>It helps to deploy applications on the cloud</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 91,
+      "question": "<p>Which of the following is NOT correct about IoT (Internet of Things) devices ?</p>",
+      "option1": "<p>IoT devices use the internet for collecting and sharing data</p>",
+      "option2": "<p>IoT devices need microcontrollers</p>",
+      "option3": "<p>IoT devices use wireless technology</p>",
+      "option4": "<p>IoT devices are completely safe</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>Internet of Things refer to a network of physical objects \"things\" embedded with sensors, software, and technologies to connect and exchange data with other devices and systems over the internet. These devices, ranging from smart home appliances to industrial machinery, enable automation, remote monitoring, and increased efficiency across various sectors. </p>"
+    },
+    {
+      "sr_no": 92,
+      "question": "<p>To reduce the memory access time we generally make use of which of the following ?</p>",
+      "option1": "<p>Cache</p>",
+      "option2": "<p>Higher capacity RAM</p>",
+      "option3": "<p>SDRAM</p>",
+      "option4": "<p>Heaps</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 93,
+      "question": "<p>For which of the following reason/s do bugs and failures occur in software?</p>",
+      "option1": "<p>specifies the tasks the program must complete</p>",
+      "option2": "<p>Developers</p>",
+      "option3": "<p>Companies </p>",
+      "option4": "<p>Both Developers and Companies </p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 94,
+      "question": "<p>Which of the following is the main function of the command interpreter?</p>",
+      "option1": "<p>to handle the files in the operating system</p>",
+      "option2": "<p>to provide the interface between the API and application program</p>",
+      "option3": "<p>to get and execute the next user-specified command</p>",
+      "option4": "<p>none of the mentioned</p>",
+      "answer": "3",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 95,
+      "question": "<p> In Operating Systems, which of the following is/are NOT a CPU scheduling algorithms?</p>",
+      "option1": "<p>Multilevel Queue Scheduling</p>",
+      "option2": "<p>Eigen Value</p>",
+      "option3": "<p>Priority </p>",
+      "option4": "<p>Shortest Job First</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": "<p>In Operating Systems, CPU scheduling algorithms are:</p><p>i) First Come First Served scheduling</p><p>ii) Shortest Job First scheduling</p><p>iii) Priority scheduling</p><p>iv) Round Robin scheduling</p><p>v) Multilevel Queue scheduling</p><p>vi) Multilevel Feedback Queue scheduling</p><p>All of these scheduling algorithms have their own advantages and disadvantages.</p>"
+    },
+    {
+      "sr_no": 96,
+      "question": "<p>If a process fails, most operating system write the error information to which of the following ?</p>",
+      "option1": "<p>another running process</p>",
+      "option2": "<p>log file</p>",
+      "option3": "<p>new file</p>",
+      "option4": "<p>RTLinux</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 97,
+      "question": "<p>Which of the following has Operating System X ?</p>",
+      "option1": "<p>monolithic kernel with modules</p>",
+      "option2": "<p>hybrid kernel</p>",
+      "option3": "<p>monolithic kernel</p>",
+      "option4": "<p>microkernel</p>",
+      "answer": "2",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 98,
+      "question": "<p>Which of the following is not a feature of Object Oriented Programming in general definitions?</p>",
+      "option1": "<p>Redundant data</p>",
+      "option2": "<p>Code reusability</p>",
+      "option3": "<p>Efficient Code</p>",
+      "option4": "<p>Modularity</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 99,
+      "question": "<p>Which of the following is the branch of Artificial Intelligence ?</p>",
+      "option1": "<p>Cyber forensics</p>",
+      "option2": "<p>Full-Stack Developer</p>",
+      "option3": "<p>Network Design</p>",
+      "option4": "<p>Machine Learning</p>",
+      "answer": "4",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    },
+    {
+      "sr_no": 100,
+      "question": "<p>Which of the following is the wrong statement about cloud computing?</p>",
+      "option1": "<p>Cloud resource pricing always scale linearly based on performance</p>",
+      "option2": "<p>Data center operates under average loads</p>",
+      "option3": "<p>Private cloud doesn’t pooling of resources that a cloud computing provider can achieve</p>",
+      "option4": "<p>Abstraction enables the key benefit of cloud computing: shared, ubiquitous access</p>",
+      "answer": "1",
+      "negative_marking": "0.25",
+      "positive_marking": "1.00",
+      "solution": ""
+    }
+  ]
+};
+
+// Extract questions and time from new structure
+const questions = quizData.questions;
+const totalTimeMinutes = quizData.time_minutes;
+
+let currentQuestion = 0;
+let answers = {};
+let bookmarks = new Set();
+let timerSeconds = totalTimeMinutes * 60;
+let timerInterval = null;
+let isPaletteOpen = false;
+
+function isImageURL(str) {
+  return str && (str.startsWith('http') || str.startsWith('https'));
+}
+
+function createOptionContent(optionText) {
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'option-content';
+    
+    if (isImageURL(optionText)) {
+        const img = document.createElement('img');
+        img.src = optionText;
+        img.className = 'option-image';
+        img.alt = 'Option image';
+        img.loading = 'lazy';
+        img.onerror = function() {
+            this.style.display = 'none';
+            const errorText = document.createTextNode('Image failed to load');
+            contentDiv.appendChild(errorText);
+        };
+        contentDiv.appendChild(img);
+    } else {
+        contentDiv.innerHTML = optionText;  // FIXED: Use innerHTML
+    }
+    
+    return contentDiv;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initQuiz();
+  initEventListeners();
+  loadFromLocalStorage();
+  startTimer();
+  createPalette();
+  preventDoubleTapZoom();
+});
+
+function preventDoubleTapZoom() {
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', (event) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+      event.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, { passive: false });
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('quizTheme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeIcon();
+}
+
+function updateThemeIcon() {
+  const theme = document.documentElement.getAttribute('data-theme');
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) {
+    themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('quizTheme', newTheme);
+  updateThemeIcon();
+}
+
+function initQuiz() {
+  loadQuestion(currentQuestion);
+  updateMarkingInfo();
+}
+
+function initEventListeners() {
+  const themeBtn = document.getElementById('themeToggle');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  
+  if (themeBtn) {
+    themeBtn.addEventListener('click', toggleTheme);
+    themeBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      toggleTheme();
+    });
+  }
+  
+  if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    fullscreenBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      toggleFullscreen();
+    });
+  }
+  
+  addButtonListener('prevBtn', prevQuestion);
+  addButtonListener('nextBtn', nextQuestion);
+  addButtonListener('clearBtn', clearAnswer);
+  addButtonListener('submitBtn', confirmSubmit);
+  addButtonListener('bookmarkBtn', toggleBookmark);
+  
+  addButtonListener('paletteFab', togglePalette);
+  addButtonListener('paletteClose', closePalette);
+  
+  const overlay = document.getElementById('paletteOverlay');
+  if (overlay) {
+    overlay.addEventListener('click', closePalette);
+    overlay.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      closePalette();
+    });
+  }
+  
+  const searchInput = document.getElementById('paletteSearch');
+  if (searchInput) {
+    searchInput.addEventListener('input', handleSearch);
+    searchInput.addEventListener('change', jumpToQuestion);
+  }
+  
+  document.addEventListener('keydown', handleKeyPress);
+  
+  setInterval(saveToLocalStorage, 5000);
+  
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      updatePalette();
+    }
+  });
+}
+
+function addButtonListener(id, handler) {
+  const btn = document.getElementById(id);
+  if (btn) {
+    btn.addEventListener('click', handler);
+    btn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      handler();
+    });
+  }
+}
+
+function jumpToQuestion(e) {
+  const questionNum = parseInt(e.target.value);
+  if (questionNum >= 1 && questionNum <= questions.length) {
+    goToQuestion(questionNum - 1);
+    closePalette();
+    e.target.value = '';
+  }
+}
+
+function togglePalette() {
+  isPaletteOpen = !isPaletteOpen;
+  const palette = document.getElementById('questionPalette');
+  const overlay = document.getElementById('paletteOverlay');
+  const fab = document.getElementById('paletteFab');
+  
+  if (isPaletteOpen) {
+    palette.classList.add('active');
+    overlay.classList.add('active');
+    fab.classList.add('active');
+    fab.innerHTML = `📋 <span class="badge" id="answeredBadge">${Object.keys(answers).length}</span>`;
+    document.body.classList.add('palette-open');
+  } else {
+    closePalette();
+  }
+}
+
+function closePalette() {
+  isPaletteOpen = false;
+  const palette = document.getElementById('questionPalette');
+  const overlay = document.getElementById('paletteOverlay');
+  const fab = document.getElementById('paletteFab');
+  
+  if (palette) palette.classList.remove('active');
+  if (overlay) overlay.classList.remove('active');
+  if (fab) {
+    fab.classList.remove('active');
+    fab.innerHTML = `📋 <span class="badge" id="answeredBadge">${Object.keys(answers).length}</span>`;
+  }
+  document.body.classList.remove('palette-open');
+}
+
+function handleSearch(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  if (!searchTerm) {
+    document.querySelectorAll('.palette-btn').forEach(btn => {
+      btn.style.display = '';
+    });
+    return;
+  }
+  
+  const buttons = document.querySelectorAll('.palette-btn');
+  buttons.forEach((btn, index) => {
+    const questionNum = (index + 1).toString();
+    if (questionNum.includes(searchTerm)) {
+      btn.style.display = '';
+    } else {
+      btn.style.display = 'none';
+    }
+  });
+}
+
+function handleKeyPress(e) {
+  if (document.getElementById('resultSection').classList.contains('hidden')) {
+    if (e.key === 'Escape') {
+      if (isPaletteOpen) {
+        closePalette();
+      }
+    } else if (!isPaletteOpen && e.target.tagName !== 'INPUT') {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevQuestion();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextQuestion();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        nextQuestion();
+      } else if (e.key === 'b' || e.key === 'B') {
+        e.preventDefault();
+        toggleBookmark();
+      } else if (e.key === 'c' || e.key === 'C') {
+        e.preventDefault();
+        clearAnswer();
+      } else if (e.key === 'p' || e.key === 'P') {
+        e.preventDefault();
+        togglePalette();
+      } else if (e.key >= '1' && e.key <= '4') {
+        e.preventDefault();
+        selectOption(parseInt(e.key));
+      }
+    }
+  }
+}
+
+function selectOption(optionNum) {
+  const q = questions[currentQuestion];
+  const radio = document.querySelector(`input[name="q${q.sr_no}"][value="${optionNum}"]`);
+  if (radio) {
+    radio.checked = true;
+    const label = radio.closest('.option-label');
+    if (label) {
+      document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+      label.classList.add('selected');
+      saveAnswer();
+    }
+  }
+}
+
+function toggleFullscreen() {
+  try {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.log('Fullscreen error:', err);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  } catch (err) {
+    console.log('Fullscreen not supported');
+  }
+}
+
+function startTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+  }
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimer();
+    
+    // Auto-submit when time runs out
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      alert('Time is up! Submitting quiz automatically.');
+      submitQuiz();
+      return;
+    }
+    
+    if (timerSeconds <= 120) {
+      const timer = document.getElementById('timer');
+      if (timer) timer.classList.add('warning');
+    }
+  }, 1000);
+}
+
+function updateTimer() {
+  const minutes = Math.floor(timerSeconds / 60);
+  const seconds = timerSeconds % 60;
+  const timer = document.getElementById('timer');
+  if (timer) {
+    timer.textContent = 
+      `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+}
+
+function createPalette() {
+  const grid = document.getElementById('paletteGrid');
+  if (!grid) return;
+  
+  grid.innerHTML = '';
+  questions.forEach((q, index) => {
+    const btn = document.createElement('button');
+    btn.textContent = index + 1;
+    btn.className = 'palette-btn';
+    btn.setAttribute('aria-label', `Go to question ${index + 1}`);
+    btn.setAttribute('type', 'button');
+    
+    btn.addEventListener('click', () => {
+      goToQuestion(index);
+      closePalette();
+    });
+    
+    btn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      goToQuestion(index);
+      closePalette();
+    });
+    
+    grid.appendChild(btn);
+  });
+  updatePalette();
+}
+
+function updatePalette() {
+  const buttons = document.querySelectorAll('.palette-btn');
+  buttons.forEach((btn, index) => {
+    btn.className = 'palette-btn';
+    if (index === currentQuestion) btn.classList.add('current');
+    if (answers[questions[index].sr_no]) btn.classList.add('answered');
+    if (bookmarks.has(questions[index].sr_no)) btn.classList.add('bookmarked');
+  });
+  
+  updatePaletteStats();
+}
+
+function updatePaletteStats() {
+  const answered = Object.keys(answers).length;
+  const unanswered = questions.length - answered;
+  const bookmarkedCount = bookmarks.size;
+  
+  const answeredEl = document.getElementById('paletteAnswered');
+  const unansweredEl = document.getElementById('paletteUnanswered');
+  const bookmarkedEl = document.getElementById('paletteBookmarked');
+  
+  if (answeredEl) answeredEl.textContent = answered;
+  if (unansweredEl) unansweredEl.textContent = unanswered;
+  if (bookmarkedEl) bookmarkedEl.textContent = bookmarkedCount;
+  
+  const badge = document.querySelector('.palette-fab .badge');
+  if (badge) badge.textContent = answered;
+}
+
+function goToQuestion(index) {
+  if (index < 0 || index >= questions.length) return;
+  saveAnswer();
+  currentQuestion = index;
+  loadQuestion(currentQuestion);
+  
+  const questionSection = document.getElementById('questionSection');
+  if (questionSection) {
+    setTimeout(() => {
+      questionSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+}
+
+function loadQuestion(index) {
+  const q = questions[index];
+  
+  const questionNumber = document.getElementById('questionNumber');
+  const questionText = document.getElementById('questionText');
+  
+  if (questionNumber) {
+    questionNumber.textContent = `Question ${index + 1} of ${questions.length}`;
+  }
+  
+  if (questionText) {
+    questionText.innerHTML = '';
+    const questionContent = createOptionContent(q.question);
+    questionText.appendChild(questionContent);
+  }
+  
+  const container = document.getElementById('optionsContainer');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  for (let i = 1; i <= 4; i++) {
+    const label = document.createElement('label');
+    label.className = 'option-label';
+    if (answers[q.sr_no] == i) label.classList.add('selected');
+    
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = `q${q.sr_no}`;
+    radio.value = i;
+    radio.checked = answers[q.sr_no] == i;
+    
+    const changeHandler = () => {
+      document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+      label.classList.add('selected');
+      saveAnswer();
+    };
+    
+    radio.addEventListener('change', changeHandler);
+    label.addEventListener('click', (e) => {
+      if (e.target !== radio) {
+        radio.checked = true;
+        changeHandler();
+      }
+    });
+    
+    label.appendChild(radio);
+    
+    const optionContent = createOptionContent(q[`option${i}`]);
+    label.appendChild(optionContent);
+    
+    container.appendChild(label);
+  }
+  
+  const bookmarkBtn = document.getElementById('bookmarkBtn');
+  if (bookmarkBtn) {
+    if (bookmarks.has(q.sr_no)) {
+      bookmarkBtn.classList.add('active');
+    } else {
+      bookmarkBtn.classList.remove('active');
+    }
+  }
+  
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const submitBtn = document.getElementById('submitBtn');
+  
+  if (prevBtn) prevBtn.disabled = index === 0;
+  
+  if (index === questions.length - 1) {
+    if (nextBtn) nextBtn.classList.add('hidden');
+    if (submitBtn) submitBtn.classList.remove('hidden');
+  } else {
+    if (nextBtn) nextBtn.classList.remove('hidden');
+    if (submitBtn) submitBtn.classList.add('hidden');
+  }
+  
+  updateProgress();
+  updatePalette();
+}
+
+function updateMarkingInfo() {
+  const q = questions[0];
+  const markingInfo = document.getElementById('markingInfo');
+  if (markingInfo) {
+    markingInfo.textContent = `Marking: +${q.positive_marking}, -${q.negative_marking}`;
+  }
+}
+
+function updateProgress() {
+  const attempted = Object.keys(answers).length;
+  const currentProgress = ((currentQuestion + 1) / questions.length) * 100;
+  
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const attemptedText = document.getElementById('attemptedText');
+  
+  if (progressBar) progressBar.style.width = `${currentProgress}%`;
+  if (progressText) progressText.textContent = `${currentQuestion + 1}/${questions.length}`;
+  if (attemptedText) attemptedText.textContent = attempted;
+}
+
+function saveAnswer() {
+  const q = questions[currentQuestion];
+  const selected = document.querySelector(`input[name="q${q.sr_no}"]:checked`);
+  
+  if (selected) {
+    answers[q.sr_no] = selected.value;
+  }
+  
+  updateProgress();
+  updatePalette();
+  saveToLocalStorage();
+}
+
+function clearAnswer() {
+  const q = questions[currentQuestion];
+  delete answers[q.sr_no];
+  
+  const selected = document.querySelector(`input[name="q${q.sr_no}"]:checked`);
+  if (selected) selected.checked = false;
+  
+  document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+  
+  updateProgress();
+  updatePalette();
+  saveToLocalStorage();
+}
+
+function toggleBookmark() {
+  const q = questions[currentQuestion];
+  const btn = document.getElementById('bookmarkBtn');
+  
+  if (bookmarks.has(q.sr_no)) {
+    bookmarks.delete(q.sr_no);
+    if (btn) btn.classList.remove('active');
+  } else {
+    bookmarks.add(q.sr_no);
+    if (btn) btn.classList.add('active');
+  }
+  
+  updatePalette();
+  saveToLocalStorage();
+}
+
+function nextQuestion() {
+  saveAnswer();
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    loadQuestion(currentQuestion);
+  }
+}
+
+function prevQuestion() {
+  saveAnswer();
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    loadQuestion(currentQuestion);
+  }
+}
+
+function confirmSubmit() {
+  const unattempted = questions.length - Object.keys(answers).length;
+  let message = 'Are you sure you want to submit the quiz?';
+  
+  if (unattempted > 0) {
+    message = `You have ${unattempted} unanswered questions. ${message}`;
+  }
+  
+  if (confirm(message)) {
+    submitQuiz();
+  }
+}
+
+function submitQuiz() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  saveAnswer();
+  closePalette();
+  
+  let correct = 0, wrong = 0, unattempted = 0, score = 0;
+  
+  questions.forEach(q => {
+    const userAns = answers[q.sr_no];
+    const posMark = parseFloat(q.positive_marking) || 0;
+    const negMark = parseFloat(q.negative_marking) || 0;
+    
+    if (!userAns) {
+      unattempted++;
+    } else if (userAns == q.answer) {
+      correct++;
+      score += posMark;
+    } else {
+      wrong++;
+      score -= negMark;
+    }
+  });
+  
+  displayResults(correct, wrong, unattempted, score);
+  
+  const fab = document.getElementById('paletteFab');
+  const nav = document.getElementById('navigation');
+  if (fab) fab.style.display = 'none';
+  if (nav) nav.style.display = 'none';
+  
+  document.body.style.paddingBottom = '20px';
+  
+  clearLocalStorage();
+}
+
+function displayResults(correct, wrong, unattempted, score) {
+  const totalQuestions = questions.length;
+  const percentage = ((correct / totalQuestions) * 100).toFixed(1);
+  const timerEl = document.getElementById('timer');
+  const timeText = timerEl ? timerEl.textContent : '00:00';
+  const timeTaken = (totalTimeMinutes * 60) - timerSeconds;
+  const minutesTaken = Math.floor(timeTaken / 60);
+  const secondsTaken = timeTaken % 60;
+  const timeTakenText = `${minutesTaken}m ${secondsTaken}s`;
+  
+  let html = `
+    <div class="score-card">
+      <h2>${score}/${totalQuestions}</h2>
+      <p>Your Score: ${percentage}%</p>
+      <p>Time Taken: ${timeTakenText}</p>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card correct">
+        <h3>${correct}</h3>
+        <p>Correct</p>
+      </div>
+      <div class="stat-card wrong">
+        <h3>${wrong}</h3>
+        <p>Wrong</p>
+      </div>
+      <div class="stat-card unattempted">
+        <h3>${unattempted}</h3>
+        <p>Unattempted</p>
+      </div>
+      <div class="stat-card">
+        <h3>${totalQuestions}</h3>
+        <p>Total</p>
+      </div>
+    </div>
+  `;
+  
+  questions.forEach(q => {
+    const userAns = answers[q.sr_no];
+    let questionDisplay = '';
+    if (isImageURL(q.question)) {
+      questionDisplay = `<img src="${q.question}" class="question-image" alt="Question ${q.sr_no}">`;
+    } else {
+      questionDisplay = q.question;
+    }
+    html += `<div class="question-review">
+      <h4>Q${q.sr_no}: ${questionDisplay}</h4>`;
+    
+    for (let i = 1; i <= 4; i++) {
+      const isCorrect = i.toString() === q.answer;
+      const isUserAnswer = userAns == i.toString();
+      
+      let className = 'review-option';
+      if (isCorrect) className += ' correct';
+      if (isUserAnswer && !isCorrect) className += ' wrong';
+      if (isUserAnswer) className += ' user-selected';
+      
+      const optionValue = q[`option${i}`];
+      
+      if (isImageURL(optionValue)) {
+        html += `<div class="${className}">
+          ${isCorrect ? '✓ ' : ''}${isUserAnswer ? '➤ ' : ''} 
+          <img src="${optionValue}" class="option-image" alt="Option ${i}">
+        </div>`;
+      } else {
+        html += `<div class="${className}">
+          ${isCorrect ? '✓ ' : ''}${isUserAnswer ? '➤ ' : ''}${optionValue}
+        </div>`;
+      }
+    }
+    
+    if (q.solution && q.solution.trim() !== '') {
+      let solutionDisplay = '';
+      if (isImageURL(q.solution)) {
+        solutionDisplay = `<img src="${q.solution}" class="solution-image" alt="Solution" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;">`;
+      } else {
+        solutionDisplay = q.solution;
+      }
+      
+      html += `<div class="solution-section" style="margin-top: 15px; padding: 15px; background: #f0f8ff; border-left: 4px solid #007bff; border-radius: 8px;">
+        <strong style="color: #007bff;">💡 Solution:</strong>
+        <div style="margin-top: 8px; color: #333;">${solutionDisplay}</div>
+      </div>`;
+    }
+    
+    html += `</div>`;
+  });
+  
+  html += `
+    <div class="action-buttons">
+      <button class="action-btn restart" onclick="restartQuiz()">Restart Quiz</button>
+      <button class="action-btn download" onclick="downloadResults()">Download Results</button>
+      <button class="action-btn print" onclick="window.print()">Print Results</button>
+    </div>
+  `;
+  
+  const resultSection = document.getElementById('resultSection');
+  const questionSection = document.getElementById('questionSection');
+  const progressSection = document.querySelector('.progress-section');
+  
+  if (resultSection) {
+    resultSection.innerHTML = html;
+    resultSection.classList.remove('hidden');
+  }
+  if (questionSection) questionSection.classList.add('hidden');
+  if (progressSection) progressSection.classList.add('hidden');
+  
+  const quizContainer = document.getElementById('quizContainer');
+  if (quizContainer) {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  }
+}
+function isImageURL(str) {
+  return str && (str.startsWith('http') || str.startsWith('https')) &&
+    (str.match(/\.(jpeg|jpg|gif|png|svg|webp)$/i));
+}
+function restartQuiz() {
+  if (confirm('Are you sure you want to restart? All progress will be lost.')) {
+    currentQuestion = 0;
+    answers = {};
+    bookmarks.clear();
+    timerSeconds = totalTimeMinutes * 60;
+    
+    const resultSection = document.getElementById('resultSection');
+    const questionSection = document.getElementById('questionSection');
+    const progressSection = document.querySelector('.progress-section');
+    const fab = document.getElementById('paletteFab');
+    const nav = document.getElementById('navigation');
+    
+    if (resultSection) {
+      resultSection.classList.add('hidden');
+      resultSection.innerHTML = '';
+    }
+    if (questionSection) questionSection.classList.remove('hidden');
+    if (progressSection) progressSection.classList.remove('hidden');
+    if (fab) fab.style.display = 'flex';
+    if (nav) nav.style.display = 'grid';
+    
+    document.body.style.paddingBottom = 'var(--nav-height)';
+    
+    if (timerInterval) {
+      clearInterval(timerInterval);
+    }
+    updateTimer();
+    startTimer();
+    
+    loadQuestion(currentQuestion);
+    createPalette();
+  }
+}
+
+function downloadResults() {
+  const resultSection = document.getElementById('resultSection');
+  if (!resultSection) return;
+  
+  const resultHTML = resultSection.innerHTML;
+  const fullHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FULL LENGTH TEST - 4</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; max-width: 900px; margin: 0 auto; }
+    .score-card { background: linear-gradient(135deg, #007bff, #28a745); color: white; padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
+    .score-card h2 { font-size: 48px; margin-bottom: 10px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
+    .stat-card { background: white; padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #ddd; }
+    .stat-card h3 { font-size: 32px; margin-bottom: 8px; }
+    .stat-card.correct h3 { color: #28a745; }
+    .stat-card.wrong h3 { color: #dc3545; }
+    .stat-card.unattempted h3 { color: #6c757d; }
+    .question-review { background: white; border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin-bottom: 15px; }
+    .question-review h4 { margin-bottom: 15px; font-size: 16px; line-height: 1.6; }
+    .review-option { padding: 10px 15px; margin: 8px 0; border-radius: 8px; border: 2px solid #ddd; display: flex; align-items: center; gap: 10px; }
+    .option-image { max-width: 150px; max-height: 100px; border-radius: 8px; }
+    .review-option.correct { background: #d4edda; border-color: #28a745; color: #155724; }
+    .review-option.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+    .review-option.user-selected { border-width: 3px; font-weight: bold; }
+    @media print { body { background: white; } }
+    @media (max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center; color: #007bff;">MOTION 3.0 - Quiz Results</h1>
+  <p style="text-align: center; color: #666; margin-bottom: 30px;">Generated on: ${new Date().toLocaleString()}</p>
+  ${resultHTML.replace(/<div class="action-buttons">[\s\S]*?<\/div>/, '')}
+</body>
+</html>
+  `;
+  
+  try {
+    const blob = new Blob([fullHTML], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Quiz_Results_${new Date().getTime()}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    alert('Download failed. Please try using the Print option instead.');
+    console.error('Download error:', err);
+  }
+}
+
+function saveToLocalStorage() {
+  try {
+    const state = {
+      currentQuestion,
+      answers,
+      bookmarks: Array.from(bookmarks),
+      timerSeconds,
+      timestamp: Date.now()
+    };
+    localStorage.setItem('quizState', JSON.stringify(state));
+  } catch (err) {
+    console.error('Save error:', err);
+  }
+}
+
+function loadFromLocalStorage() {
+  try {
+    const saved = localStorage.getItem('quizState');
+    if (saved) {
+      const state = JSON.parse(saved);
+      if (Date.now() - state.timestamp < 24 * 60 * 60 * 1000) {
+        if (confirm('Resume previous quiz session?')) {
+          currentQuestion = state.currentQuestion || 0;
+          answers = state.answers || {};
+          bookmarks = new Set(state.bookmarks || []);
+          timerSeconds = state.timerSeconds || (totalTimeMinutes * 60); // MODIFIED
+          updateTimer();
+          loadQuestion(currentQuestion);
+        }
+      } else {
+        clearLocalStorage();
+      }
+    }
+  } catch (err) {
+    console.error('Load error:', err);
+    clearLocalStorage();
+  }
+}
+
+function clearLocalStorage() {
+  try {
+    localStorage.removeItem('quizState');
+  } catch (err) {
+    console.error('Clear storage error:', err);
+  }
+}
+
+window.addEventListener('beforeunload', (e) => {
+  const resultSection = document.getElementById('resultSection');
+  if (resultSection && !resultSection.classList.contains('hidden')) {
+    return;
+  }
+  e.preventDefault();
+  e.returnValue = '';
+});
+
+window.addEventListener('unload', () => {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+  }
+});
+</script>
+</body>
+</html>
